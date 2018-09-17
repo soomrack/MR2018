@@ -6,6 +6,3 @@ set(CMAKE_C_STANDARD 11)
 add_library(kurshakovlib STATIC kurshakov_lib.c)
 
 add_executable(kurshakovmain kurshakov_main.c)
-
-target_link_libraries(kurshakovmain mylib)
-message("Отлично поработали!")
