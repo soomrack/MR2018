@@ -8,6 +8,7 @@ add_library(mylibrary STATIC libraryvb.c)
 add_executable(main CMakeLists.txt)
 target_link_libraries(main mylibrary)
 
+add_subdirectory(Artyrrr)
 add_subdirectory(kurshakov.ga)
 add_subdirectory(Nenahov)
 add_subdirectory(vorobieva.vb)
