@@ -15,12 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Maxim\library.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Maxim\fail.c">
+    <ClCompile Include="Structs.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
