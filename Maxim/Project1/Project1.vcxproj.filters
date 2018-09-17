@@ -18,5 +18,13 @@
     <ClCompile Include="Structs.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="fail2.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
