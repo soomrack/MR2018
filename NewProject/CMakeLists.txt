@@ -4,6 +4,8 @@ project(C)
 set(CMAKE_C_STANDARD 11)
 
 add_library(mylibrary STATIC library.c)
+add_library(anotherlibrary STATIC anotherlibrary.c)
 
 add_executable(main notes.c)
 target_link_libraries(main mylibrary)
+target_link_libraries(main anotherlibrary)

@@ -9,5 +9,5 @@
 
 void main2()
 {
-        printf("LIBRARY: Hello World!");
+        printf("LIBRARY: Hello World!\n");
 }

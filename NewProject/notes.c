@@ -14,6 +14,7 @@
  * */
 
 #include "library.h"
+#include "anotherlibrary.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -96,5 +97,6 @@ int main()
         }
 
         main2();
+        main3();
         return 0;
 }
