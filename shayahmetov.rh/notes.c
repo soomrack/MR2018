@@ -13,7 +13,7 @@
  *
  * */
 
-#include "library.h"
+#include "librain.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -90,10 +90,10 @@ err:
 
 int main()
 {
-        printf("Hello, World!\n\n");
-        for(int k = 1; k <= N; ++k){
-                ave();
-        }
+        //printf("Hello, World!\n\n");
+      //  for(int k = 1; k <= N; ++k){
+       //         ave();
+       // }
 
         main2();
         return 0;
