@@ -10,9 +10,6 @@ target_link_libraries(main mylibrary)
 
 add_subdirectory(kurshakov.ga)
 add_subdirectory(Nenahov)
-<<<<<<< HEAD
 add_subdirectory(shayahmetov.rh)
-=======
 add_subdirectory(vorobieva.vb)
 add_subdirectory(librarypk)
->>>>>>> origin/master
