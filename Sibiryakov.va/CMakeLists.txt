@@ -7,6 +7,6 @@ set(SOURCE_LIB mylibrary.c)
 
 add_executable(main main.c)
 
-add_library(newlibrary STATIC ${SOURCE_LIB})
+add_library(mylibrary STATIC ${SOURCE_LIB})
 
 target_link_libraries(main mylibrary)
