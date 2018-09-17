@@ -6,5 +6,6 @@ set(CMAKE_C_STANDARD 11)
 add_library(mylibrary STATIC librain.c)
 
 add_executable(main CMakeLists.txt)
+
 target_link_libraries(main mylibrary)
 
