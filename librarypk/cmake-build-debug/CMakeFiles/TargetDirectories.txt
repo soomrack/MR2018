@@ -1,0 +1,4 @@
+C:/Users/prog/CLionProjects/librarypk/cmake-build-debug/CMakeFiles/mylibrary.dir
+C:/Users/prog/CLionProjects/librarypk/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/prog/CLionProjects/librarypk/cmake-build-debug/CMakeFiles/main.dir
+C:/Users/prog/CLionProjects/librarypk/cmake-build-debug/CMakeFiles/rebuild_cache.dir
