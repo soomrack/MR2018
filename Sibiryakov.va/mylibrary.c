@@ -2,7 +2,7 @@
 // Created by Victor on 17.09.2018.
 //
 
-#include "newlibrary.h"
+#include "mylibrary.h"
 
 #include <stdio.h>
 

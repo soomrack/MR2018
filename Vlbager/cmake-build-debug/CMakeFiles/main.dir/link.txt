@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/main.dir/notes.c.o  -o main libmylibrary.a 
