@@ -5,9 +5,19 @@ set(CMAKE_C_STANDARD 11)
 
 add_library(mylibrary STATIC library.c)
 
-add_executable(main CMakeLists.txt)
+add_executable(main notes.c)
 
 target_link_libraries(main mylibrary)
+
+include_directories(Artyrrr)
+include_directories(kurshakov.ga)
+include_directories(Nenahov)
+include_directories(shayahmetov.rh)
+include_directories(vorobieva.vb)
+include_directories(librarypk)
+include_directories(Elizaveta)
+include_directories(VolkAl)
+include_directories(ksenya)
 
 add_subdirectory(Artyrrr)
 add_subdirectory(kurshakov.ga)
