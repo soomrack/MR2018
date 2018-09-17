@@ -3,8 +3,8 @@ project(C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mylibrary STATIC library.c)
+add_library(mylibrary STATIC library.c kurshakov.ga/kurshakov_lib.c kurshakov.ga/kurshakov_lib.h)
 
-add_executable(main main.c)
+add_executable(main notes.c kurshakov.ga/kurshakov_main.c)
 target_link_libraries(main mylibrary)
 
