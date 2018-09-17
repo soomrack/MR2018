@@ -3,7 +3,7 @@ project(C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mylibrary STATIC libraryvb.c)
+add_library(mylibrary STATIC library.c)
 
 add_executable(main notes.c)
 

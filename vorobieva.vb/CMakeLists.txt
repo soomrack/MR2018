@@ -3,8 +3,6 @@ project(C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mylibrary STATIC libraryvb.c)
+add_library(mylibraryvb STATIC libraryvb.c)
 
-add_executable(main notesvb.c)
-target_link_libraries(main mylibrary)
-
+add_executable(vorobieva notesvb.c)
