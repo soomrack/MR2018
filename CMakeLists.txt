@@ -8,3 +8,4 @@ add_library(mylibrary STATIC library.c)
 add_executable(main main.c)
 target_link_libraries(main mylibrary)
 
+add_subdirectory(kurshakov.ga)
