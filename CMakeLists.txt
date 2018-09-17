@@ -3,11 +3,16 @@ project(C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mylibrary STATIC librain.c)
+add_library(mylibrary STATIC libraryvb.c)
 
 add_executable(main CMakeLists.txt)
 target_link_libraries(main mylibrary)
 
 add_subdirectory(kurshakov.ga)
 add_subdirectory(Nenahov)
+<<<<<<< HEAD
 add_subdirectory(shayahmetov.rh)
+=======
+add_subdirectory(vorobieva.vb)
+add_subdirectory(librarypk)
+>>>>>>> origin/master
