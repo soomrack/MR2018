@@ -5,8 +5,9 @@ set(CMAKE_C_STANDARD 11)
 
 set(SOURCE_LIB mylibrary.c)
 
-add_executable(main main.c)
+add_executable(maintarget maintarget.c)
+add_executable(webserver webserver.c)
 
 add_library(mylibrary STATIC ${SOURCE_LIB})
 
-target_link_libraries(main mylibrary)
+target_link_libraries(maintarget mylibrary)
