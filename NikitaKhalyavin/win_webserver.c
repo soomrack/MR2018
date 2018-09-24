@@ -3,14 +3,7 @@
 #include <unistd.h>
 
 
-/*
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <err.h>
-*/
+
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
