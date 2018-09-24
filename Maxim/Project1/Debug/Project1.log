@@ -1,0 +1,4 @@
+﻿  Structs.c
+c:\users\user\source\repos\mr2018\maxim\project1\project1\structs.c(58): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\users\user\source\repos\mr2018\maxim\project1\project1\structs.c(68): warning C4013: system: нет определения; предполагается "extern" с возвратом типа "int"
+  Project1.vcxproj -> C:\Users\User\source\repos\MR2018\Maxim\Project1\Debug\Project1.exe

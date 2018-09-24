@@ -7,7 +7,7 @@
 
 int main() {
         for (int i = 12; i<121; i+=12) {
-                printf("%ld, %ld\n", -ipoteka(i)+6000000, vklad(i)-arenda(i)); //коммент
+                printf("%ld, %ld\n", -ipoteka(i)+6000000, vklad(i)-arenda(i)); //коммент хаха теперь дргой коммент
         }
 
         return 0;
