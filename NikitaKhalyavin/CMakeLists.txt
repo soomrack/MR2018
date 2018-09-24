@@ -5,5 +5,3 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(test256 webserver.c)
 
-
-target_link_libraries(test)
