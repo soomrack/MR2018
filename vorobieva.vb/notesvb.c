@@ -8,9 +8,11 @@
 #include <arpa/inet.h>
 #include <err.h>
 
+int schetchiki;
+char schetchikc [10];
 char response[] = "HTTP/1.1 200 OK\r\n"
                   "Content-Type: text/html; charset=UTF-8\r\n\r\n"
-                  "<!DOCTYPE html><html><head><title>Hello World!</title></head>"
+                  "<!DOCTYPE html><html><head><title>Hello world! </title></head>"
                   "<body><h1>Hello World!</h1></body></html>\r\n";
 
 int main()
@@ -36,16 +38,20 @@ int main()
         }
 
         listen(sock, 5);
+        schetchiki = 0;
         while (1) {
                 client_fd = accept(sock, (struct sockaddr *) &cli_addr, &sin_len);
+                sleep(1);
                 printf("got connection\n");
-
                 if (client_fd == -1) {
                         perror("Can't accept");
                         continue;
                 }
-
+                schetchiki++;
+                sprintf(schetchikc,"%d",schetchiki);
                 write(client_fd, response, sizeof(response) - 1); /*-1:'\0'*/
+                sleep(1);
+                write(client_fd, &schetchikc, sizeof(schetchikc)-1);
                 close(client_fd);
         }
 }
