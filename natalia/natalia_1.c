@@ -7,6 +7,7 @@
 #define PROCENTY 0.1 // проценты по вкладу в долях
 #define OPLATA 20000 // стоимость аренды квартиры за месяц в рублях
 #define VZNOS 100000000 // первоначальный взнос за ипотеку в копейках
+#define nol 0
 
 int ipoteka(int month) {
     int platezh = (SUM * PERCENT * pow((1 + PERCENT),TIME / 12)) / (12 * (pow(1 + PERCENT,TIME / 12) - 1));// Вычисляем ежемесячный платеж
