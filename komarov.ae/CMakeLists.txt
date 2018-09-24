@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.9)
-project(C)
+project(komarov.ae)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mylibrary STATIC library.c)
+add_library(komarovlib STATIC komarov_library.c)
 
-add_executable(main notes.c)
-target_link_libraries(main mylibrary)
+add_executable(komarov.ae komarov.c)
+target_link_libraries(komarov.ae komarovlib)
 
