@@ -56,11 +56,15 @@ int main()
         }
         char beg[] = "HTTP/1.1 200 OK\r\n"
                   "Content-Type: text/html; charset=UTF-8\r\n\r\n"
-                  "<!DOCTYPE html><html><head><title>посещения</title></head>"
+                  "<!DOCTYPE html><html><head><title>Hello World!</title></head>"
                   "<body><h1>";
 
-        char end[]=" visits</h1></body></html>\r\n";
-        char response[1000];
+        /*char beg[]="HTTP/1.1 200 OK\r\n"
+                   "Content-Type: text/html; charset=UTF-8\r\n\r\n"
+                   "<!DOCTYPE html><html><head><title>Hello World!</title></head>"
+                   "<body><h1>";*/
+        char end[]="visits</h1></body></html>\r\n";
+        char response[200];
         sprintf(response,"%s%d%s",beg,i,end);
         printf("%s\n",response);
         send(client_fd, response, sizeof(response) - 1,0); /*-1:'\0'*/
