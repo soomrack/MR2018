@@ -40,7 +40,7 @@ int main()
   }
 
   listen(sock, 5);
-  while (1) {localhost:8081?a=3
+  while (1) {
     client_fd = accept(sock, (struct sockaddr *) &cli_addr, &sin_len);
     static int counter = 0;
     printf("got connection\n");
