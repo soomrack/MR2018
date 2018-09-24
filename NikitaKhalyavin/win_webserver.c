@@ -3,14 +3,7 @@
 #include <unistd.h>
 
 
-/*
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <err.h>
-*/
+
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -18,10 +11,14 @@
 #pragma comment(lib,"Ws2_32.lib")
 
 
-char response[] = "HTTP/1.1 200 OK\r\n"
+
+char response[1024];
+char responseTest[] = "HTTP/1.1 200 OK\r\n"
 "Content-Type: text/html; charset=UTF-8\r\n\r\n"
 "<!DOCTYPE html><html><head><title>Hello World!</title></head>"
-"<body><h1>Hello World!</h1></body></html>\r\n";
+"<body><h1>Hello World!</h1><p>Значение счётчика: %d</p></body></html>\r\n";
+
+
 
 int main()
 {
@@ -46,18 +43,20 @@ int main()
     close(sock);
     printf("Can't bind");
   }
-
+    int i = 0;
   listen(sock, 5);
   while (1) {
     client_fd = accept(sock, (struct sockaddr *) &cli_addr, &sin_len);
     printf("got connection\n");
 
-    if (client_fd == -1) {
-      perror("Can't accept");
-      continue;
-    }
+    i++;
 
-    send(client_fd, response, sizeof(response) - 1,0); /*-1:'\0'*/
+    sprintf(response,responseTest,i);
+
+
+    send(client_fd, response, sizeof(response) - 1 + i/10,0); /*-1:'\0'*/
+
+
     close(client_fd);
   }
     WSACleanup();
