@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
-project(untitled10 C)
+project(ksenya)
 
 set(CMAKE_C_STANDARD 99)
 
-add_library(untitled10 ksenya.c ksenya.h)
+add_executable(ksenya main.c)
 
-add_executable(main ksenya.c)
+add_library(untitled10 STATIC mylibrary.c)
+
+target_link_libraries(ksenya untitled10)
