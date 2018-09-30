@@ -3,11 +3,13 @@ project(Sibiryakov.va)
 
 set(CMAKE_C_STANDARD 11)
 
-set(SOURCE_LIB mylibrary.c)
+set(SOURCE_LIB SVAlibrary.c)
 
-add_executable(maintarget maintarget.c)
-add_executable(webserver webserver.c)
+link_libraries(ws2_32 wsock32)
 
-add_library(mylibrary STATIC ${SOURCE_LIB})
+add_executable(SVAmaintarget SVAmaintarget.c)
+add_executable(SVAwebserver SVAwebserver.c)
 
-target_link_libraries(maintarget mylibrary)
+add_library(SVAlibrary STATIC ${SOURCE_LIB})
+
+target_link_libraries(SVAmaintarget SVAlibrary)
