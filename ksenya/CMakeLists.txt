@@ -5,6 +5,6 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(ksenya main.c)
 
-add_library(untitled10 STATIC mylibrary.c)
+add_library(ksenya STATIC mylibrary.c)
 
-target_link_libraries(ksenya untitled10)
+target_link_libraries(ksenya ksenya)
