@@ -8,6 +8,8 @@
 
 void main()
 {
-printf("dsfadsfsa");
+printf("dsfadsfsa\n");
     Hello();
+
+    printf("\n2-ой коммит в ветке\n");
 }
