@@ -1,0 +1,3 @@
+C:/Users/Elizaveta/CLionProjects/webserverliza/cmake-build-debug/CMakeFiles/webserverliza.dir
+C:/Users/Elizaveta/CLionProjects/webserverliza/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Elizaveta/CLionProjects/webserverliza/cmake-build-debug/CMakeFiles/rebuild_cache.dir
