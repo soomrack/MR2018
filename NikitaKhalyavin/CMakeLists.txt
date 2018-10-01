@@ -5,7 +5,9 @@ set(CMAKE_C_STANDARD 11)
 
 link_libraries(Ws2_32 wsock32)
 
+add_library(NKhLib StringLibNKh.h StringLibNKh.c)
+
 add_executable(test256 win_webserver.c)
 
-
+target_link_libraries(test256 NKhLib)
 
