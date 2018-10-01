@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Elizaveta/CLionProjects/webserverliza/webserver.c
+stdio.h
+-
+stdlib.h
+-
+unistd.h
+-
+windows.h
+-
+ws2tcpip.h
+-
+winsock2.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+netdb.h
+-
+arpa/inet.h
+-
+err.h
+-
+
