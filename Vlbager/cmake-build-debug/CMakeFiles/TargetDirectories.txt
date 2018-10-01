@@ -1,4 +1,0 @@
-/home/bager/reps/MR2018/Vlbager/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/bager/reps/MR2018/Vlbager/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/bager/reps/MR2018/Vlbager/cmake-build-debug/CMakeFiles/main.dir
-/home/bager/reps/MR2018/Vlbager/cmake-build-debug/CMakeFiles/mylibrary.dir
