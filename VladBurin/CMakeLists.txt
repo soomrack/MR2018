@@ -3,10 +3,15 @@ project(VladBurin)
 
 set(CMAKE_C_STANDARD 11)
 
-set(SOURCE_LIB Library.c)
+set(SOURCE_LIB Library.c mainVB2.c)
 
-add_executable(main main.c)
+add_executable(webserverVB webserverVB.c)
 
-add_library(Library STATIC ${SOURCE_LIB})
+add_executable(mainV mainV.c)
+add_executable(mainVB2 mainVB2.c)
 
-target_link_libraries(main Library)
+
+add_library(VladBurinlib STATIC ${SOURCE_LIB})
+
+target_link_libraries(mainV VladBurinlib)
+target_link_libraries(mainVB2 VladBurinlib)

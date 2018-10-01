@@ -3,7 +3,7 @@ project(librarypk C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_library(mylibrary STATIC library.c note.c)
+add_library(librarypklib STATIC library.c)
 
-add_executable(main note.c)
-target_link_libraries(main mylibrary)
+add_executable(librarypk note.c)
+target_link_libraries(librarypk librarypklib)

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
 project(C)
-include_directories(shayahmetov.rh)
+
 set(CMAKE_C_STANDARD 11)
-add_library(mylibrary STATIC librain.c)
-add_executable(main notes.c)
-target_link_libraries(main mylibrary)
+add_library(shayahmetov.rhlib STATIC librain.c)
+add_executable(shayahmetov.rh notes.c)
+target_link_libraries(shayahmetov.rh shayahmetov.rhlib)
 
