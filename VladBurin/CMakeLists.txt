@@ -5,8 +5,8 @@ set(CMAKE_C_STANDARD 11)
 
 set(SOURCE_LIB Library.c)
 
-add_executable(main main.c)
+add_executable(VladBurin main.c)
 
-add_library(Library STATIC ${SOURCE_LIB})
+add_library(VladBurinlib STATIC ${SOURCE_LIB})
 
-target_link_libraries(main Library)
+target_link_libraries(VladBurin VladBurinlib)
