@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.9)
-project(C)
+cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_C_STANDARD 11)
+project(lesson_4 C)
 
-add_library(mylibrary STATIC library.c)
+set(CMAKE_C_STANDARD 99)
 
-add_executable(main notes.c)
-target_link_libraries(main mylibrary)
+link_libraries(Ws2_32 wsock32)
+
+add_executable(lesson_4 sd_main.c)
 
