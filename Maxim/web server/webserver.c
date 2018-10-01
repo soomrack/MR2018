@@ -56,7 +56,6 @@ int main()
         sleep(1);
         i++;
         sprintf(response,"%s%d%s",begin,i,end);
-        printf("%s",response);
 
         if (client_fd == -1) {
             perror("Can't accept");
