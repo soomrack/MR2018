@@ -3,12 +3,13 @@
 #include <unistd.h>
 
 
-
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 // link with Ws2_32.lib
 #pragma comment(lib,"Ws2_32.lib")
+
+#include "StringLibNKh.h"
 
 
 
@@ -51,12 +52,17 @@ int main()
 
     i++;
 
+      char buf[1024];
+      int len;
+      len=recv(client_fd,buf,1023,0);
+
+    char temp[1024];
+    sprintf(temp, returnGetString(buf,len));
+    if(temp[0] == 'a' && temp[1] == '=') i = temp[2] - '0';
+
     sprintf(response,responseTest,i);
 
-
-    send(client_fd, response, sizeof(response) - 1 + i/10,0); /*-1:'\0'*/
-
-
+    send(client_fd, response, sizeof(response) - 1,0); /*-1:'\0'*/
     close(client_fd);
   }
     WSACleanup();
