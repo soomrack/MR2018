@@ -3,8 +3,7 @@ project(ksenya)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(ksenya main.c)
+add_executable(ksenya ksenya.c)
 
-add_library(ksenya STATIC mylibrary.c)
 
-target_link_libraries(ksenya ksenya)
+

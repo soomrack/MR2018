@@ -3,7 +3,7 @@ project(kredit C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mybiblio STATIC biblioteka.c)
+add_library(Nenahovlib STATIC biblioteka.c)
 
 add_executable(kredit glavnii.c)
-target_link_libraries(kredit mybiblio)
+target_link_libraries(kredit Nenahovlib)

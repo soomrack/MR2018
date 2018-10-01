@@ -7,8 +7,8 @@ add_executable(liza Emain.c)
 
 
 
-add_library(mylib STATIC Elib.c)
+add_library(lizalib STATIC Elib.c)
 
 
 
-target_link_libraries(liza mylib)
+target_link_libraries(liza lizalib)
