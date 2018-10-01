@@ -18,10 +18,12 @@
 #pragma comment(lib,"Ws2_32.lib")
 
 int i=0;
-char response[] = "HTTP/1.1 200 OK\r\n"
+char response[2000];
+char begin[]= "HTTP/1.1 200 OK\r\n"
                   "Content-Type: text/html; charset=UTF-8\r\n\r\n"
                   "<!DOCTYPE html><html><head><title>Hello World!2</title></head>"
-                  "<body><h1>Hello World!</h1><h3>Значение переменной i<h3></h3></h3></body></html>\r\n";
+                  "<body><h1>Hello World!</h1><h3>Значение переменной";
+                  char end[]="<h3></h3>конец программы</h3></body></html>\r\n";
 
 int main()
 {
@@ -53,7 +55,8 @@ int main()
         printf("got connection\n");
         sleep(1);
         i++;
-        printf("%d",i);
+        sprintf(response,"%s%d%s",begin,i,end);
+        printf("%s",response);
 
         if (client_fd == -1) {
             perror("Can't accept");
