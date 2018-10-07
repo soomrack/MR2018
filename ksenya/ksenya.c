@@ -1,75 +1,60 @@
-#include "ksenya.h"
-
 #include <stdio.h>
-#include <string.h>
-#include <limits.h>
-#include <stdio.h>
-#include "ksenya.h"
-#define TIME 121
-#define TIME2 97
-#define STAVKA 0.18
-#define STAVKA2 0.17
-#define PROCENT 0.1
-#define VZNOS 1000000
-#define DOLG 5000000
-#define KVPAY 20000
+#include <stdlib.h>
+#include <unistd.h>
 
-int ezmes_pay1_do_krizisa(int mes)
-{
-    int pay=0;
-    int sum=0;
-    int ostat = DOLG-VZNOS;
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+// link with Ws2_32.lib
+#pragma comment(lib,"Ws2_32.lib")
 
 
-    for (int i=0;i<mes;i++) // считаем платежи до кризиса (то есть 96 месяцев)
-    {
-        pay =(int) DOLG/TIME+(STAVKA/12)*ostat; // платёж за ипотеку в месяц
-        ostat = ostat-pay;
-        sum = sum+pay; // сумма всех платежей
-    }
 
-    return sum; // общая сумма выплат
-}
+char response[1024];
+char responseTest[] = "HTTP/1.1 200 OK\r\n"
+                      "Content-Type: text/html; charset=UTF-8\r\n\r\n"
+                      "<!DOCTYPE html><html><head><title>Hello World!</title></head>"
+                      "<body><h1>Hello World!</h1><p>Значение счётчика: %d</p></body></html>\r\n";
 
-int ezmes_pay1_posle_krizisa(int mes) // после кризиса берем сумму, получившуюся за 8 лет и делаем новые вычисления с ней
-{
-    int pay=0;
-    int sum2;
-    sum2=ezmes_pay1_do_krizisa(mes);
-    int ostat = DOLG-VZNOS-sum2;
-    for (int i=0;i<mes;++i)
-    {
-        pay = (int) DOLG / TIME + (STAVKA2 / 12) * ostat; // платёж за ипотеку в месяц
-        ostat = ostat - pay;
-        sum2 = sum2 + pay; // сумма всех платежей
-    }
-    return sum2; // общая сумма выплат
-}
-
-
-int ezmes_pay2(int mes)
-{
-    int bank=VZNOS;
-    for (int i=0;i<mes;++i)
-    {
-        bank=bank+(PROCENT/12)*bank; //счёт в банке
-    }
-    bank=bank-KVPAY*120; // вычет из счёта денег за кварплату
-    return bank; // сколько денег имеет
-}
 
 int main()
 {
-    for (int mes=1; mes < TIME2; mes++) // выводим общие суммы выплат в первые 8 лет
-    {
-        printf("%d        %d\n", ezmes_pay1_do_krizisa(mes), ezmes_pay2(mes) );
+    WSADATA wsdata;
+    WSAStartup(0x0101,&wsdata);
+    int one = 1, client_fd;
+    struct sockaddr_in svr_addr, cli_addr;
+    socklen_t sin_len = sizeof(cli_addr);
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock < 0)
+        printf("can't open socket");
+
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
+
+    int port = 8083;
+    svr_addr.sin_family = AF_INET;
+    svr_addr.sin_addr.s_addr = INADDR_ANY;
+    svr_addr.sin_port = htons(port);
+
+    if (bind(sock, (struct sockaddr *) &svr_addr, sizeof(svr_addr)) == -1) {
+        close(sock);
+        printf("Can't bind");
     }
+    int i = 0;
+    listen(sock, 5);
+    while (1) {
+        client_fd = accept(sock, (struct sockaddr *) &cli_addr, &sin_len);
+        printf("got connection\n");
 
-    for (int mes=97; mes < TIME; mes++)
-    {
-        printf("%d\n", ezmes_pay1_posle_krizisa(mes));
+        i++;
+
+        sprintf(response,responseTest,i);
+
+
+        send(client_fd, response, sizeof(response) - 1 + i/10,0); /*-1:'\0'*/
+
+
+        close(client_fd);
     }
-
-
-    return 0;
+    WSACleanup();
 }
