@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="ksenya"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\5555\;CMake Files\kurshakov.ga\;CMake Files\shayahmetov.rh\;CMake Files\vorobieva.vb\;CMake Files\zamorin.ns\;CMake Files\Schebnev\;CMake Files\AndreyCH\;CMake Files\Elizaveta\;CMake Files\komarov.ae\;CMake Files\ksenya\;CMake Files\librarypk\;CMake Files\marias\;CMake Files\Maxim\;CMake Files\natalia\;CMake Files\Nenahov\;CMake Files\NikitaKhalyavin\;CMake Files\Sibiryakov.va\;CMake Files\VladBurin\;CMake Files\Vlbager\;CMake Files\VolkAl\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ksenya">
+				<Option output="C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/ksenya.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include/c++/i686-w64-mingw32"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 ksenya"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ksenya/fast">
+				<Option output="C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/ksenya.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include/c++/i686-w64-mingw32"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 ksenya/fast"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/prog/CLionProjects/MR2018/cmake-build-debug/ksenya/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/ksenya/ksenya.c">
+			<Option target="ksenya"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/5555/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\5555\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/kurshakov.ga/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\kurshakov.ga\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/shayahmetov.rh/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\shayahmetov.rh\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/vorobieva.vb/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\vorobieva.vb\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/zamorin.ns/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\zamorin.ns\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/Schebnev/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Schebnev\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/AndreyCH/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\AndreyCH\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/Elizaveta/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Elizaveta\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/komarov.ae/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\komarov.ae\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/ksenya/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\ksenya\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/librarypk/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\librarypk\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/marias/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\marias\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/Maxim/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Maxim\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/natalia/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\natalia\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/Nenahov/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Nenahov\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/NikitaKhalyavin/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\NikitaKhalyavin\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/Sibiryakov.va/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Sibiryakov.va\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/VladBurin/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\VladBurin\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/Vlbager/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Vlbager\"/>
+		</Unit>
+		<Unit filename="C:/Users/prog/CLionProjects/MR2018/VolkAl/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\VolkAl\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

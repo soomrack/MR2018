@@ -42,9 +42,18 @@ double rashodi(double Summa,int arenda, int months){
         return raznica;
 }
 
+void matrixmul(int size, int a[size][size], int b[size][size], result[size][size]) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            for (int r = 0; r < size; r++)
+                result[i][j] += A[i][r] * B[r][j];
+        }
+    }
+}
+
 void main2()
 {
-
+/*
 
 
                         int count=0;
@@ -94,7 +103,7 @@ void main2()
                 for(int i = 0 ; i < n - 1; i++) {
                         printf("%10li рублей переплаты при ставке %i%% и сумме %8li рублей на 10 лет\n", data[i].effect, data[i].percent, data[i].summm);
                 }
-                /* printf("Выплачено %10.2lf\n",paid);
+                 printf("Выплачено %10.2lf\n",paid);
                 double newsum = Vyplati * 120.0 - paid;
                 stavka = 17;
                 printf("Осталось %10.2lf\n",newsum);
@@ -106,7 +115,11 @@ void main2()
                                 printf("%d", k / 12);
                                 printf("\t%10.2lf\n", Vyplati * 12.0);
                         }
-                }*/
+                }
                 return 0;
+*/
+
+
+
 
 }
