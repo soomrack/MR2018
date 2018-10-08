@@ -1,3 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2018.2.2\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\natalia.dir/objects.a
-C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ar.exe cr CMakeFiles\natalia.dir/objects.a @CMakeFiles\natalia.dir\objects1.rsp
-C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\gcc.exe -g   -Wl,--whole-archive CMakeFiles\natalia.dir/objects.a -Wl,--no-whole-archive  -o natalia.exe -Wl,--out-implib,libnatalia.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\natalia.dir\linklibs.rsp
