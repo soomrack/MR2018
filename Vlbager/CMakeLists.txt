@@ -4,9 +4,10 @@ project(Vlbager)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(Vlbager webserver.c)
+add_executable(VlbagerTest test.c)
 
-add_library(Vlbagerlib STATIC mylibrary.c)
+add_library(Vlbagerlib EXCLUDE_FROM_ALL STATIC  Testlib.c)
 
-target_link_libraries(Vlbager Vlbagerlib)
+target_link_libraries(VlbagerTest Vlbagerlib)
 
 
