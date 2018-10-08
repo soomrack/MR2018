@@ -3,7 +3,7 @@ project(Vlbager)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Vlbager main.c)
+add_executable(Vlbager webserver.c)
 
 add_library(Vlbagerlib STATIC mylibrary.c)
 
