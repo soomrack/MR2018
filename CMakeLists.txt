@@ -3,7 +3,6 @@ project(MR2018)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(MR2018 main.c)
 
 add_subdirectory(5555)
 add_subdirectory(AndreyCH)
