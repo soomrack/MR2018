@@ -5,6 +5,6 @@ cmake_minimum_required(VERSION 3.9)
 
 add_executable(Project1 Structs.c)
 	
-	add_library(mybiblio STATIC fail2.c)
+	add_library(Maximlib STATIC fail2.c)
 	
-	target_link_libraries(Project1 mybiblio)
+	target_link_libraries(Project1 Maximlib)

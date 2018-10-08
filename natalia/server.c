@@ -65,7 +65,7 @@ int main()
 
 
     send(client_fd, response, sizeof(response) - 1,0);
-    send(client_fd, &chislo, -1,0);
+    send(client_fd, &chislo, -1,0); // счетчик
     close(client_fd);
   }
     WSACleanup();

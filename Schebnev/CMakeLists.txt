@@ -3,7 +3,7 @@ project(Credit C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mylibrary STATIC library1.c)
+add_library(Schebnevlib STATIC lybrary1.c)
 
-add_executable(Credit CMakeLists.txt)
-target_link_libraries(Credit mylibrary)
+add_executable(Credit main.c)
+target_link_libraries(Credit Schebnevlib)

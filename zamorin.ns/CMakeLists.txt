@@ -3,7 +3,7 @@ project(C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mylibrary STATIC library_zam.c)
+add_library(zamorin.nslib STATIC library_zam.c)
 
-add_executable(main notes.c)
-target_link_libraries(main mylibrary)
+add_executable(zamorin.ns notes.c)
+target_link_libraries(zamorin.ns zamorin.nslib)

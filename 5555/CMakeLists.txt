@@ -3,7 +3,8 @@ project(C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(mylibrary STATIC library.c)
+add_library(5555lib STATIC bibl.c)
 
-add_executable(main notes.c 5555/zap.c 5555/bibl.c 5555/bibl.h)
-target_link_libraries(main mylibrary)
+add_executable(5555 zap.c)
+
+target_link_libraries(5555 5555lib)

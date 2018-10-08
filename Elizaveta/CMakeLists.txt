@@ -1,14 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
-project(liza)
+project(webserverliza C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(liza Emain.c)
+link_libraries(Ws2_32 wsock32)
 
-
-
-add_library(mylib STATIC Elib.c)
-
-
-
-target_link_libraries(liza mylib)
+add_executable(webserverliza webserver.c)
