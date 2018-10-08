@@ -1,11 +1,7 @@
-cmake_minimum_required(VERSION 3.9)
-project(test)
+cmake_minimum_required(VERSION 3.12)
+project(NikitaKhalyavin)
 
-set(CMAKE_C_STANDARD 11)
-
+set(CMAKE_CXX_STANDARD 14)
 link_libraries(Ws2_32 wsock32)
-
-add_executable(test256 win_webserver.c)
-
-
+add_executable(M win_webserver.c)
 

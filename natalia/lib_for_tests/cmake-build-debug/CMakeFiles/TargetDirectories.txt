@@ -1,0 +1,3 @@
+C:/Users/natas/CLionProjects/Common/natalia/lib_for_tests/cmake-build-debug/CMakeFiles/lib_for_tests.dir
+C:/Users/natas/CLionProjects/Common/natalia/lib_for_tests/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/natas/CLionProjects/Common/natalia/lib_for_tests/cmake-build-debug/CMakeFiles/rebuild_cache.dir
