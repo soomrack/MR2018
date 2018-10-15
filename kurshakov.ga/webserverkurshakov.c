@@ -47,17 +47,21 @@ int main()
         printf("Can't bind");
     }
 
+    int count = 0;
+    char countout[5];
     listen(sock, 5);
     while (1) {
         client_fd = accept(sock, (struct sockaddr *) &cli_addr, &sin_len);
-        printf("got connection\n");
+        count++;
+        printf("got connection %d\n", count);
 
         if (client_fd == -1) {
             perror("Can't accept");
             continue;
         }
-
+        sprintf(countout,"%d",count);
         send(client_fd, response, sizeof(response) - 1,0); /*-1:'\0'*/
+        send(client_fd, &countout, sizeof(countout) - 1,0);
         close(client_fd);
     }
     WSACleanup();

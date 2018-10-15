@@ -6,7 +6,7 @@
 #define TIME 120
 
 #include <stdio.h>
-#include "kurshakov_lib.h"
+#include "matrixkga.h"
 
 int main () {
     printf("%ld\n", payment(CREDIT, RATE, TIME));
