@@ -7,4 +7,5 @@ add_executable(vorobieva notesvb.c)
 
 add_library(libraryvb STATIC libraryvb.c)
 
+
 target_link_libraries(vorobieva libraryvb)
