@@ -1,4 +1,4 @@
-#include "../../matrix.h"
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -110,7 +110,7 @@ extern Matrix matrix_trans(const Matrix A){
 }
 
 // Обращение матрицы
-extern Matrix matrix_invert(const Matrix A){//error
+extern Matrix matrix_invert(const Matrix A){
     if(A.cols != A.rows)exit(1);
     if(A.cols < 1) exit(1);
 
@@ -139,7 +139,7 @@ extern Matrix matrix_invert(const Matrix A){//error
             Algd.data[col + row*Algd.cols] = matrix_determinant(Temp)*sign;
         }
     }
-    return matrix_mult__scalar(1 / matrix_determinant(Temp), matrix_trans(Algd));
+    return matrix_mult__scalar( ( 1 / matrix_determinant(A) ), matrix_trans(Algd));
 }
 
 
@@ -149,17 +149,20 @@ unsigned long long int fact(unsigned int n){
     return  out;
 }
 // Матричная экспонента
-extern Matrix matrix_exp(const Matrix A){//not tested
+extern Matrix matrix_exp(const Matrix A){
     Matrix C = matrix_zero(A.rows, A.cols);
     Matrix B;
-    for(unsigned int k = 0; k < 10; k++) {
+    for(unsigned int k = 1; k < 1000; k++) {
+        int flag = 1;
         B = matrix_power(A, k);
         unsigned long long int f = fact(k);
         for (int i = 0; i < C.rows; i++) {
             for (int j = 0; j < C.cols; j++) {
                 C.data[j + (i * C.cols)] += B.data[j + (i * B.cols)] / f;
+                flag &=  !( ( B.data[j + (i * B.cols)] / f / C.data[j + (i * C.cols)] ) > 0.0001);
             }
         }
+        if(flag) break;
     }
     return C;
 }
