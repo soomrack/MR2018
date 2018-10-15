@@ -63,9 +63,15 @@ extern Matrix matrix_mult(const Matrix A, const Matrix B) {
     C.rows = A.rows;
     C.cols = B.cols;
     C.data = malloc(C.rows * C.cols * sizeof(double));
-    for (int i = 0; i < A.rows; i++) {
-        for (int j = 0; j < A.cols; j++) {
-            C.data[j + i * C.cols] = A.data[j + i * C.cols] + B.data[j + i * C.cols];
+    for (int row = 0; row < C.rows; row++) {
+        for (int col = 0; col < C.cols; col++) {
+            double a[A.cols];
+            double sum = 0;
+            for (int numInARow = 0; numInARow < A.cols; numInARow++) {
+                a[numInARow] = A.data[numInARow + row * C.cols] * B.data[col + numInARow * C.cols];
+                sum += a[numInARow];
+            }
+            C.data[col + row * C.cols] = sum;
         }
     }
     return C;
@@ -154,11 +160,12 @@ extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols){
 // Вывести матрицу на экран
 extern void matrix_print(const Matrix A) {
     for (int i = 0; i < A.cols * A.rows; i++) {
-        printf("%.2lf\t", A.data[i]);
+        printf("%.3lf\t", A.data[i]);
         if (((i+1)%A.cols) == 0) {
             printf("\n");
         }
     }
+    printf("\n");
 }
 
 
