@@ -45,11 +45,11 @@ double matrix_trace(const Matrix A){
             return A.data[0];
         }
        else{
-            return
+            return  ну тут с минорами
         }
 
     }
-}; */
+};   */
 
 Matrix matrix_one(const unsigned int rows, const unsigned int cols){
     Matrix A;
