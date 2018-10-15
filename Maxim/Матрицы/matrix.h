@@ -1,14 +1,10 @@
 #ifndef C_LIBRARY_H
 #define C_LIBRARY_H
-
-
 typedef struct {
-        unsigned int rows;
-        unsigned int cols;
-        double* data;
+    unsigned int rows;
+    unsigned int cols;
+    double* data;
 } Matrix;
-
-
 
 // След матрицы
 extern Matrix matrix_trace(const Matrix A);
