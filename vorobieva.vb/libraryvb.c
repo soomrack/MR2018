@@ -18,7 +18,7 @@ void matrix_print(const Matrix A){
 };
 
 double matrix_trace(const Matrix A){
-    double trace = 0;
+    double trace = 0.0;
     if (A.cols != A.rows) {
         printf("Матрица не квадратная");
     }
