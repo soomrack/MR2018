@@ -3,14 +3,14 @@
 
 
 typedef struct {
-        unsigned int rows;
-        unsigned int cols;
-        double* data;
+    unsigned int rows;
+    unsigned int cols;
+    double* data;
 } Matrix;
 
 
 // След матрицы
-extern Matrix matrix_trace(const Matrix A);
+extern double matrix_trace(const Matrix A);
 
 // Определитель матрицы
 extern double matrix_determinant(const Matrix A);
