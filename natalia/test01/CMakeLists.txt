@@ -1,22 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
-project(test C)
+project(test01)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 14)
 
-set(ENABLETESTS TRUE)
-
-add_executable(testing main.c)
-
-if(ENABLETESTS)
     enable_testing()
 
-    add_executable(natalia mytests.c)
+    add_executable(Test01 mytests.c)
 
-    add_test(NAME mytests COMMAND natalia)
+    add_test(NAME mytest01 COMMAND Test01)
 
-    add_library(natalialib EXCLUDE_FROM_ALL STATIC library.c)
+    add_library(Natalialib STATIC  library.c)
 
-    target_link_libraries(natalia natalialib)
-    target_link_libraries(testing natalialib)
-
-endif()
+    target_link_libraries(Test01 Natalialib)
