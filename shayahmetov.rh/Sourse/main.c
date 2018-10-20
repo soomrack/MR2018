@@ -10,7 +10,17 @@ int main() {
     A.rows = SIZEMATRIX;
     A.data = malloc(SIZEMATRIX * SIZEMATRIX * sizeof(double));
     for(int i=0; i<SIZEMATRIX*SIZEMATRIX; i++)
-        A.data[i]=(double)i*M_PI/6;
+        A.data[i]=i+1;
     matrix_print(A);
-        return 0;
+    printf("____________________________\n");
+    Matrix B;
+    B.cols = 7;
+    B.rows = 2;
+    B.data = malloc(7 * 2 * sizeof(double));
+    for(int i=0; i<7*2; i++)
+        B.data[i]=i+1;
+    matrix_print(B);
+    printf("____________________________\n");
+    matrix_print(matrix_trans(B));
+    return 0;
 }
