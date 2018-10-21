@@ -82,6 +82,8 @@ int main() {
     printf("\n");
     //matrix_print(matrix_sum(A,B));
     //Matrix C=matrix_zero(2,2);
-    matrix_print(matrix_mult(A,B));
+    //matrix_print(matrix_mult(A,B));
+    //matrix_print(matrix_rand(4,4));
+    matrix_print(matrix_mult__scalar(2,A));
     return 0;
 }

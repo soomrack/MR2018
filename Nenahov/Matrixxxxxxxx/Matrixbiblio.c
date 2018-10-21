@@ -5,7 +5,37 @@
 #include "Matrixbiblio.h"
 #include <stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
+extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols)
+{
+    Matrix A;
+    srand(time(NULL));
+    A.rows=rows;
+    A.cols=cols;
+    A.data=malloc(A.cols*A.rows*sizeof(double));
+    for(int t=0;t<A.rows;t++)
+    {
+        for(int i=0;i<A.cols;i++)
+        {
+            A.data[t+i*A.cols]=(double)(-100+rand()%200)/100;
+        }
+    }
+    return A;
+}
+
+extern Matrix matrix_mult__scalar(const double scalar, const Matrix A)
+{
+    for(int t=0;t<A.rows;t++)
+    {
+        for(int i=0;i<A.cols;i++)
+        {
+            A.data[t+i*A.cols]=scalar*A.data[t+i*A.cols];
+        }
+    }
+    return A;
+
+}
 
 double matrix_trace(const Matrix A)
 {
