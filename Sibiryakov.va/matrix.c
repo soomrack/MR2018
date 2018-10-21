@@ -16,3 +16,25 @@ extern double matrix_trace(const Matrix A)
     }
     return trace;
 }
+
+extern Matrix matrix_mult(const Matrix A, const Matrix B)
+{
+    Matrix TMres;
+    TMres.cols = B.cols;
+    TMres.rows = A.rows;
+    TMres.data = (double**)malloc(TMres.rows * sizeof(double));
+    for (int i = 0; i < TMres.rows; i++) {
+        *(TMres.data + i) = (double*)malloc(TMres.cols * sizeof(double));
+    }
+
+    for (int i=0; i<TMres.rows; i++)
+        for (int j=0; j<TMres.cols; j++)
+            TMres.data[i][j]=0;
+
+    for (int i=0; i<TMres.rows; i++) // заполнение результирующего массива
+        for (int j=0; j<TMres.cols; j++)
+            for (int u=0; u<A.cols; u++)
+                TMres.data[i][j ]= TMres.data[i][j]+(A.data[i][u]*B.data[u][j]);
+
+     return TMres;
+}

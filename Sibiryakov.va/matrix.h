@@ -12,10 +12,6 @@ typedef struct {
 // След матрицы
 extern double matrix_trace(const Matrix A);
 
-
-
-
-
 // Определитель матрицы
 extern double matrix_determinant(const Matrix A);
 

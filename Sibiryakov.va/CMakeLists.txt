@@ -14,12 +14,14 @@ if(ENABLETESTS)
     enable_testing()
 
     add_executable(SibiryakovTestTrace SVAtests/test_trace.c)
+    add_executable(SibiryakovTestMult SVAtests/test_multiplication.c)
 
     add_test(NAME SibiryakovTest01 COMMAND SibiryakovTestTrace)
+    add_test(NAME SibiryakovTest02 COMMAND SibiryakovTestMult)
 
     add_library(SibiryakovMatrix EXCLUDE_FROM_ALL STATIC  matrix.c)
-
     target_link_libraries(SibiryakovTestTrace SibiryakovMatrix)
+    target_link_libraries(SibiryakovTestMult SibiryakovMatrix)
 endif()
 
 
@@ -31,5 +33,4 @@ add_library(SVAlibrary STATIC ${SOURCE_LIB})
 
 target_link_libraries(SVAmaintarget SVAlibrary)
 
-enable_testing()
 
