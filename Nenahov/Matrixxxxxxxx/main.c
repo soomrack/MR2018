@@ -10,7 +10,7 @@ typedef struct {
     double* data;
 } Matrix;*/
 
-double Minor(Matrix A,int n)
+/*double Minor(Matrix A,int n)
 {
     if(A.rows>2)
     {
@@ -43,7 +43,7 @@ double matrix_determinant(const Matrix A)
         det+=pow(-1,1+i+1)*A.data[1+i*A.rows]*M.data[1+i*M.rows];
     }
 }
-
+*/
 
 
 int main() {
@@ -53,21 +53,14 @@ int main() {
     A.rows=3;
     A.cols=3;
     A.data=malloc(A.cols*A.rows*sizeof(double));
-
-   /*  A.data = (double**) malloc (sizeof (double*) * A.rows);
-    for (int i = 0; i < A.rows; i++) {
-        A.data [i] = (int*) malloc (sizeof (int)*A.cols);
-    }*/
-
     for(int t=0;t<A.rows;t++)
     {
         for(int i=0;i<A.cols;i++)
         {
-          A.data[i+t*A.rows]=rand();
+          A.data[t+i*A.rows]=rand()%10;
         }
     }
     Matrix B;
-
     B.rows=3;
     B.cols=3;
     B.data=malloc(A.cols*A.rows*sizeof(double));
@@ -75,15 +68,20 @@ int main() {
     {
         for(int i=0;i<A.rows;i++)
         {
-            B.data[i+t*A.rows]=rand();
+            B.data[t+i*A.rows]=rand()%10;
+//            B.data[i+t*A.rows]=0;
         }
     }
     matrix_sum(A,B);
 
     matrix_print(A);
+
     printf("trace=%4.2lf\n",matrix_trace(A));
+   // printf("a 32=%lf\n",A.data[0+1*A.rows]);
     matrix_print(B);
     printf("\n");
-    matrix_print(matrix_sum(A,B));
+    //matrix_print(matrix_sum(A,B));
+    //Matrix C=matrix_zero(2,2);
+    matrix_print(matrix_mult(A,B));
     return 0;
 }
