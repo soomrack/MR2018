@@ -3,14 +3,14 @@
 
 
 typedef struct {
-    unsigned int rows;
-    unsigned int cols;
-    double* data;
+        unsigned int rows;
+        unsigned int cols;
+        double* data;
 } Matrix;
 
 
 // След матрицы
-extern double matrix_trace(const Matrix A);
+extern double matrix_trace(const Matrix A);                     //DONE
 
 // Определитель матрицы
 extern double matrix_determinant(const Matrix A);
@@ -21,17 +21,18 @@ extern Matrix matrix_eigen_values(const Matrix A);
 // Матрица собственных векторов
 extern Matrix matrix_eigen_vectors(const Matrix A);
 
+
 // Сумма матриц
-extern Matrix matrix_sum(const Matrix A, const Matrix B);
+extern Matrix matrix_sum(const Matrix A, const Matrix B);       //DONE
 
 // Умножение матриц
-extern Matrix matrix_mult(const Matrix A, const Matrix B);
+extern Matrix matrix_mult(const Matrix A, const Matrix B);      //DONE
 
 // Умножение матрицы на скаляр
-extern Matrix matrix_mult__scalar(const double scalar, const Matrix A);
+extern Matrix matrix_mult__scalar(const double scalar, const Matrix A);         //Done
 
 // Транспонирование матрицы
-extern Matrix matrix_trans(const Matrix A);
+extern Matrix matrix_trans(const Matrix A);             //Done
 
 // Обращение матрицы
 extern Matrix matrix_invert(const Matrix A);
@@ -40,20 +41,21 @@ extern Matrix matrix_invert(const Matrix A);
 extern Matrix matrix_exp(const Matrix A);
 
 // Возведение матрицы в степень (натуральное число или 0)
-extern Matrix matrix_power(const Matrix A, const unsigned int power);
+extern Matrix matrix_power(const Matrix A, const unsigned int power);           //DONE
+
 
 // Единичная матрица
-extern Matrix matrix_one(const unsigned int rows, const unsigned int cols);
+extern Matrix matrix_one(const unsigned int rows, const unsigned int cols);     //DONE
 
 // Нулевая матрица
-extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols);
+extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols);    //DONE
 
 // Матрица оставленная из случайных чисел из диапазона [-1, +1]
-extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols);
+extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols);    //DONE
 
 
 // Вывести матрицу на экран
-extern void matrix_print(const Matrix A);
+extern void matrix_print(const Matrix A);                               //DONE
 
 
 // ТАУ
