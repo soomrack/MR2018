@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Example"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\test_matrix\;CMake Files\cmake-build-debug\;CMake Files\cmake-build-debug\test_matrix\;CMake Files\cmake-build-debug\test_matrix\googletest-prefix\;CMake Files\cmake-build-debug\test_matrix\googletest-prefix\tmp\;CMake Files\src\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Experimental">
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 Experimental"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Continuous">
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 Continuous"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Nightly">
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 Nightly"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="runmyTests">
+				<Option output="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/runmyTests.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 runmyTests"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="runmyTests/fast">
+				<Option output="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/runmyTests.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 runmyTests/fast"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="googletest">
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 googletest"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="runUnitTests">
+				<Option output="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/runUnitTests.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 runUnitTests"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="runUnitTests/fast">
+				<Option output="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/runUnitTests.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/../lib/gcc/i686-w64-mingw32/8.1.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 runUnitTests/fast"/>
+					<CompileFile command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~2/MINGW-~1/I686-8~1.0-P/mingw32/bin/mingw32-make.exe -f &quot;C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/test_matrix/gtest_matrix_1_main.cpp">
+			<Option target="runUnitTests"/>
+		</Unit>
+		<Unit filename="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/test_matrix/test_matrix_1.cpp">
+			<Option target="runmyTests"/>
+		</Unit>
+		<Unit filename="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/test_matrix/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test_matrix\"/>
+		</Unit>
+		<Unit filename="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/googletest-prefix/tmp/googletest-cfgcmd.txt.in">
+			<Option virtualFolder="CMake Files\cmake-build-debug\test_matrix\googletest-prefix\tmp\"/>
+		</Unit>
+		<Unit filename="C:/Users/natas/CLionProjects/Common/natalia/matrix_2/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

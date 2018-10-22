@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/src/main.c
+stdio.h
+-
+matrix.h
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/src/matrix.h
+malloc.h
+-
+
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/src/matrix.h
+
