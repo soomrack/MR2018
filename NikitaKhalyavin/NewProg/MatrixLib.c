@@ -40,6 +40,7 @@ extern double matrix_determinant(const Matrix A){
         else sign = 1;
         det += matrix_determinant(Temp)*A.data[col]*sign;
     }
+    free(Temp.data);
     return det;
 }
 
@@ -139,12 +140,15 @@ extern Matrix matrix_invert(const Matrix A){
             Algd.data[col + row*Algd.cols] = matrix_determinant(Temp)*sign;
         }
     }
-    return matrix_mult__scalar( ( 1 / matrix_determinant(A) ), matrix_trans(Algd));
+    Matrix Out = matrix_mult__scalar( ( 1 / matrix_determinant(A) ), matrix_trans(Algd));
+    free(Algd.data);
+    free(Temp.data);
+    return Out;
 }
 
 
 unsigned long long int fact(unsigned int n){
-    int out = 1;
+    unsigned long long int out = 1;
     for(int i = 2; i < n; i++)out*=i;
     return  out;
 }
@@ -164,6 +168,7 @@ extern Matrix matrix_exp(const Matrix A){
         }
         if(flag) break;
     }
+    free(B.data);
     return C;
 }
 
@@ -202,6 +207,7 @@ extern Matrix matrix_power(const Matrix A, const unsigned int power){
             }
         }
     }
+    free(B.data);
     return C;
 }
 
