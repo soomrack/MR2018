@@ -25,13 +25,13 @@ extern Matrix matrix_eigen_vectors(const Matrix A);
 // +Сумма матриц
 extern Matrix matrix_sum(const Matrix A, const Matrix B);
 
-// Умножение матриц
+// +Умножение матриц
 extern Matrix matrix_mult(const Matrix A, const Matrix B);
 
 // +Умножение матрицы на скаляр
 extern Matrix matrix_mult__scalar(const double scalar, const Matrix A);
 
-// Транспонирование матрицы
+// +Транспонирование матрицы
 extern Matrix matrix_trans(const Matrix A);
 
 // Обращение матрицы
@@ -56,6 +56,7 @@ extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols);
 
 // +Вывести матрицу на экран
 extern void matrix_print(const Matrix A);
+extern void matrix_printe(const Matrix A);
 
 
 // ТАУ

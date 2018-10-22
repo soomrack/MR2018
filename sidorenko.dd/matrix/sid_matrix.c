@@ -16,7 +16,7 @@ extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols)
     {
         for (int col=0; col<cols; col++)
         {
-            A.data[row*rows+col]=0.0;
+            A.data[row*cols+col]=0.0;
         }
     }
 
@@ -24,6 +24,8 @@ extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols)
 
 
 }
+
+
 extern void matrix_print(const Matrix A)
 {
 
@@ -31,11 +33,13 @@ extern void matrix_print(const Matrix A)
     {
         for (int col=0; col<A.cols; col++)
         {
-            printf("%f  ",A.data[row*A.rows+col]);
+            printf("%f  ",A.data[row*A.cols+col]);
         }
         printf("\n");
     }
 }
+
+
 extern Matrix matrix_one(const unsigned int rows, const unsigned int cols)
 {
     Matrix A;
@@ -59,6 +63,8 @@ extern Matrix matrix_one(const unsigned int rows, const unsigned int cols)
 
     return A;
 }
+
+
 extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols)
 {
     Matrix A;
@@ -70,12 +76,14 @@ extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols)
     {
         for (int col=0; col<cols; col++)
         {
-            A.data[row*rows+col]=-1.0+2.0*rand()/(double) RAND_MAX;
+            A.data[row*cols+col]=-1.0+2.0*rand()/(double) RAND_MAX;
         }
     }
 
     return A;
 }
+
+
 extern Matrix matrix_mult__scalar(const double scalar, const Matrix A)
 {
     Matrix B;
@@ -92,6 +100,8 @@ extern Matrix matrix_mult__scalar(const double scalar, const Matrix A)
 
     return B;
 }
+
+
 extern Matrix matrix_sum(const Matrix A, const Matrix B)
 {
     Matrix C;
@@ -109,6 +119,7 @@ extern Matrix matrix_sum(const Matrix A, const Matrix B)
     return C;
 }
 
+
 extern double matrix_trace(const Matrix A)
 {
     if (A.cols!=A.rows)
@@ -123,6 +134,7 @@ extern double matrix_trace(const Matrix A)
     }
     return sum;
 }
+
 
 extern Matrix matrix_trans(const Matrix A)
 {
@@ -143,4 +155,64 @@ extern Matrix matrix_trans(const Matrix A)
         }
     }
     return B;
+}
+
+
+extern Matrix matrix_mult(const Matrix A, const Matrix B)
+{
+    if(A.cols != B.rows) {
+        printf("ERROR");
+        exit(1);
+    }
+    Matrix C;
+    C.cols = B.cols;
+    C.rows = A.rows;
+    C.data = malloc(C.cols * C.rows * sizeof(double));
+    for(int row = 0; row < C.rows; row++) {
+        for(int col = 0; col < C.cols; col++) {
+            C.data[row * C.rows + col] = 0;
+            for(int count = 0; count < A.cols; count++) {
+                C.data[row * C.cols+col]+= A.data[row * C.cols + count] * B.data[count * C.cols + col];
+            }
+        }
+    }
+    return C;
+}
+
+
+extern Matrix matrix_power(const Matrix A, const unsigned int power)
+{
+    if(A.cols != A.rows) {
+        printf("ERROR");
+        exit(1);
+    }
+    if(power == 1) {
+        return A;
+        exit(0);
+    }
+    Matrix POW;
+    POW.cols = A.cols;
+    POW.rows = A.rows;
+    POW.data = malloc(A.rows * A.cols * sizeof(double)+1);
+    if(power == 0){
+        POW = matrix_one(POW.rows,POW.cols);
+    }
+    for(int count = 1; count < power; count++){
+            POW = matrix_mult(POW, A);
+        }
+
+    return POW;
+}
+
+extern void matrix_printe(const Matrix A)
+{
+
+    for(int row=0; row<A.rows; row++)
+    {
+        for (int col=0; col<A.cols; col++)
+        {
+            printf("%E  ",A.data[row*A.cols+col]);
+        }
+        printf("\n");
+    }
 }
