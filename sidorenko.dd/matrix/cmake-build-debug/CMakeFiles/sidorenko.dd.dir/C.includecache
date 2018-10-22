@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Programms/111/High Code/lesson_7/MR2018-master/sidorenko.dd/matrix/sid_main.c
+sid_matrix.h
+D:/Programms/111/High Code/lesson_7/MR2018-master/sidorenko.dd/matrix/sid_matrix.h
+stdio.h
+-
+
+D:/Programms/111/High Code/lesson_7/MR2018-master/sidorenko.dd/matrix/sid_matrix.h
+
