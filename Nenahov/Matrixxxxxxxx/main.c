@@ -45,12 +45,20 @@ int main() {
     //matrix_print(C);
     Matrix D=matrix_zero(2,2);
     Matrix E=matrix_mult(A,B);
-    Matrix F=matrix_rand(4,4);
     Matrix G=matrix_mult__scalar(2,A);
+    Matrix H=matrix_trans(A);
+    Matrix I=matrix_invert(A);
     double det=matrix_determinant(A);
+    printf("det=%lf\n",det);
 
     //matrix_print(matrix_invert(A));
-    //printf("det=%lf\n",det);
+
+   // matrix_print(matrix_mult__scalar(1/matrix_determinant(A),matrix_trans(A)));
+    Matrix F=matrix_rand(4,4);
+    //matrix_print(matrix_mult__scalar(1/matrix_determinant(A),matrix_trans(A)));
+    //matrix_print(I);
+    matrix_print(matrix_mult(A,I));
+
 
     return 0;
 }

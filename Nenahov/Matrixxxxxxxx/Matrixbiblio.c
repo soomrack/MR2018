@@ -29,6 +29,7 @@ extern Matrix matrix_trans(const Matrix A)
     Matrix B;
     B.rows=A.cols;
     B.cols=A.rows;
+    B.data=malloc(B.cols*B.rows*sizeof(double));
     for(int t=0;t<B.rows;t++)
     {
         for(int i=0;i<B.cols;i++)
@@ -42,6 +43,9 @@ extern Matrix matrix_trans(const Matrix A)
 extern Matrix matrix_mult__scalar(const double scalar, const Matrix A)
 {
     Matrix B;
+    B.rows=A.rows;
+    B.cols=A.cols;
+    B.data=malloc(B.cols*B.rows*sizeof(double));
     for(int t=0;t<A.rows;t++)
     {
         for(int i=0;i<A.cols;i++)
@@ -63,7 +67,7 @@ double matrix_trace(const Matrix A)
     return trace;
 }
 
-void matrix_print(const Matrix A)
+extern void matrix_print(const Matrix A)
 {
 
     for(int t=0;t<A.rows;t++)
@@ -112,6 +116,7 @@ extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols)
 extern Matrix matrix_mult(const Matrix A, const Matrix B)
 {
     Matrix C=matrix_zero(A.rows,B.cols);
+    C.data=malloc(C.cols*C.rows*sizeof(double));
     for(int i=0;i<A.rows;i++)
     {
         for(int t=0;t<B.cols;t++)
@@ -125,29 +130,27 @@ extern Matrix matrix_mult(const Matrix A, const Matrix B)
     return C;
 }
 
-Matrix Minor(Matrix A,int n)
+extern Matrix Minor(Matrix A,int row,int col)
 {
     Matrix B;
     B.rows=A.rows-1;
     B.cols=A.cols-1;
+    B.data=malloc(B.cols*B.rows*sizeof(double));
     for(int rows=0;rows<B.rows;rows++)
     {
         for(int cols=0;cols<B.cols;cols++)
         {
-            if(cols<n)
-            {
-                B.data[cols+rows*B.cols]=A.data[cols+(rows+1)*A.cols];
-            }
-            else
-            {
-                B.data[cols + rows * B.cols] = A.data[cols+1+(rows+1)*A.cols];
-            }
+            int r=0;
+            int c=0;
+            if(cols>=col) c=1;
+            if(rows>=row) r=1;
+            B.data[cols + rows * B.cols] = A.data[cols+c+(rows+r)*A.cols];
 
         }
     }
     return B;
 }
-double matrix_determinant(const Matrix A)
+extern double matrix_determinant(const Matrix A)
 {
     double det=0;
     if(A.cols==1)
@@ -160,9 +163,10 @@ double matrix_determinant(const Matrix A)
     }
     else{
         int k=1;
-        for(int rows=0;rows<A.rows;rows++)
+        int rows=0;
+        for(int cols=0;cols<A.rows;cols++)
         {
-            det+=k*A.data[rows]*matrix_determinant(Minor(A,rows));
+            det+=k*A.data[cols]*matrix_determinant(Minor(A,rows,cols));
             k*=(-1);
         }
     }
@@ -171,8 +175,29 @@ double matrix_determinant(const Matrix A)
 
 extern Matrix matrix_invert(const Matrix A)
 {
-    Matrix B;
-    B=matrix_mult__scalar(1/matrix_determinant(A),matrix_trans(A));
-    return B;
+    Matrix invA;
+    invA.rows=A.cols;
+    invA.cols=A.rows;
+    invA.data=malloc(invA.cols*invA.rows*sizeof(double));
+    Matrix AlgDop;
+    AlgDop.rows=A.cols;
+    AlgDop.cols=A.rows;
+    AlgDop.data=malloc(AlgDop.cols*AlgDop.rows*sizeof(double));
+    int k=1;
+    for(int rows=0;rows<AlgDop.rows;rows++)
+    {
+        for(int cols=0;cols<AlgDop.cols;cols++)
+        {
+            AlgDop.data[cols+rows*AlgDop.cols]=k*matrix_determinant(Minor(A,cols,rows));
+            k*=(-1);
+        }
+    }
+   /* double d=matrix_determinant(A);
+    printf("det=%lf\n",d);
+    double id=1/d;
+    Matrix C=matrix_trans(A);
+    invA=matrix_mult__scalar(id,C);*/
+    invA=matrix_mult__scalar(1/matrix_determinant(A),AlgDop);
+    return invA;
 }
 
