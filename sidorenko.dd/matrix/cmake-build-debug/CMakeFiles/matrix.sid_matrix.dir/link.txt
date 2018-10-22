@@ -1,0 +1,2 @@
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ar.exe qc libmatrix.sid_matrix.a  CMakeFiles/matrix.sid_matrix.dir/sid_matrix.c.obj
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ranlib.exe libmatrix.sid_matrix.a

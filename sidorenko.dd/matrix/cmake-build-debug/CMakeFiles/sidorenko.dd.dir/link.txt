@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2018.2.2\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\sidorenko.dd.dir/objects.a
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\ar.exe cr CMakeFiles\sidorenko.dd.dir/objects.a @CMakeFiles\sidorenko.dd.dir\objects1.rsp
+C:\PROGRA~2\MINGW-~1\I686-8~1.0-P\mingw32\bin\gcc.exe -g   -Wl,--whole-archive CMakeFiles\sidorenko.dd.dir/objects.a -Wl,--no-whole-archive  -o sidorenko.dd.exe -Wl,--out-implib,libsidorenko.dd.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\sidorenko.dd.dir\linklibs.rsp

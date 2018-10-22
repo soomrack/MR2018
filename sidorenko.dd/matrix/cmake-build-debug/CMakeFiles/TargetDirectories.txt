@@ -1,0 +1,4 @@
+D:/Programms/111/High Code/lesson_7/MR2018-master/sidorenko.dd/matrix/cmake-build-debug/CMakeFiles/sid_matrix.dir
+D:/Programms/111/High Code/lesson_7/MR2018-master/sidorenko.dd/matrix/cmake-build-debug/CMakeFiles/sidorenko.dd.dir
+D:/Programms/111/High Code/lesson_7/MR2018-master/sidorenko.dd/matrix/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Programms/111/High Code/lesson_7/MR2018-master/sidorenko.dd/matrix/cmake-build-debug/CMakeFiles/rebuild_cache.dir
