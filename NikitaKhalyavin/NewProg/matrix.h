@@ -6,6 +6,26 @@ typedef struct {
     double* data;
 } Matrix;
 
+
+typedef struct{
+    int maxPower;
+    double* data;
+}Polinom;
+
+typedef struct{
+    int rows;
+    int cols;
+    Polinom* data;
+}PowerMatrix;
+
+void polinomPrint(Polinom P);
+Polinom PolinomAdd(Polinom P1, Polinom P2);
+Polinom PolinomMul(Polinom P1, Polinom P2);
+Polinom PolinomMulSc(Polinom P1, double Sc);
+Polinom determinant_PowerMatrix(PowerMatrix A);
+PowerMatrix ToPowerMatrix(Matrix A);
+void print_PowerMatrix(PowerMatrix Temp);
+
 // След матрицы
 extern double matrix_trace(const Matrix A);
 
@@ -13,7 +33,7 @@ extern double matrix_trace(const Matrix A);
 extern double matrix_determinant(const Matrix A);
 
 // Собственные числа матрицы
-extern Matrix matrix_eigen_values(const Matrix A);
+extern Polinom matrix_eigen_values(const Matrix A);
 
 // Матрица собственных векторов
 extern Matrix matrix_eigen_vectors(const Matrix A);
