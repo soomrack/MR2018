@@ -57,8 +57,7 @@ int main() {
     Matrix F=matrix_rand(4,4);
     //matrix_print(matrix_mult__scalar(1/matrix_determinant(A),matrix_trans(A)));
     //matrix_print(I);
-    matrix_print(matrix_mult(A,I));
-
-
+   // matrix_print(matrix_one(4,4));
+   matrix_print(matrix_power(A,0));
     return 0;
 }

@@ -99,15 +99,14 @@ Matrix matrix_sum(const Matrix A, const Matrix B)
 extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols)
 {
     Matrix A;
-
     A.rows=rows;
     A.cols=cols;
     A.data=malloc(A.cols*A.rows*sizeof(double));
-    for(int t=0;t<A.rows;t++)
+    for(unsigned int t=0;t<A.rows;t++)
     {
-        for(int i=0;i<A.cols;i++)
+        for(unsigned int i=0;i<A.cols;i++)
         {
-            A.data[t+i*A.rows]=0;
+            A.data[i+t*A.cols]=0;
         }
     }
     return A;
@@ -201,3 +200,37 @@ extern Matrix matrix_invert(const Matrix A)
     return invA;
 }
 
+extern Matrix matrix_one(const unsigned int rows, const unsigned int cols)
+{
+    Matrix A;
+    srand(time(NULL));
+    A.rows=rows;
+    A.cols=cols;
+    A.data=malloc(A.cols*A.rows*sizeof(double));
+    for(int t=0;t<A.rows;t++)
+    {
+        for(int i=0;i<A.cols;i++)
+        {
+            if(i==t)
+            A.data[t+i*A.cols]=1;
+            else  A.data[t+i*A.cols]=0;
+        }
+    }
+    return A;
+}
+
+extern Matrix matrix_power(const Matrix A, const unsigned int power)
+{
+    Matrix B;
+    B.rows=A.rows;
+    B.cols=A.cols;
+    B.data=malloc(B.cols*B.rows*sizeof(double));
+    if(power==0) B=matrix_one(B.rows,B.cols);
+    else {
+        B=matrix_one(B.rows,B.cols);
+        for (unsigned int i = 0; i < power; i++) {
+            B = matrix_mult(B,A);
+        }
+    }
+    return B;
+}
