@@ -1,0 +1,13 @@
+# Target labels
+ googletest
+# Source files and their labels
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/CMakeFiles/googletest
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/CMakeFiles/googletest.rule
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/CMakeFiles/googletest-complete.rule
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/googletest-prefix/src/googletest-stamp/googletest-install.rule
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/googletest-prefix/src/googletest-stamp/googletest-mkdir.rule
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/googletest-prefix/src/googletest-stamp/googletest-download.rule
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/googletest-prefix/src/googletest-stamp/googletest-update.rule
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/googletest-prefix/src/googletest-stamp/googletest-patch.rule
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/googletest-prefix/src/googletest-stamp/googletest-configure.rule
+C:/Users/natas/CLionProjects/Common/natalia/matrix_2/cmake-build-debug/test_matrix/googletest-prefix/src/googletest-stamp/googletest-build.rule
