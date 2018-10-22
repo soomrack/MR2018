@@ -1,3 +1,8 @@
+#include "matrix.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 extern double matrix_determinant(const Matrix A){
         if(A.cols != A.rows)exit(1);
         if(A.cols == 1) return A.data[0];
@@ -11,7 +16,7 @@ extern double matrix_determinant(const Matrix A){
         double det = 0;
         int sign;
         for(int col = 0; col < A.cols; col++){
-                for(int i = 0; i < Temp.rows; i++){     //construction sub-matrix
+                for(int i = 0; i < Temp.rows; i++){
                         for(int j = 0; j < Temp.cols; j++){
                                 if((i <  row) && (j <  col))  Temp.data[j + ( i * Temp.cols)] = A.data[j + ( i * A.cols)];
                                 if((i <  row) && (j >= col))  Temp.data[j + ( i * Temp.cols)] = A.data[(j + 1) + ( i * A.cols)];

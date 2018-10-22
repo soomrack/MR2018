@@ -3,8 +3,8 @@ project(Artyrrr)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Artyrrr main.c)
-
 add_library(Artyrrrlib STATIC mylibrary.c)
+
+add_executable(Artyrrr main.c)
 
 target_link_libraries(Artyrrr Artyrrrlib)
