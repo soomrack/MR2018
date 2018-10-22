@@ -21,6 +21,7 @@ extern Matrix matrix_eigen_values(const Matrix A);
 // Матрица собственных векторов
 extern Matrix matrix_eigen_vectors(const Matrix A);
 
+
 // Сумма матриц
 extern Matrix matrix_sum(const Matrix A, const Matrix B);
 
@@ -41,6 +42,7 @@ extern Matrix matrix_exp(const Matrix A);
 
 // Возведение матрицы в степень (натуральное число или 0)
 extern Matrix matrix_power(const Matrix A, const unsigned int power);
+
 
 // Единичная матрица
 extern Matrix matrix_one(const unsigned int rows, const unsigned int cols);

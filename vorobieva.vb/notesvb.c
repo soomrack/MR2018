@@ -7,51 +7,27 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <err.h>
+#include "libraryvb.h"
+#include <time.h>
 
-int schetchiki;
-char schetchikc [10];
-char response[] = "HTTP/1.1 200 OK\r\n"
-                  "Content-Type: text/html; charset=UTF-8\r\n\r\n"
-                  "<!DOCTYPE html><html><head><title>Hello world! </title></head>"
-                  "<body><h1>Hello World!</h1></body></html>\r\n";
 
 int main()
 {
-        int one = 1, client_fd;
-        struct sockaddr_in svr_addr, cli_addr;
-        socklen_t sin_len = sizeof(cli_addr);
-
-        int sock = socket(AF_INET, SOCK_STREAM, 0);
-        if (sock < 0)
-                err(1, "can't open socket");
-
-        setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
-
-        int port = 8080;
-        svr_addr.sin_family = AF_INET;
-        svr_addr.sin_addr.s_addr = INADDR_ANY;
-        svr_addr.sin_port = htons(port);
-
-        if (bind(sock, (struct sockaddr *) &svr_addr, sizeof(svr_addr)) == -1) {
-                close(sock);
-                err(1, "Can't bind");
-        }
-
-        listen(sock, 5);
-        schetchiki = 0;
-        while (1) {
-                client_fd = accept(sock, (struct sockaddr *) &cli_addr, &sin_len);
-                sleep(1);
-                printf("got connection\n");
-                if (client_fd == -1) {
-                        perror("Can't accept");
-                        continue;
-                }
-                schetchiki++;
-                sprintf(schetchikc,"%d",schetchiki);
-                write(client_fd, response, sizeof(response) - 1); /*-1:'\0'*/
-                sleep(1);
-                write(client_fd, &schetchikc, sizeof(schetchikc)-1);
-                close(client_fd);
-        }
+    srand(time(NULL));
+    Matrix A = matrix_rand(3,3);
+    Matrix B = matrix_rand(3,3);
+    matrix_print(A);
+    printf("\n");
+    matrix_print(B);
+    printf("%1.3f\n\n", matrix_trace(matrix_rand(3,3)));
+    matrix_print(matrix_one(3,3));
+    printf("\n");
+    matrix_print(matrix_zero(3,3));
+    printf("\n");
+    Matrix C = matrix_sum(A, B);
+    matrix_print(C);
+    printf("\n");
+    C = matrix_mult__scalar(3,A);
+    matrix_print(C);
+    return 0;
 }
