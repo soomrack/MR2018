@@ -8,6 +8,9 @@ int main(){
     matrix_print(A);
     PowerMatrix P = ToPowerMatrix(A);
     print_PowerMatrix(P);
-    polinomPrint(determinant_PowerMatrix(P));
+    Polinom T = determinant_PowerMatrix(P);
+    polinomPrint(T);
+    polinomPrint(Pr(T));
+    matrix_print(matrix_eigen_values(A));
     return 0;
 }

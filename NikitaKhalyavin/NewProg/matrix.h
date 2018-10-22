@@ -25,6 +25,7 @@ Polinom PolinomMulSc(Polinom P1, double Sc);
 Polinom determinant_PowerMatrix(PowerMatrix A);
 PowerMatrix ToPowerMatrix(Matrix A);
 void print_PowerMatrix(PowerMatrix Temp);
+Polinom Pr(Polinom P);
 
 // След матрицы
 extern double matrix_trace(const Matrix A);
@@ -33,7 +34,7 @@ extern double matrix_trace(const Matrix A);
 extern double matrix_determinant(const Matrix A);
 
 // Собственные числа матрицы
-extern Polinom matrix_eigen_values(const Matrix A);
+extern Matrix matrix_eigen_values(const Matrix A);
 
 // Матрица собственных векторов
 extern Matrix matrix_eigen_vectors(const Matrix A);

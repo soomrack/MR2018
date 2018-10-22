@@ -96,8 +96,6 @@ Polinom PolinomMulSc(Polinom P1, double Sc){
     for(int p1 = 0; p1 < P1.maxPower; p1++){
         out.data[p1] = P1.data[p1] * Sc;
     }
-    polinomPrint(out);
-    printf("\n");
     return out;
 }
 
@@ -131,7 +129,6 @@ Polinom determinant_PowerMatrix(PowerMatrix A){
                 }
             }
         }
-        print_PowerMatrix(Temp);
         if(col % 2) sign = -1;
         else sign = 1;
         temp = PolinomAdd(det,PolinomMul(A.data[col],PolinomMulSc(determinant_PowerMatrix(Temp),sign)));
@@ -141,18 +138,77 @@ Polinom determinant_PowerMatrix(PowerMatrix A){
     return det;
 }
 
-/*Matrix PolynomEqvSolve(struct Polinom P){
+Polinom Pr(Polinom P){
+    Polinom out;
+    out.maxPower = P.maxPower - 1;
+    out.data = malloc(out.maxPower * sizeof(double));
+    for(int i = 0; i < out.maxPower; i++){
+        out.data[i] = P.data[i+1] * (i+1);
+    }
+    return (out);
+}
 
-}*/
+double PolinomCalc(Polinom P, double lyambda){
+    double out = 0;
+    double k = 1;
+    for(int i = 0; i < P.maxPower; i++){
+        out += P.data[i]*k;
+        k*=lyambda;
+    }
+    return out;
+}
+
+double HalfDividingSquare(double start, double stop, Polinom P){
+    if(PolinomCalc(P,start)/PolinomCalc(P,stop) > 0)return 0;
+    if( (start - stop ) / start < 0.0001)return start;
+    if(PolinomCalc(P,start)/PolinomCalc(P,(start + stop) / 2)<0)return HalfDividingSquare(start,(start + stop) / 2,P);
+    return HalfDividingSquare((start + stop) / 2, stop, P);
+}
+
+Matrix PolynomEqvSolve(Polinom P){
+    Matrix out;
+    out.cols = 1;
+    out.rows = P.maxPower - 1;
+    out.data = malloc(out.rows*out.cols* sizeof(double));
+    if(P.maxPower == 2){
+        out.data[0] = -P.data[0]/P.data[1];
+        return out;
+    }
+    Matrix prSq;
+    prSq = PolynomEqvSolve(Pr(P));
+    double start = PolinomCalc(P,prSq.data[0]);
+    double value;
+    double temp = prSq.data[0];
+    for(int i = 0; i < 50; i++){
+        if(temp >= 0) temp -= temp + 1;
+        else temp *= 2;
+        value = PolinomCalc(P,temp);
+        if(value/start < 0) break;
+    }
+    out.data[0] = HalfDividingSquare(temp, prSq.data[0], P);
+    for(int i =0; i < prSq.rows - 1; i++){
+        out.data[i + 1] = HalfDividingSquare(temp, prSq.data[i], P);
+    }
+    start = PolinomCalc(P,prSq.data[prSq.rows - 1]);
+    temp = prSq.data[prSq.rows - 1];
+    for(int i = 0; i < 50; i++){
+        if(temp <= 0) temp += temp + 1;
+        else temp *= 2;
+        value = PolinomCalc(P,temp);
+        if(value/start < 0) break;
+    }
+    out.data[prSq.rows] = HalfDividingSquare(prSq.data[0], temp , P);
+    return out;
+}
 
 // Собственные числа матрицы
-extern Polinom matrix_eigen_values(const Matrix A){
+extern Matrix matrix_eigen_values(const Matrix A){
 
     if(A.cols != A.rows)exit(1);
     PowerMatrix Temp;
     Temp = ToPowerMatrix(A);
-    return determinant_PowerMatrix(Temp);
-
+    Polinom temp = determinant_PowerMatrix(Temp);
+    return PolynomEqvSolve(temp);
 }
 
 PowerMatrix ToPowerMatrix(Matrix A){
