@@ -9,7 +9,7 @@ typedef struct {
 } Matrix;
 
 
-// След матрицы
+// +След матрицы
 extern double matrix_trace(const Matrix A);
 
 // Определитель матрицы

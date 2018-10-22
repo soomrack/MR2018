@@ -11,9 +11,10 @@ int main()
     A.rows=3;
     A=matrix_rand(A.cols,A.rows);
     matrix_print(A);
+    A=matrix_trans(A);
     printf("\n");
-    test=matrix_trace(A);
-    printf("%f",test);
+    matrix_print(A);
+
 
 
     return 0;

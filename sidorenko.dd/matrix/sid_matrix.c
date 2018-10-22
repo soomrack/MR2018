@@ -123,3 +123,24 @@ extern double matrix_trace(const Matrix A)
     }
     return sum;
 }
+
+extern Matrix matrix_trans(const Matrix A)
+{
+    if (A.cols!=A.rows)
+    {
+        printf("ERROR");
+        exit(1);
+    }
+    Matrix B;
+    B.cols=A.cols;
+    B.rows=A.rows;
+    B.data=malloc(A.cols*A.rows*sizeof(double));
+    for(int row=0; row<B.rows; row++)
+    {
+        for (int col=0; col<B.cols; col++)
+        {
+            B.data[col*B.rows+row]= A.data[row*A.rows+col];
+        }
+    }
+    return B;
+}
