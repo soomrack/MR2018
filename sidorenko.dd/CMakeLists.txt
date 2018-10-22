@@ -1,10 +1,9 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.9)
+project(sidorenko.dd)
 
-project(lesson_4 C)
+set(CMAKE_C_STANDARD 11)
 
-set(CMAKE_C_STANDARD 99)
+add_library(sid_matrix STATIC sid_matrix.c)
 
-link_libraries(Ws2_32 wsock32)
-
-add_executable(lesson_4 sd_main.c)
-
+add_executable(sidorenko.dd sid_main.c)
+target_link_libraries(sidorenko.dd sid_matrix)
