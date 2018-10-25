@@ -13,7 +13,7 @@ typedef struct {
 extern double matrix_trace(const Matrix A);                     //DONE
 
 // Определитель матрицы
-extern double matrix_determinant(const Matrix A);
+extern double matrix_determinant(const Matrix A);               //DONE
 
 // Собственные числа матрицы
 extern Matrix matrix_eigen_values(const Matrix A);
@@ -38,7 +38,7 @@ extern Matrix matrix_trans(const Matrix A);             //Done
 extern Matrix matrix_invert(const Matrix A);
 
 // Матричная экспонента
-extern Matrix matrix_exp(const Matrix A);
+extern Matrix matrix_exp(const Matrix A);                       //DONE
 
 // Возведение матрицы в степень (натуральное число или 0)
 extern Matrix matrix_power(const Matrix A, const unsigned int power);           //DONE
@@ -56,7 +56,6 @@ extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols);    
 
 // Вывести матрицу на экран
 extern void matrix_print(const Matrix A);                               //DONE
-
 
 // ТАУ
 

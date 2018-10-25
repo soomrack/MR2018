@@ -14,7 +14,8 @@ typedef struct {
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <stdbool.h>
+#include <math.h>
 //Procedure print value matrix
 extern void matrix_print(const Matrix A) {
         for (int i = 0; i < A.cols*A.rows; i++) {
@@ -123,6 +124,99 @@ extern Matrix matrix_trans(const Matrix A)
         for(int i=0; i<A.cols; i++)
                 for(int j=0; j<A.rows; j++)
                         C.data[j+i*A.rows]=A.data[i+j*A.cols];
+        return C;
+}
+//The function return factorial of num
+long int factorial(long int n)
+{
+        if (n == 0 || n == 1) return 1;
+        return n * factorial(n - 1);
+}
+//The function return one of possible implementation
+int possible_implementation(int size, int nom)
+{
+       int temp[size];
+       _Bool decline=0;
+       int global_count=0;
+       int start=0;
+       for(int k=1; k<size; k++)
+               start+=k*pow(10,size-k-1);
+       for(int i=start; i<pow(10, size); i++)
+       {
+               int num = i;
+               int count=0;
+               while (num != 0)
+               {
+                       if((num%10==0)&&i<pow(10,size-1))
+                               decline=1;
+                       if(num%10>size-1)
+                               decline=1;
+                       if(count==0)
+                       {
+                               temp[count]=num%10;
+                               count++;
+                       }
+                       else
+                       {
+                               for(int j=0; j<count; j++)
+                                       if(temp[j]==num%10)
+                                               decline=1;
+                               temp[count]=num%10;
+                               count++;
+                       }
+                       num=num/10;
+               }
+               if(!decline)
+                       global_count++;
+               if(global_count==nom)
+                       return i;
+               decline=0;
+       }
+
+}
+//The function return determinant of matrix
+extern double matrix_determinant(const Matrix A)
+{
+        unsigned int size=A.rows;
+        double result=0;
+        Matrix C=matrix_zero(size, size);
+        if(A.rows!=A.cols)
+                printf("Error: determinant does not exist for non-square matrix");
+        else
+        {
+                for(int i=1; i<factorial(size)+1; i++)
+                {
+                        double mul_result=1;
+                        if(i%4<2)
+                                mul_result=-1;
+                        int sequence = possible_implementation(size, i);
+                        for (int j = 0; j < size; j++)
+                        {
+                                mul_result*=A.data[(j*size)+sequence%10];
+                                sequence=sequence/10;
+                        }
+                        result+=mul_result;
+                }
+        }
+        return result;
+}
+//The function return inverse matrix of the original
+extern Matrix matrix_invert(const Matrix A)
+{
+        Matrix C=matrix_zero(A.rows, A.cols);
+        if(matrix_determinant(A)==0)
+                printf("Error: inverse of matrix imposible for those matrix whose determinant is zero");
+        else
+        {
+                return matrix_mult__scalar((1/matrix_determinant(A)), matrix_trans(A));
+        }
+}
+//The function return result of matrix exponent
+extern Matrix matrix_exp(const Matrix A)
+{
+        Matrix C=matrix_one(A.rows, A.cols);
+        for(int i=1; i<20; i++)
+                C=matrix_sum(C, matrix_mult__scalar((1.0/factorial(i)), matrix_power(A, i)));
         return C;
 }
 

@@ -13,5 +13,5 @@ int main() {
     for(int i=0; i<SIZEMATRIX*SIZEMATRIX; i++)
         A.data[i]=(double)i*M_PI/6;
     matrix_print(A);
-        return 1;
+        return 0;
 }
