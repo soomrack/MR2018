@@ -1,6 +1,6 @@
 ﻿# The directory of Ruslan Shayahmetov
 
-#Task 1: "Matrix Library"
+# Task 1: "Matrix Library"
 Assignment task have been doing on 75 percent
 
 During: 
