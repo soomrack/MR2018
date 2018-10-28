@@ -5,7 +5,7 @@
 typedef struct {
         unsigned int rows;
         unsigned int cols;
-        double** data;
+        double* data;
 } Matrix;
 
 
