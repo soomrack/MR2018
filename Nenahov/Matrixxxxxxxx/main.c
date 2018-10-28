@@ -58,6 +58,19 @@ int main() {
     //matrix_print(matrix_mult__scalar(1/matrix_determinant(A),matrix_trans(A)));
     //matrix_print(I);
    // matrix_print(matrix_one(4,4));
-   matrix_print(matrix_power(A,0));
+   matrix_print(matrix_exp(A));
     return 0;
+}
+
+while(1)
+{
+matrix_m_vector(A, Xn, Xn1);
+float num=0,den=0;
+vector_m_vector(Xn1, Xn, &num);
+vector_m_vector(Xn, Xn, &den);
+float Lprev=L;
+L=num/den;
+if ((fabs(L-Lprev))<0.00001) break;
+memcpy(Xn, Xn1, sizeof(Xn)*_n);
+it++;
 }

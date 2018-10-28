@@ -234,3 +234,22 @@ extern Matrix matrix_power(const Matrix A, const unsigned int power)
     }
     return B;
 }
+
+extern Matrix matrix_exp(const Matrix A)
+{
+    Matrix B=matrix_one(A.rows,A.cols);
+    B.rows=A.rows;
+    B.cols=A.cols;
+    B.data=malloc(B.cols*B.rows*sizeof(double));
+    double F=1;
+    for(int i=1;i<10;i++)
+    {
+        for (int t=2;t<i+1;t++){
+            F=F*t;
+        }
+        B=matrix_sum(B,matrix_mult__scalar(1/F,matrix_power(A,i)));
+    }
+    return B;
+
+}
+
