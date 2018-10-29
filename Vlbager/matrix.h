@@ -8,6 +8,9 @@ typedef struct {
         double* data;
 } Matrix;
 
+/*
+ * Need free(matrix.data) after use!!!
+ */
 
 // След матрицы
 extern double matrix_trace(const Matrix A);
@@ -43,9 +46,7 @@ extern Matrix matrix_exp(const Matrix A);
 // Возведение матрицы в степень (натуральное число или 0)
 extern Matrix matrix_power(const Matrix A, const unsigned int power);
 
-/*
- * Need malloc(matrix.data) before use!!!
- */
+
 // Единичная матрица
 extern Matrix matrix_one(const unsigned int size);
 

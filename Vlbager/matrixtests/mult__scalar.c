@@ -54,7 +54,6 @@ bool doublecomparison (double a, double b)
     }
 }
 
-
 int main()
 {
     int returnCode = 0;
@@ -63,39 +62,55 @@ int main()
     double dA[1][1] = {1.0};
     Matrix A = {1, 1, *dA};
 
-    TEST_EQUAL(matrix_one(1), A);
+    TEST_EQUAL(matrix_mult__scalar(1.0, A), A);
+    
+
+    double dB1[2][2] = {{1.0, 0.0},
+                        {2.0, 3.0}};
+    double dB2[2][2] = {{2.0, 0.0},
+                        {4.0, 6.0}};
+    Matrix B1 = {2, 2, *dB1};
+    Matrix B2 = {2, 2, *dB2};
+
+    TEST_EQUAL(matrix_mult__scalar(2.0, B1), B2);
+    
+
+    double dB3[2][1] = {{1.0},
+                        {2.0}};
+    double dB4[2][1] = {{1.5},
+                        {3.0}};
+    Matrix B3 = {2, 1, *dB3};
+    Matrix B4 = {2, 1, *dB4};
+
+    TEST_EQUAL(matrix_mult__scalar(1.5, B3), B4);
+    
+    
+
+    double dC1[2][3] = {{1.0, 0.0, 0.0},
+                        {4.0, 2.0, 0.0}};
+    Matrix C1 = {2, 3, *dC1};
+    double dC2[2][3] = {{0.0, 0.0, 0.0},
+                        {0.0, 0.0, 0.0}};
+    Matrix C2 = {2, 3, *dC2};
+
+    TEST_EQUAL(matrix_mult__scalar(0.0, C1), C2);
 
 
-    double dB[2][2] = {{1.0, 0},
-                       {0, 1.0}};
-    Matrix B = {2, 2, *dB};
+    double dD1[5][3] = {{1.0, 0.0, 0.0},
+                        {2.0, 6.0, 0.0},
+                        {3.0, 7.0, 10.0},
+                        {4.0, 8.0, 11.0},
+                        {5.0, 9.0, 12.0}};
+    Matrix D1 = {5, 3, *dD1};
+    double dD2[5][3] = {{0.5, 0.0, 0.0},
+                        {1.0, 3.0, 0.0},
+                        {1.5, 3.5, 5.0},
+                        {2.0, 4.0, 5.5},
+                        {2.5, 4.5, 6.0}};
+    Matrix D2 = {5, 3, *dD2};
 
-    TEST_EQUAL(matrix_one(2), B);
+    TEST_EQUAL(matrix_mult__scalar(0.5, D1), D2);
 
-
-    double dC[3][3] = {{1.0, 0.0, 0.0},
-                       {0.0, 1.0, 0.0},
-                       {0.0, 0.0, 1.0}};
-    Matrix C = {3, 3, *dC};
-
-    TEST_EQUAL(matrix_one(3), C);
-
-    double dD[4][4] = {{1.0, 0.0, 0.0, 0.0},
-                       {0.0, 1.0, 0.0, 0.0},
-                       {0.0, 0.0, 1.0, 0.0},
-                       {0.0, 0.0, 0.0, 1.0}};
-    Matrix D = {4, 4, *dD};
-
-    TEST_EQUAL(matrix_one(4), D);
-
-    double dE[5][5] = {{1.0, 0.0, 0.0, 0.0, 0.0},
-                       {0.0, 1.0, 0.0, 0.0, 0.0},
-                       {0.0, 0.0, 1.0, 0.0, 0.0},
-                       {0.0, 0.0, 0.0, 1.0, 0.0},
-                       {0.0, 0.0, 0.0, 0.0, 1.0}};
-    Matrix E = {5, 5, *dE};
-
-    TEST_EQUAL(matrix_one(5), E)
 
     return returnCode;
 }

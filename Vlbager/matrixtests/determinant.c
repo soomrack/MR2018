@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdbool.h>
+#include <float.h>
+
 #include "../matrix.h"
 
 #define STRINGIFY( x ) #x
@@ -8,9 +11,7 @@
 {                                                                            \
     printf("%-40s","Testing "  STRINGIFY(matrix) " ");                       \
     double value = matrix_determinant(matrix);                               \
-    if(     (fabs(1.001 * value) >= fabs(expected))                          \
-         && (fabs(0.999 * value) <= fabs(expected))                          \
-         && ((expected * value) >= 0))                                       \
+    if( doublecomparison(value, expected) )                                  \
     {                                                                        \
         printf("Passed\n" );                                                 \
     }                                                                        \
@@ -23,6 +24,25 @@
     matrix_print(matrix);                                                    \
     printf("\n");                                                            \
 }                                                                            \
+
+bool doublecomparison (double a, double b)
+{
+    double diff = fabs(a - b);
+    const double eps = 0.000001;
+    if ( a == b )
+    {   //случаи для нулей и бесконечностей
+        return true;
+    }
+    else if ( a == 0 || b == 0 || diff < DBL_MIN )
+    {   //близкие к нулю значения сравниваются с абсолютным eps
+        return diff <= eps;
+    }
+    else
+    {   //все остальное сравнивнивается относительно
+        return diff / (fabs(a) + fabs(b)) <= eps;
+    }
+}
+
 
 int main()
 {

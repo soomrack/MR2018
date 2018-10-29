@@ -2,38 +2,57 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <float.h>
 #include "../matrix.h"
 
 #define STRINGIFY( x ) #x
 
-#define TEST_EQUAL( foo, expected )                                                                \
-{                                                                                                  \
-    printf("%-40s","Testing "  STRINGIFY(expected) " ");                                           \
-    bool ifEqual = true;                                                                           \
-    Matrix matrix = foo;                                                                           \
-    for (int row = 0; row < matrix.rows; row++)                                                    \
-    {                                                                                              \
-        for (int col = 0; col < matrix.cols; col++)                                                \
-        {                                                                                          \
-            if (matrix.data[row * matrix.cols + col] != expected.data[row * expected.cols + col])  \
-            {                                                                                      \
-                ifEqual = false;                                                                   \
-            }                                                                                      \
-        }                                                                                          \
-    }                                                                                              \
-    if (ifEqual)                                                                                   \
-    {                                                                                              \
-        printf("Passed\n" );                                                                       \
-    }                                                                                              \
-    else                                                                                           \
-    {                                                                                              \
-        printf("Shaitan!\n");                                                                      \
-        returnCode = 1;                                                                            \
-    }                                                                                              \
-    matrix_print(matrix);                                                                          \
-    free(matrix.data);                                                                             \
-    printf("\n");                                                                                  \
-}                                                                                                  \
+#define TEST_EQUAL( foo, expected )                                                                                 \
+{                                                                                                                   \
+    printf("%-40s","Testing "  STRINGIFY(expected) " ");                                                            \
+    bool ifEqual = true;                                                                                            \
+    Matrix matrix = foo;                                                                                            \
+    for (int row = 0; row < matrix.rows; row++)                                                                     \
+    {                                                                                                               \
+        for (int col = 0; col < matrix.cols; col++)                                                                 \
+        {                                                                                                           \
+            if (!doublecomparison(matrix.data[row * matrix.cols + col], expected.data[row * expected.cols + col]))  \
+            {                                                                                                       \
+                ifEqual = false;                                                                                    \
+            }                                                                                                       \
+        }                                                                                                           \
+    }                                                                                                               \
+    if (ifEqual)                                                                                                    \
+    {                                                                                                               \
+        printf("Passed\n" );                                                                                        \
+    }                                                                                                               \
+    else                                                                                                            \
+    {                                                                                                               \
+        printf("Shaitan!\n");                                                                                       \
+        returnCode = 1;                                                                                             \
+    }                                                                                                               \
+    matrix_print(matrix);                                                                                           \
+    free(matrix.data);                                                                                              \
+    printf("\n");                                                                                                   \
+}                                                                                                                   \
+
+bool doublecomparison (double a, double b)
+{
+    double diff = fabs(a - b);
+    const double eps = 0.000001;
+    if ( a == b )
+    {   //случаи для нулей и бесконечностей
+        return true;
+    }
+    else if ( a == 0 || b == 0 || diff < DBL_MIN )
+    {   //близкие к нулю значения сравниваются с абсолютным eps
+        return diff <= eps;
+    }
+    else
+    {   //все остальное сравнивнивается относительно
+        return diff / (fabs(a) + fabs(b)) <= eps;
+    }
+}
 
 int main()
 {

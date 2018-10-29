@@ -18,7 +18,7 @@ extern double matrix_trace(const Matrix  A)
     return result;
 }
 
-extern Matrix matrix_minor(const Matrix A, int mrow, int mcol)
+extern Matrix matrix_forminor(const Matrix A, int mrow, int mcol)
 {
     int counter = 0;
 
@@ -54,16 +54,16 @@ extern double matrix_determinant(const Matrix A)
     }
 
     double result = 0;
-    int sign;
+    int sign = 1;
 
     for (int col = 0; col < A.cols; col++)
     {
-        sign = (col % 2) ? -1 : 1;
-
         Matrix temp;
-        temp = matrix_minor(A, 0, col);
+        temp = matrix_forminor(A, 0, col);
 
         result += sign * A.data[col] * matrix_determinant(temp);
+
+        sign = -sign;
 
         free(temp.data);
     }
@@ -121,7 +121,7 @@ extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols)
 extern Matrix matrix_sum(const Matrix A, const Matrix B)
 {
     Matrix result = {A.rows, A.cols};
-    result.data = malloc(A.rows * A.cols * sizeof(double));
+    result.data = malloc(result.rows * result.cols * sizeof(double));
     for (int row = 0; row < A.rows; row++)
     {
         for (int col = 0; col < A.cols; col++)
@@ -135,13 +135,88 @@ extern Matrix matrix_sum(const Matrix A, const Matrix B)
 extern Matrix matrix_trans(const Matrix A)
 {
     Matrix result = {A.cols, A.rows};
-    result.data = malloc(A.rows * A.cols * sizeof(double));
+    result.data = malloc(result.rows * result.cols * sizeof(double));
     for (int row = 0; row < result.rows; row++)
     {
         for (int col = 0; col < result.cols; col++)
         {
-            result.data[row * result.cols + col] = A.data[col * A.rows + row];
+            result.data[row * result.cols + col] = A.data[col * A.cols + row];
         }
     }
     return result;
 }
+
+extern Matrix matrix_mult(const Matrix A, const Matrix B)
+{
+    Matrix result = {A.rows, B.cols};
+    result.data = malloc(result.rows * result.cols * sizeof(double));
+
+    Matrix transB = matrix_trans(B);
+    for (int row = 0; row < result.rows; row++)
+    {
+        for (int col = 0; col < result.cols; col++)
+        {
+            result.data[row * result.cols + col] = 0;
+            for (int i = 0; i < A.cols; i++)
+            {
+                result.data[row * result.cols + col] += A.data[row * A.cols + i] * transB.data[col * transB.cols  + i];
+            }
+        }
+    }
+    free(transB.data);
+    return result;
+}
+
+extern Matrix matrix_mult__scalar(const double scalar, const Matrix A)
+{
+    Matrix result = {A.rows, A.cols};
+    result.data = malloc(result.rows * result.cols * sizeof(double));
+
+    for (int row = 0; row < result.rows; row++)
+    {
+        for (int col = 0; col < result.cols; col++)
+        {
+            result.data[row * result.cols + col] = scalar * A.data[row * A.cols + col];
+        }
+    }
+
+    return result;
+}
+
+extern Matrix matrix_invert(const Matrix A)
+{
+    Matrix result = {A.rows, A.cols};
+    result.data = malloc(result.rows * result.cols * sizeof(double));
+
+    if (A.rows == 1)
+    {
+        result.data[0] = 1 / A.data[0];
+        return result;
+    }
+
+    int sign = 1;
+    for (int row = 0; row < result.rows; row++)
+    {
+        for (int col = 0; col < result.cols; col++)
+        {
+
+            Matrix temp;
+            temp = matrix_forminor(A, row, col);
+
+            result.data[row * result.cols + col] = sign * matrix_determinant(temp);
+            sign = -sign;
+
+            free(temp.data);
+        }
+    }
+    matrix_mult__scalar(matrix_determinant(A), result);
+    return result;
+}
+
+
+
+
+
+
+
+

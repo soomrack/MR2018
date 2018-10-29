@@ -3,20 +3,22 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <float.h>
+
 #include "../matrix.h"
 
 #define STRINGIFY( x ) #x
 
-#define TEST_EQUAL( foo, expected )                                                                                \
+#define TEST_EQUAL( foo, sizeone, letter )                                                                                \
 {                                                                                                                  \
-    printf("%-40s","Testing "  STRINGIFY(expected) " ");                                                           \
+    printf("%-40s","Testing "  STRINGIFY(letter) " ");                                                           \
     bool ifEqual = true;                                                                                           \
+    Matrix expected = matrix_one(sizeone); \
     Matrix m = foo;                                                                                                \
     for (int row = 0; row < m.rows; row++)                                                                         \
     {                                                                                                              \
         for (int col = 0; col < m.cols; col++)                                                                     \
         {                                                                                                          \
-        if (!doublecomparison(m.data[row * m.cols + col], expected.data[row * expected.cols + col]))               \
+        if (  !doublecomparison(m.data[row * m.cols + col], expected.data[row * expected.cols + col]) )            \
             {                                                                                                      \
                 ifEqual = false;                                                                                   \
             }                                                                                                      \
@@ -33,6 +35,7 @@
     }                                                                                                              \
     matrix_print(m);                                                                                               \
     free(m.data);                                                                                                  \
+    free(expected.data); \
     printf("\n");                                                                                                  \
 }                                                                                                                  \
 
@@ -54,92 +57,66 @@ bool doublecomparison (double a, double b)
     }
 }
 
+
 int main()
 {
     int returnCode = 0;
+    Matrix temp;
 
+    double dA[1][1] = {-1.0};
+    Matrix A = {1, 1, *dA};
 
+    temp = matrix_invert(A);
+    matrix_print(temp);
+    TEST_EQUAL(matrix_mult(A, matrix_invert(A)), A.rows, A);
 
-    double dA1[1][1] = {1.0};
-    Matrix A1 = {1, 1, *dA1};
+    double dB[2][2] = {{1.0, 0},
+                       {0, 1.0}};
+    Matrix B = {2, 2, *dB};
 
-    double dA2[1][1] = {-1.0};
-    Matrix A2 = {1, 1, *dA2};
+    TEST_EQUAL(matrix_mult(B, matrix_invert(B)), B.rows, B);
 
-    double dAr[1][1] = {0.0};
-    Matrix Ar = {1, 1, *dAr};
+    double dC[2][2] = {{0, 99.0},
+                       {0, 1.0}};
+    Matrix C = {2, 2, *dC};
 
-    TEST_EQUAL(matrix_sum(A1, A2), Ar);
+    TEST_EQUAL(matrix_mult(C, matrix_invert(C)), C.rows, C);
 
+    double dD[2][2] = {{5.0, 3.0},
+                       {5.0, 5.0}};
+    Matrix D = {2, 2, *dD};
 
+    TEST_EQUAL(matrix_mult(D, matrix_invert(D)), D.rows, D);
 
-    double dB1[2][2] = {{25.8, -100.0},
-                        {343, 0.99}};
-    Matrix B1 = {2, 2, *dB1};
+    double dE[2][2] = {{-55.965, 38.325},
+                       {-1.875, 69.123}};
+    Matrix E = {2, 2, *dE};
 
-    double dB2[2][2] = {{0.2, 200.0},
-                        {-43, 0.01}};
-    Matrix B2 = {2, 2, *dB2};
+    TEST_EQUAL(matrix_mult(E, matrix_invert(E)), E.rows, E);
 
-    double dBr[2][2] = {{26, 100},
-                        {300, 1.0}};
-    Matrix Br = {2, 2, *dBr};
+    double dF[3][3] = {{20.0, 13.0, 14.0},
+                       {15.0, 16.0, 17.0},
+                       {18.0, 19.0, 20.0}};
+    Matrix F = {3, 3, *dF};
 
-    TEST_EQUAL(matrix_sum(B1, B2), Br);
+    TEST_EQUAL(matrix_mult(E, matrix_invert(E)), E.rows, E);
 
+    double dG[4][4] = {{20.0, 13.1, 14.0, -6.38},
+                       {15.2, 16.0, 17.4, 5.25},
+                       {18.0, 19.3, 20.0, -9.99},
+                       {25.45, 15.0, 57.1, 5.65}};
+    Matrix G = {4, 4, *dG};
 
+    TEST_EQUAL(matrix_mult(G, matrix_invert(G)), G.rows, G);
 
-    double dC1[2][1] = {{999.99},
-                        {0.01}};
-    Matrix C1 = {2, 1, *dC1};
+    double dH[5][5] = {{54.0, 66.0, 11.0, 0.0, 1.0},
+                       {10.0, 20.0, 1.0, 2.0, 15.0},
+                       {12.0, 5.0, 2.0, 0.55, 0.31},
+                       {16.0, 78.5, 55.68, 7.0, 0.4},
+                       {49.0, 55.2, 8.8, 4.1, 12.5}};
+    Matrix H = {5, 5, *dH};
 
-    double dC2[2][1] = {{0.01},
-                        {-999.99}};
-    Matrix C2 = {2, 1, *dC2};
-
-    double dCr[2][1] = {{1000.0},
-                        {-999.98}};
-    Matrix Cr = {2, 1, *dCr};
-
-    TEST_EQUAL(matrix_sum(C1, C2), Cr);
-
-
-
-    double dD1[1][2] = {{1.0, 0.0}};
-    Matrix D1 = {1, 2, *dD1};
-
-    double dD2[1][2] = {{0.0, -1.0}};
-    Matrix D2 = {1, 2, *dD2};
-
-    double dDr[1][2] = {{1.0, -1.0}};
-    Matrix Dr = {1, 2, *dDr};
-
-    TEST_EQUAL(matrix_sum(D1, D2), Dr);
-
-
-
-    double dE1[5][3] = {{1.0, 2.0, 3.0},
-                        {4.0, 5.0, 6.0},
-                        {7.0, 8.0, 9.0},
-                        {10.0, 11.0, 12.0},
-                        {13.0, 14.0, 15.0}};
-    Matrix E1 = {5, 3, *dE1};
-
-    double dE2[5][3] = {{2.0, 4.0, 6.0},
-                        {8.0, 10.0, 12.0},
-                        {14.0, 16.0, 18.0},
-                        {20.0, 22.0, 24.0},
-                        {26.0, 28.0, 30.0}};
-    Matrix E2 = {5, 3, *dE2};
-
-    double dEr[5][3] = {{3.0, 6.0, 9.0},
-                        {12.0, 15.0, 18.0},
-                        {21.0, 24.0, 27.0},
-                        {30.0, 33.0, 36.0},
-                        {39.0, 42.0, 45.0}};
-    Matrix Er = {5, 3, *dEr};
-
-    TEST_EQUAL(matrix_sum(E1, E2), Er)
+    TEST_EQUAL(matrix_mult(H, matrix_invert(H)), H.rows, H);
 
     return returnCode;
 }
