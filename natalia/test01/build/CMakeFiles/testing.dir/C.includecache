@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/natas/CLionProjects/Common/natalia/test01/library.h
+
+C:/Users/natas/CLionProjects/Common/natalia/test01/main.c
+library.h
+C:/Users/natas/CLionProjects/Common/natalia/test01/library.h
+

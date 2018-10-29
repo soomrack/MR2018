@@ -1,0 +1,18 @@
+Start testing: Oct 22 01:41 RTZ 2 (ceia)
+----------------------------------------------------------
+1/1 Testing: mytest01
+1/1 Test: mytest01
+Command: "C:/Users/natas/CLionProjects/Common/natalia/test01/build/Test01.exe"
+Directory: C:/Users/natas/CLionProjects/Common/natalia/test01/build
+"mytest01" start time: Oct 22 01:41 RTZ 2 (ceia)
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.54 sec
+----------------------------------------------------------
+Test Passed.
+"mytest01" end time: Oct 22 01:41 RTZ 2 (ceia)
+"mytest01" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 22 01:41 RTZ 2 (ceia)

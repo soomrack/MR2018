@@ -1,0 +1,10 @@
+.\obj\eval.o: src\main\eval.c
+.\obj\eval.o: .\src\mcu_support_package/inc/stm32f10x.h
+.\obj\eval.o: .\src\cmsis\core_cm3.h
+.\obj\eval.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\eval.o: .\src\cmsis\cmsis_compiler.h
+.\obj\eval.o: .\src\cmsis\cmsis_armcc.h
+.\obj\eval.o: .\src\mcu_support_package/inc/system_stm32f10x.h
+.\obj\eval.o: src\main\eval.h
+.\obj\eval.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\obj\eval.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

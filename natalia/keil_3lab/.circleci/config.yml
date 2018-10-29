@@ -1,0 +1,20 @@
+version: 2
+
+general:
+  branches:
+    only:
+      - master
+jobs:
+  build:
+    docker:
+      - image: romankhazanskii/circleci_alpine_gcc:0.0.1
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          when: always
+          command: chmod +x .test/run_tests.sh && .test/run_tests.sh 
+      - run:
+          name: Check due date
+          when: always
+          command: chmod +x .test/date_checker.sh && .test/date_checker.sh
