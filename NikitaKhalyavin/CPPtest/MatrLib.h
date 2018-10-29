@@ -153,6 +153,53 @@ public:
         free(B.data);
         return C;
     }
+
+    double Determinant(){
+        if(m_cols == 1) return data[0];
+        Matrix Temp(m_cols - 1, m_rows - 1, 0);
+        double det = 0;
+        int sign;
+        for(int col = 0; col < m_cols; col++){
+            for(int i = 0; i < Temp.m_rows; i++){     //construction sub-matrix
+                for(int j = 0; j < Temp.m_cols; j++){
+                    if(j <  col)  Temp.data[j + ( i * Temp.m_cols)] = data[j + ( (i + 1) * m_cols)];
+                    if(j >= col)  Temp.data[j + ( i * Temp.m_cols)] = data[(j + 1) + ( (i + 1) * m_cols)];
+                }
+            }
+            if(col % 2) sign = -1;
+            else sign = 1;
+            det += Temp.Determinant()*data[col]*sign;
+        }
+        free(Temp.data);
+        return det;
+    }
+
+    Matrix Invert(){
+        Matrix Temp(m_cols - 1, m_rows - 1);
+        Matrix Algd(m_cols, m_rows);
+        double det = 0;
+        int sign;
+        for(int col = 0; col < m_cols; col++){
+            for(int row = 0; row < m_rows; row++) {
+                for (int i = 0; i < Temp.m_rows; i++) {     //construction sub-matrix
+                    for (int j = 0; j < Temp.m_cols; j++) {
+                        if ((i <  row) && (j <  col)) Temp.data[j + (i * Temp.m_cols)] = data[j + (i * m_cols)];
+                        if ((i <  row) && (j >= col)) Temp.data[j + (i * Temp.m_cols)] = data[(j + 1) + (i * m_cols)];
+                        if ((i >= row) && (j <  col)) Temp.data[j + (i * Temp.m_cols)] = data[j + ((i + 1) * m_cols)];
+                        if ((i >= row) && (j >= col)) Temp.data[j + (i * Temp.m_cols)] = data[(j + 1) + ((i + 1) * m_cols)];
+                    }
+                }
+                if(( col + row ) % 2) sign = -1;
+                else sign = 1;
+                Algd.data[col + row*Algd.m_cols] = Temp.Determinant()*sign;
+            }
+        }
+        for(int col = 0; col < m_cols; col++){
+            det += Algd.data[col]*data[col];
+        }
+        Matrix Out =   Algd.Trans() * ( 1 / det );
+        return Out;
+    }
 };
 
 
