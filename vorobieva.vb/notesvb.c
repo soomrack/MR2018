@@ -35,5 +35,6 @@ int main()
     printf("\n");
     matrix_print(matrix_power(A,2));
     printf("\n");
+    matrix_print(matrix_invert(A));
     return 0;
 }

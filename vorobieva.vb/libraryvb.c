@@ -92,6 +92,44 @@ Matrix matrix_trans(const Matrix A){
     return B;
 };
 
+Matrix matrix_invert(const Matrix A){
+    if(A.cols != A.rows){
+        printf("sasi");
+        exit(1);
+    };
+    if(A.cols < 1) exit(1);
+    Matrix B;
+    Matrix C;
+    C.cols = A.cols;
+    C.rows = A.rows;
+    C.data = malloc(C.cols * C.rows * sizeof(double));
+    B.cols = A.cols - 1;
+    B.rows = A.rows - 1;
+    B.data = malloc(B.cols * B.rows * sizeof(double));
+    double det = 0;
+    int sign;
+    for(int col = 0; col < A.cols; col++){
+        for(int row = 0; row < A.rows; row++) {
+            for (int i = 0; i < B.rows; i++) {
+                for (int j = 0; j < B.cols; j++) {
+                    if ((i <  row) && (j <  col)) B.data[i * B.cols + j] = A.data[j + (i * A.cols)];
+                    if ((i <  row) && (j >= col)) B.data[i * B.cols + j] = A.data[(j + 1) + (i * A.cols)];
+                    if ((i >= row) && (j <  col)) B.data[i * B.cols + j] = A.data[j + ((i + 1) * A.cols)];
+                    if ((i >= row) && (j >= col)) B.data[i * B.cols + j] = A.data[(j + 1) + ((i + 1) * A.cols)];
+                }
+            }
+            if(( col + row ) % 2) sign = -1;
+            else sign = 1;
+            C.data[col + row * C.cols] = matrix_determinant(B) * sign;
+        }
+    }
+    Matrix Out = matrix_mult__scalar( ( 1 / matrix_determinant(A) ), matrix_trans(C));
+    free(C.data);
+    free(B.data);
+    return Out;
+};
+
+
 Matrix matrix_eigen_values(const Matrix A){
 
 };
