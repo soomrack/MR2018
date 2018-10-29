@@ -4,24 +4,13 @@
 
 
 int main(){
-    Polinom P1(3,2,4);
-    Polinom P2(3,0,1);
+   Matrix M1(3,3,1);
+   Matrix M2(4,5,0);
+   Matrix M3(1,2);
 
-    P1.Print();
-    P2.Print();
-
-
-    Polinom P3 = P1 + P2;
-    Polinom P4 = P1 * P2;
-    Polinom P5 = P1.Pr();
-
-    P1.Print();
-    P2.Print();
-    P3.Print();
-    P4.Print();
-    P5.Print();
-
-    printf("%lf", P5.Calc(5));
+   M1.Print();
+   M2.Print();
+   M3.Print();
 
     return  0;
 }

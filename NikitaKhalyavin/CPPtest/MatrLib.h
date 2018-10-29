@@ -19,17 +19,49 @@ private:
 public:
     double * data;
     Matrix(int cols, int rows):    m_cols(cols), m_rows(rows){
-        data = (double*)malloc(m_cols * m_rows * sizeof(int));
+        data = (double*)malloc(m_cols * m_rows * sizeof(double));
+        srand(time(NULL));
+        for(int i = 0; i < m_rows; i++){
+            for(int j = 0; j < m_cols; j++){
+                data[j + ( i * m_cols)] = -1 + (double)(rand())/RAND_MAX * 2;
+            }
+        }
     }
+
+    Matrix(int cols, int rows, int type): m_cols(cols), m_rows(rows){
+        data = (double*)malloc(m_cols * m_rows * sizeof(double));
+        for(int i = 0; i < m_rows; i++){
+            for(int j = 0; j < m_cols; j++){
+                if(i == j) data[j + ( i * m_cols)] = type;
+                else       data[j + ( i * m_cols)] = 0;
+            }
+        }
+    }
+
     ~Matrix(){
         free(data);
     }
-    int getCols(){
-        return m_cols;
+
+    void Print() {
+        for (int i = 0; i < m_rows; i++) {
+            for (int j = 0; j < m_cols; j++) {
+                printf("%5.2lf\t", data[j + (i * m_cols)]);
+            }
+            printf("\n");
+        }
+        printf("\n");
     }
-    int getRows(){
-        return m_cols;
+
+    double Trace(){
+        double trace = 0;
+
+        for(int i = 0; i < m_rows; i++){     //construction sub-matrix
+            trace += data[i + ( i * m_cols)];
+        }
+        return trace;
     }
+
+
 };
 
 class Polinom{
