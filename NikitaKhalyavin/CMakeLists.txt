@@ -9,6 +9,7 @@ add_subdirectory(win_webserver)
 add_subdirectory(CMakeTestLib)
 add_subdirectory(CMakeTest)
 add_subdirectory(NewProg)
+add_subdirectory(CPPtest)
 
 add_test(test1 NKhTestMatrix)
 
