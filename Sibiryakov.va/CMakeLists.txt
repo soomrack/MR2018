@@ -6,7 +6,6 @@ set(ENABLETESTS TRUE)
 
 set(SOURCE_LIB SVAlibrary.c)
 
-add_subdirectory(MatrixMultiplication)
 
 link_libraries(ws2_32 wsock32)
 
