@@ -8,12 +8,13 @@
 
 #define STRINGIFY( x ) #x
 
-#define TEST_EQUAL( foo, sizeone, letter )                                                                                \
+#define TEST_INVERT( M )                                                                                           \
 {                                                                                                                  \
-    printf("%-40s","Testing "  STRINGIFY(letter) " ");                                                           \
+    printf("%-40s","Testing "  STRINGIFY(M) " ");                                                                  \
     bool ifEqual = true;                                                                                           \
-    Matrix expected = matrix_one(sizeone); \
-    Matrix m = foo;                                                                                                \
+    Matrix expected = matrix_one(M.rows);                                                                          \
+    Matrix inverted = matrix_invert(M);                                                                            \
+    Matrix m = matrix_mult(M, inverted);                                                                           \
     for (int row = 0; row < m.rows; row++)                                                                         \
     {                                                                                                              \
         for (int col = 0; col < m.cols; col++)                                                                     \
@@ -33,9 +34,10 @@
         printf("Shaitan!\n");                                                                                      \
         returnCode = 1;                                                                                            \
     }                                                                                                              \
-    matrix_print(m);                                                                                               \
+    matrix_print(inverted);                                                                                        \
     free(m.data);                                                                                                  \
-    free(expected.data); \
+    free(expected.data);                                                                                           \
+    free(inverted.data);                                                                                           \
     printf("\n");                                                                                                  \
 }                                                                                                                  \
 
@@ -61,45 +63,43 @@ bool doublecomparison (double a, double b)
 int main()
 {
     int returnCode = 0;
-    Matrix temp;
 
     double dA[1][1] = {-1.0};
     Matrix A = {1, 1, *dA};
 
-    temp = matrix_invert(A);
-    matrix_print(temp);
-    TEST_EQUAL(matrix_mult(A, matrix_invert(A)), A.rows, A);
+    TEST_INVERT(A);
 
     double dB[2][2] = {{1.0, 0},
                        {0, 1.0}};
     Matrix B = {2, 2, *dB};
 
-    TEST_EQUAL(matrix_mult(B, matrix_invert(B)), B.rows, B);
 
-    double dC[2][2] = {{0, 99.0},
+    TEST_INVERT(B);
+
+    double dC[2][2] = {{1, 99.0},
                        {0, 1.0}};
     Matrix C = {2, 2, *dC};
 
-    TEST_EQUAL(matrix_mult(C, matrix_invert(C)), C.rows, C);
+    TEST_INVERT(C);
 
     double dD[2][2] = {{5.0, 3.0},
                        {5.0, 5.0}};
     Matrix D = {2, 2, *dD};
 
-    TEST_EQUAL(matrix_mult(D, matrix_invert(D)), D.rows, D);
+    TEST_INVERT(D);
 
     double dE[2][2] = {{-55.965, 38.325},
                        {-1.875, 69.123}};
     Matrix E = {2, 2, *dE};
 
-    TEST_EQUAL(matrix_mult(E, matrix_invert(E)), E.rows, E);
+    TEST_INVERT(E);
 
     double dF[3][3] = {{20.0, 13.0, 14.0},
                        {15.0, 16.0, 17.0},
                        {18.0, 19.0, 20.0}};
     Matrix F = {3, 3, *dF};
 
-    TEST_EQUAL(matrix_mult(E, matrix_invert(E)), E.rows, E);
+    TEST_INVERT(F);
 
     double dG[4][4] = {{20.0, 13.1, 14.0, -6.38},
                        {15.2, 16.0, 17.4, 5.25},
@@ -107,7 +107,7 @@ int main()
                        {25.45, 15.0, 57.1, 5.65}};
     Matrix G = {4, 4, *dG};
 
-    TEST_EQUAL(matrix_mult(G, matrix_invert(G)), G.rows, G);
+    TEST_INVERT(G);
 
     double dH[5][5] = {{54.0, 66.0, 11.0, 0.0, 1.0},
                        {10.0, 20.0, 1.0, 2.0, 15.0},
@@ -116,7 +116,7 @@ int main()
                        {49.0, 55.2, 8.8, 4.1, 12.5}};
     Matrix H = {5, 5, *dH};
 
-    TEST_EQUAL(matrix_mult(H, matrix_invert(H)), H.rows, H);
+    TEST_INVERT(H);
 
     return returnCode;
 }
