@@ -9,6 +9,7 @@ double ClassMatrix::matrix_trace(ClassMatrix A) {
     std::cout << "\n Matrix trace = " << sum << std::endl;
     return sum;
 }
+<<<<<<< HEAD
 
 extern double minor(ClassMatrix A, int row, int col, int size)
 {
@@ -42,3 +43,5 @@ extern double minor(ClassMatrix A, int row, int col, int size)
     return B[A.rows*A.cols* sizeof(double)];
 
 }
+=======
+>>>>>>> 33a26d8985261ae7bf72b981c6f43d46ceae23be

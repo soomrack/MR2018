@@ -12,8 +12,14 @@ public:
     double matrix_trace(ClassMatrix A);
     // Определитель матрицы
     double matrix_determinant(ClassMatrix);
+<<<<<<< HEAD
 
 };
 
 double minor(ClassMatrix A, int row, int col, int size);
+=======
+};
+
+
+>>>>>>> 33a26d8985261ae7bf72b981c6f43d46ceae23be
 #endif
