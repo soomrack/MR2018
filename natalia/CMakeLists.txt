@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
-project(untitled2 C)
+project(natalia)
 
-set(CMAKE_C_STANDARD 99)
-link_libraries(Ws2_32 wsock32)
-add_executable(natalia server.c)
+set(CMAKE_CXX_STANDARD 14)
+
+add_executable(natalia
+        CMakeLists.txt
+        server.c)
