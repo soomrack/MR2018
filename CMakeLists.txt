@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 11)
 
 add_subdirectory(5555)
 add_subdirectory(AndreyCH)
-#add_subdirectory(Elizaveta)
+add_subdirectory(Elizaveta)
 add_subdirectory(komarov.ae)
 add_subdirectory(ksenya)
 add_subdirectory(kurshakov.ga)
