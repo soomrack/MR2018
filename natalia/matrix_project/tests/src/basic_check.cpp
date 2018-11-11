@@ -28,9 +28,7 @@ TEST(test_trace, Simple) {
                       {1.0, 1.0, 1.0}};
     ClassMatrix C3 = {3, 3, *B3};
     EXPECT_EQ( C3.matrix_trace(C3),  3.0  );
-    double M = {0.0};
 
-    EXPECT_EQ(minor(C3,1,1,3), M); //needs repair!!!
 
     double B4[4][4] = {{20.0, 13.1, 14.0, -6.38},
                        {15.2, 16.0, 17.4, 5.25},
@@ -38,4 +36,34 @@ TEST(test_trace, Simple) {
                        {25.45, 15.0, 57.1, 5.65}};
     ClassMatrix C4 = {4, 4, *B4};
     EXPECT_EQ( C4.matrix_trace(C4),  61.65  );
+}
+
+TEST(test_det, Simple) {
+    double B2[2][2] ={{1.0, 0},
+                      {0, 1.0}};
+    ClassMatrix C2 = {2, 2, *B2};
+    EXPECT_EQ(C2.matrix_determinant(C2), 1.0);
+
+    double M2[2][2] = {{3.0, 3.0},
+                    {3.0, 3.0}};
+    ClassMatrix D2 = {2, 2, *M2};
+    EXPECT_EQ(D2.matrix_determinant(D2), 0.0);
+
+    double B3[3][3] ={{1.0, 1.0, 1.0},
+                      {1.0, 1.0, 1.0},
+                      {1.0, 1.0, 1.0}};
+    ClassMatrix C3 = {3, 3, *B3};
+    EXPECT_EQ( C3.matrix_determinant(C3),  0.0  );
+
+    double M3[3][3] ={{2.0, 1.0, 1.0},
+                      {1.0, 2.0, 1.0},
+                      {1.0, 1.0, 2.0}};
+    ClassMatrix D3 = {3, 3, *M3};
+    EXPECT_EQ( D3.matrix_determinant(D3),  4.0  );
+    /*double B4[4][4] = {{20.0, 13.1, 14.0, -6.38},
+                       {15.2, 16.0, 17.4, 5.25},
+                       {18.0, 19.3, 20.0, -9.99},
+                       {25.45, 15.0, 57.1, 5.65}};
+    ClassMatrix C4 = {4, 4, *B4};
+    EXPECT_EQ( C4.matrix_determinant(C4),  81552.67  );*/
 }
