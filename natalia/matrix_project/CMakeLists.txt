@@ -11,7 +11,7 @@ include_directories (GTestDir PUBLIC "../../../../googletest-master/googletest")
 add_library(untitled EXCLUDE_FROM_ALL STATIC libraries/ClassMatrix.cpp)
 add_library(gtestLib EXCLUDE_FROM_ALL STATIC ../../../../googletest-master/googletest/src/gtest-all.cc)
 
-#add target with google MatrixCL
+#add target with google tests
 add_executable(MatrixTest
         ../../../../googletest-master/googletest/include/gtest/gtest.h
         ../../../../googletest-master/googletest/src/gtest-all.cc
