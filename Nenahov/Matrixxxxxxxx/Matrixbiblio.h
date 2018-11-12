@@ -65,6 +65,6 @@ extern Matrix matrix_lyapunov_equation(const Matrix A, const Matrix C);
 
 
 //Миноры матриц
-extern Matrix Minor(Matrix A,int col,int row);
+static Matrix Minor(Matrix A,int col,int row);
 
 #endif //C_LIBRARY_H
