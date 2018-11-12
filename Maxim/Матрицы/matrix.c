@@ -10,7 +10,7 @@ double trace(const Matrix A) {
     }
     printf("%s%.2lf","trace=",trace);
 }
-void print_matrix(const Matrix A) {
+extern void matrix_print(const Matrix A) {
     for(unsigned int i=0;i<A.rows;i++){
         for(unsigned int j=0;j<A.cols;j++){
             printf("%10.2lf\t",A.data[j+i*A.cols]);
@@ -25,6 +25,6 @@ extern void matrix_trace(const Matrix A) {
             A.data[j + i * A.cols] = rand();
         }
     }
-    print_matrix(A);
+    matrix_print(A);
     trace(A);
 }
