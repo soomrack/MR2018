@@ -56,6 +56,8 @@ public:
 
 
 
+
+
 class point {
 private:
     bool isNotVisited;
@@ -117,4 +119,45 @@ public:
             printf("%d\t%d\n", i, Graph[i].label);
         }
     }
+};
+
+
+class pointList{
+private:
+    int listSize;
+public:
+    point * data;
+    pointList(){
+        listSize = 0;
+        data = (point *)0;
+    }
+
+    ~pointList(){
+        if(data != (point *)0)
+            delete data;
+    }
+
+    void operator += (point newPoint){
+        listSize++;
+        point * temp = new point[listSize];
+        memcpy(temp, data, listSize - 1);
+        if(data != (point *)0)
+            delete data;
+        data = temp;
+    }
+};
+
+
+
+
+
+class Graph{
+private:
+    pointList listOfPoint;
+public:
+    void AddPoint(point newPoint){
+        listOfPoint += newPoint;
+    }
+
+
 };
