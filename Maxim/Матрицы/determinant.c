@@ -36,14 +36,12 @@ int det(int ** a, int size){
 }
 
 extern double matrix_determinant(const Matrix A){
-    srand(time(NULL));
     int ** a = (int **)malloc(A.cols * sizeof(int *));
     for (int i = 0; i < A.cols; i++)
         a[i] = (int *)malloc(A.rows * sizeof(int));
     for (int i = 0; i < A.rows; i++) {
-        for (int j = 0; j < A.rows; j++) {
-            a[i][j] = rand()%5;
-            printf("%d\t", a[i][j]);
+    for (int j = 0; j < A.cols; j++) {
+            a[i][j] = A.data[j + i * A.cols];
         }
         printf("\n");
     }

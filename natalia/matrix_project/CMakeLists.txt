@@ -25,5 +25,7 @@ target_link_libraries(MatrixTest matrix_project)
 add_executable(runmyapp tests/src/main.cpp
         ${PROJECT_SOURCE_DIR}/libraries/ClassMatrix.h)
 #add libraries to target
+
 target_link_libraries (runmyapp matrix_project)
+
 
