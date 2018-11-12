@@ -12,5 +12,7 @@ int main(){
     M8.Print();
     M9.Print();
 
+    M7.memUsedPrint();
+    M7.countPrint();
     return  0;
 }

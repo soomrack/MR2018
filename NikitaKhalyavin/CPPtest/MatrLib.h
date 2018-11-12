@@ -19,11 +19,30 @@ class Matrix{
 private:
     int m_cols;
     int m_rows;
+    static int countIncrement(int delta) {
+        static int count = 0;
+        count += delta;
+        return count;
+    }
+
+    static int memUsedIncrement(int delta) {
+        static int memUsed = 0;
+        memUsed += delta;
+        return memUsed;
+    }
 public:
     double * data;
 
     Matrix(){
+        countIncrement(1);
+        memUsedIncrement(sizeof(Matrix));
+    }
 
+    void countPrint(){
+        printf("%d\n", countIncrement(0));
+    }
+    void memUsedPrint(){
+        printf("%d\n", memUsedIncrement(0));
     }
 
     Matrix(int cols, int rows):    m_cols(cols), m_rows(rows){
@@ -34,6 +53,8 @@ public:
                 data[j + ( i * m_cols)] = -1 + (double)(rand())/RAND_MAX * 2;
             }
         }
+        countIncrement(1);
+        memUsedIncrement(sizeof(Matrix) + m_cols * m_rows * sizeof(double));
     }
 
     Matrix(int cols, int rows, int type): m_cols(cols), m_rows(rows){
@@ -44,6 +65,8 @@ public:
                 else       data[j + ( i * m_cols)] = 0;
             }
         }
+        countIncrement(1);
+        memUsedIncrement(sizeof(Matrix) + m_cols * m_rows * sizeof(double));
     }
 
     ~Matrix(){
@@ -114,6 +137,7 @@ public:
 
     void operator = (const Matrix& Arg){
         free(data);
+        memUsedIncrement(-m_cols * m_rows * sizeof(double));
         m_cols = Arg.m_cols;
         m_rows = Arg.m_rows;
         data = (double*)malloc(m_cols * m_rows * sizeof(double));
@@ -122,6 +146,7 @@ public:
                 data[j + ( i * m_cols)] = Arg.data[j + ( i * m_cols)];
             }
         }
+        memUsedIncrement(m_cols * m_rows * sizeof(double));
     }
 
     Matrix Power (int power){
