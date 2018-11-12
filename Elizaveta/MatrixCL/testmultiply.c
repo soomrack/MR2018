@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Elib.h"
+#include "Elib.h"
 
 #define M 2
 #define N 3

@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Elib.h"
-#include <Math.h>
+#include <math.h>
 
 
 void matrix_multiplication (int* A, int* B, int* C, int m, int n, int q)
