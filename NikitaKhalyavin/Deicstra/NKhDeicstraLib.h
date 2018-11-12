@@ -4,6 +4,7 @@
 
 #include <limits.h>
 #include <cstring>
+#include <stdio.h>
 
 #ifndef MR2018_NKHDEICSTRALIB_H
 #define MR2018_NKHDEICSTRALIB_H
@@ -45,8 +46,10 @@ public:
     }
 
     ~List(){
-        delete dataNames;
-        delete dataLength;
+        if(dataNames != (int*)0)
+            delete dataNames;
+        if(dataLength != (int*)0)
+            delete dataLength;
     }
 };
 
@@ -109,7 +112,9 @@ public:
         ConnectTo = Arg.ConnectTo;
     }
 
-    ~point() {
-
+    void printLabels(point * Graph, int size){
+        for(int i = 0; i < size; i++){
+            printf("%d\t%d\n", i, Graph[i].label);
+        }
     }
 };
