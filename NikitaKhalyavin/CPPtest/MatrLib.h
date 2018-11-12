@@ -5,6 +5,8 @@
 #include <malloc.h>
 #include <time.h>
 #include <stdio.h>
+#include <cstring>
+#include <cmath>
 
 #ifndef MR2018_MATRLIB_H
 #define MR2018_MATRLIB_H
@@ -34,6 +36,7 @@ public:
     double * data;
 
     Matrix(){
+        data = (double *)0;
         countIncrement(1);
         memUsedIncrement(sizeof(Matrix));
     }
@@ -46,7 +49,7 @@ public:
     }
 
     Matrix(int cols, int rows):    m_cols(cols), m_rows(rows){
-        data = (double*)malloc(m_cols * m_rows * sizeof(double));
+        data = new double[m_cols * m_rows];
         srand(time(NULL));
         for(int i = 0; i < m_rows; i++){
             for(int j = 0; j < m_cols; j++){
@@ -58,7 +61,7 @@ public:
     }
 
     Matrix(int cols, int rows, int type): m_cols(cols), m_rows(rows){
-        data = (double*)malloc(m_cols * m_rows * sizeof(double));
+        data = new double[m_cols * m_rows];
         for(int i = 0; i < m_rows; i++){
             for(int j = 0; j < m_cols; j++){
                 if(i == j) data[j + ( i * m_cols)] = type;
@@ -70,7 +73,9 @@ public:
     }
 
     ~Matrix(){
-        free(data);
+        if(data != (double *)0)
+            delete data;
+
     }
 
     void Print() {
@@ -136,11 +141,12 @@ public:
     }
 
     void operator = (const Matrix& Arg){
-        free(data);
+        if(data != (double *)0)
+            delete data;
         memUsedIncrement(-m_cols * m_rows * sizeof(double));
         m_cols = Arg.m_cols;
         m_rows = Arg.m_rows;
-        data = (double*)malloc(m_cols * m_rows * sizeof(double));
+        data = new double[m_cols * m_rows];
         for(int i = 0; i < m_rows; i++){
             for(int j = 0; j < m_cols; j++){
                 data[j + ( i * m_cols)] = Arg.data[j + ( i * m_cols)];
@@ -175,7 +181,6 @@ public:
             }
             if(flag) break;
         }
-        free(B.data);
         return C;
     }
 
@@ -230,18 +235,18 @@ public:
 
 
 
-
-
-
-
-
-
-
 class Polinom{
 private:
     int maxPower;
-    double * data;
 public:
+
+    double * data;
+
+    Polinom(){
+        data = (double *)0;
+        maxPower = 0;
+    }
+
     Polinom(int power):     maxPower(power){
         data = (double*)malloc(maxPower * sizeof(double));
     }
@@ -254,7 +259,8 @@ public:
         }
     }
     ~Polinom(){
-        free(data);
+        if(data != (double *)0)
+            free(data);
     }
 
     Polinom operator + (const Polinom& Arg2){
@@ -282,7 +288,32 @@ public:
         return out;
     }
 
-    Polinom operator * (Polinom& Arg){
+    Polinom operator - (const Polinom& Arg2){
+        int MaxPower;
+        int minMaxPower;
+        bool flag;
+        if(maxPower > Arg2.maxPower) {
+            MaxPower = maxPower;
+            minMaxPower = Arg2.maxPower;
+            flag = 1;
+        }
+        else {
+            MaxPower = Arg2.maxPower;
+            minMaxPower = maxPower;
+            flag = 0;
+        }
+        Polinom out(MaxPower);
+        for(int i = 0; i < minMaxPower; i++){
+            out.data[i] = data[i] - Arg2.data[i];
+        }
+        for(int i = minMaxPower; i < out.maxPower; i++){
+            if(flag) out.data[i] = data[i];
+            else out.data[i] = -Arg2.data[i];
+        }
+        return out;
+    }
+
+    Polinom operator * (const Polinom& Arg){
         int MaxPower = maxPower + Arg.maxPower - 1;
         Polinom out(MaxPower);
         for(int i = 0; i < out.maxPower; i++)out.data[i] = 0;
@@ -295,8 +326,8 @@ public:
     }
 
     void Print() {
-        for(int i = 0; i < maxPower; i++){
-            printf("%lf l^%d     ", data[i], i);
+        for(int i = maxPower; i > 0; i--){
+            printf("%lf l^%d     ", data[i-1], i-1);
         }
         printf("\n");
     }
@@ -307,6 +338,16 @@ public:
             out.data[p1] = data[p1] * Arg;
         }
         return out;
+    }
+
+    void operator = (const Polinom& Arg){
+        if(data != (double *)0)
+            free(data);
+        maxPower = Arg.maxPower;
+        data = (double*)malloc(maxPower * sizeof(double));
+        for(int i = 0; i < maxPower; i++){
+            data[i] = Arg.data[i];
+        }
     }
 
     Polinom Pr(){
@@ -324,6 +365,63 @@ public:
             out += data[i]*k;
             k*=lyambda;
         }
+        return out;
+    }
+    Polinom operator / (const Polinom& Arg){
+        int minMax = Arg.maxPower - 1;
+        Polinom temp2;
+        temp2 = *this;
+        Polinom out(maxPower - Arg.maxPower + 1);
+        for(int j = 0; j < maxPower - Arg.maxPower; j ++){
+            out.data[j] = 0;
+        }
+        for(int i = maxPower - 1; i > minMax; i--){
+            double ratio = temp2.data[i] / Arg.data[minMax];
+            int tempPower = i - minMax;
+            Polinom temp3(tempPower + 1);
+            for(int j = 0; j < tempPower; j ++){
+                temp3.data[j] = 0;
+            }
+            temp3.data[tempPower] = ratio;
+            out.data[tempPower] = ratio;
+            temp2 = temp2 - (temp3 * Arg);
+        }
+        out.data[0] = temp2.data[minMax] / Arg.data[minMax];
+        return out;
+    }
+
+    double halfDivideSq(double a, double b){
+        if(abs(b-a) < 0.001)return a;
+        if( (Calc(a) >= 0) && (Calc( (a+b)/2 ) <=0) ){
+            return halfDivideSq(a,(a+b)/2);
+        }
+        else return halfDivideSq((a+b)/2,b);
+    }
+
+    Matrix Solve(){
+        Matrix out(1,maxPower - 1);
+        if(maxPower == 3){
+            double D = data[1]*data[1] - 4 * data[2]*data[0];
+            out.data[0] = (-data[1]-sqrt(D))/2/data[2];
+            out.data[1] = (-data[1]+sqrt(D))/2/data[2];
+            return out;
+        }
+        if(maxPower == 2){
+            out.data[0] = -data[0]/data[1];
+            return out;
+        }
+        Polinom tempP;
+        tempP = this->Pr();
+        Matrix tempM(1,maxPower - 2);
+        tempM = tempP.Solve();
+        double x1 = halfDivideSq(tempM.data[0], tempM.data[1]);
+        Polinom Sq(2);
+        Sq.data[1] = 1;
+        Sq.data[0] = -x1;
+        tempP = *this / Sq;
+        tempM = tempP.Solve();
+        memcpy(out.data, tempM.data, maxPower - 2);
+        out.data[maxPower - 1] = x1;
         return out;
     }
 };
