@@ -15,13 +15,10 @@ class Matrixcpp {
             int rows;
             int cols;
     public:
-
-     Matrixcpp()
-     {
-         data=new double(cols*rows);
-     };
-    Matrixcpp matrix_rand(const int Mrows, const int Mcols);
+    void matrix_rand(const int Mrows, const int Mcols);
     void matrix_print();
+    Matrixcpp matrix_trans();
+
 };
 
 
