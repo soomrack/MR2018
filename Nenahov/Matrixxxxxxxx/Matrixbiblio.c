@@ -194,7 +194,7 @@ extern Matrix matrix_invert(const Matrix A)
    /* double d=matrix_determinant(A);
     printf("det=%lf\n",d);
     double id=1/d;
-    Matrix C=matrix_trans(A);
+    MatrixCL=matrix_trans(A);
     invA=matrix_mult__scalar(id,C);*/
     invA=matrix_mult__scalar(1/matrix_determinant(A),AlgDop);
     return invA;
