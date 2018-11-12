@@ -86,3 +86,15 @@ double ClassMatrix::matrix_determinant(ClassMatrix A) {
     printf("%f", determin);
     return determin;
 }
+
+extern ClassMatrix& matrix_sum(const ClassMatrix A, const ClassMatrix B, ClassMatrix& C) {
+
+    for (int i = 0; i < A.rows; i++) {
+        for (int j = 0; j < A.cols; j++){
+            C.data[i*(A.cols)+j] = A.data[i*(A.cols)+j]+B.data[i*(A.cols)+j];
+            //std::cout << A.data[i*(A.cols)+j];
+        }
+        //std::cout << std::endl;
+    }
+    return C;
+}

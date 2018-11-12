@@ -75,5 +75,7 @@ int main() {
         Graph[Graph[0].getMinNumber(Graph,6)].Visit(Graph);
     }
 
+    Graph[0].printLabels(Graph, 6);
+
     return 0;
 }
