@@ -70,7 +70,7 @@ void tree::addtonode(double var, node *curnode) {
             addtonode(var, curnode->children[0]);
         }
 
-        if(var>curnode->keys[curnode->keyscount])
+        if(var>curnode->keys[curnode->keyscount-1])
         {
             if(curnode->children[curnode->keyscount]==0) curnode->children[curnode->keyscount]=create(curnode);
             addtonode(var, curnode->children[curnode->keyscount]);
