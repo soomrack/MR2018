@@ -7,7 +7,7 @@
 
 #endif //B_TREE_B_TREELIBRARY_H
 
-const int t=6;
+const int t=3;
 
 struct node{
     node *parent;
@@ -34,6 +34,10 @@ public:
         root->keyscount=0;
         root->childrencount=0;
         root->parent=0;
+        for(int i=0;i<2*t;i++)
+        {
+            root->children[i]=0;
+        }
 
 
     };
