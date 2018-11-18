@@ -77,7 +77,7 @@ void tree::addtonode(double var, node *curnode) {
         }
 
         for (int i = 1; i < curnode->keyscount; i++) {
-            if (((var > curnode->keys[i]) && (var < curnode->keys[i + 1])||((var > curnode->keys[i]) && (curnode->keyscount==1)))) {
+            if ((((var > curnode->keys[i-1]) && (var < curnode->keys[i]))||((var > curnode->keys[i]) && (curnode->keyscount==1)))) {
                 if(curnode->children[i]==0) curnode->children[i]=create(curnode);
                 addtonode(var, curnode->children[i]);
 
@@ -124,9 +124,9 @@ void tree::addtonode(double var, node *curnode) {
                     }
 
                     curnode->children[curnode->childrencount]=create(curnode);
-                    for (int i = curnode->keyscount / 2; i < curnode->keyscount; i++)
+                    for (int i = curnode->keyscount / 2+1; i < curnode->keyscount; i++)
                     {
-                        curnode->children[1]->keys[i - curnode->keyscount / 2] = curnode->keys[i];
+                        curnode->children[1]->keys[i - curnode->keyscount / 2-1] = curnode->keys[i];
                         curnode->children[1]->keyscount++;
                     }
 
@@ -160,4 +160,48 @@ void tree::print()
     for(int i=0;i<curnode->keyscount;i++)
         std::cout<<curnode->keys[i]<<"\t";
     cout<<")"<<endl;
+}
+
+double *tree::search(double var)
+{
+    using namespace std;
+     //searchinnode(root,var);
+     node *targetnode=searchinnode(root,var);
+     double *ret=searchresult(targetnode,var);
+     //cout<<"The address of "<<var<<" is "<<ret<<endl;
+     return ret;
+}
+
+node *tree::searchinnode(node *curnode, double var)
+{
+    node *ret=0;
+    if(var>curnode->keys[curnode->keyscount-1]) ret=searchinnode(curnode->children[curnode->keyscount-1],var);
+    if(var<curnode->keys[0]) ret=searchinnode(curnode->children[0],var);
+    for(int i=1;i<curnode->keyscount;i++)
+    {
+        if(var==curnode->keys[i])
+        {
+            ret=curnode;
+
+
+        }
+        if((var>curnode->keys[i-1])&&(var<curnode->keys[i]))
+        {
+            searchinnode(curnode->children[i],var);
+        }
+
+    }
+    if (ret==0) std::cout<<"key "<<var<<" not found"<<std::endl;
+    return ret;
+}
+
+
+double *tree::searchresult(node *curnode, double var)
+{
+    double *ret=0;
+    for(int i=0;i<curnode->keyscount;i++)
+    {
+        if(var==curnode->keys[i]) ret=&curnode->keys[i];
+    }
+    return ret;
 }

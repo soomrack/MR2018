@@ -1,7 +1,7 @@
 //
 // Created by v2719 on 17.11.2018.
 //
-
+#include <iostream>
 #ifndef B_TREE_B_TREELIBRARY_H
 #define B_TREE_B_TREELIBRARY_H
 
@@ -26,6 +26,7 @@ public:
     void add(double var);
     void sort(node *curnode);
     void print();
+    double *search(double var);
     tree()
     {
         currentnode=new node;
@@ -44,6 +45,9 @@ public:
 private:
     void addtonode(double var,node *curnode);
     node *create(node *parent);
+    node* searchinnode(node *curnode,double var);
+    double *searchresult(node *curnode, double var);
+
 
 };
 
