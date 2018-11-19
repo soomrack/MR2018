@@ -5,8 +5,10 @@
 int main(){
 
     Matrix M7(2,2,1);
-    Matrix M8 = M7.Invert();
-    Matrix M9 = M7 * M8;
+    Matrix M8;
+    M8 = M7.Invert();
+    Matrix M9;
+    M9 = M7 * M8;
 
     M7.Print();
     M8.Print();

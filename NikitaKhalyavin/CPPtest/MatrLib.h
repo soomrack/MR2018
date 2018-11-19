@@ -49,6 +49,18 @@ public:
         memUsedIncrement(sizeof(Matrix));
     }
 
+    Matrix(Matrix& Arg){
+        m_cols = Arg.m_cols;
+        m_rows = Arg.m_rows;
+        data = new double[m_cols * m_rows];
+        for(int i = 0; i < m_rows; i++){
+            for(int j = 0; j < m_cols; j++){
+                data[j + ( i * m_cols)] = Arg.data[j + ( i * m_cols)];
+            }
+        }
+        memUsedIncrement(m_cols * m_rows * sizeof(double));
+    }
+
     void countPrint(){
         printf("%d\n", countIncrement(0));
     }
@@ -233,7 +245,8 @@ public:
         for(int col = 0; col < m_cols; col++){
             det += Algd.data[col]*data[col];
         }
-        Matrix Out =   Algd.Trans() * ( 1 / det );
+        Matrix Out;
+        Out = Algd.Trans() * ( 1 / det );
         return Out;
     }
 };
@@ -533,6 +546,7 @@ Matrix getEigenValue(Matrix A){
     PowerMatrix Temp(A);
     Polinom temp;
     temp = Temp.Determinant();
-    Matrix out = temp.Solve();
+    Matrix out;
+    out = temp.Solve();
     return out;
 }
