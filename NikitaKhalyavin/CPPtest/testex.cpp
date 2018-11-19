@@ -29,6 +29,30 @@ int main(){
     Matrix M02;
     M02 = P01.Solve();
 
+    Polinom P02(2);
+    Polinom P03(1);
+
+    P02.data[1] = 1;
+    P03.data[0] = 3;
+
+    for(int i = 0; i < 3; i++){
+        P03.Print();
+        P02.data[0] = -M02.data[i];
+        P03 = P03 * P02;
+    }
+
+    P03.Print();
+    Polinom P04;
+
+    P04 = P01 / P03;
+    P04.Print();
+
+
+    P02.data[0] = -0.537457;
+    P03 = P03 * P04;
+
+    P03.Print();
+
     M02.Print();
 
     return  0;

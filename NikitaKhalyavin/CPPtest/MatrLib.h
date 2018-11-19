@@ -81,7 +81,7 @@ public:
     void Print() {
         for (int i = 0; i < m_rows; i++) {
             for (int j = 0; j < m_cols; j++) {
-                printf("%5.2lf\t", data[j + (i * m_cols)]);
+                printf("%5.6lf\t", data[j + (i * m_cols)]);
             }
             printf("\n");
         }
@@ -389,7 +389,7 @@ public:
     }
 
     double halfDivideSq(double a, double b){
-        if(abs(b-a) < 0.001)return a;
+        if( (b - a < 0.001) && (b - a > -0.001) )return a;
         if( (Calc(a) >= 0) && (Calc( (a+b)/2 ) <=0) ){
             return halfDivideSq(a,(a+b)/2);
         }
