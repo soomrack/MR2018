@@ -74,7 +74,7 @@ public:
 
     ~Matrix(){
         if(data != (double *)0)
-            delete data;
+            delete [] data;
 
     }
 
@@ -142,7 +142,7 @@ public:
 
     void operator = (const Matrix& Arg){
         if(data != (double *)0)
-            delete data;
+            delete [] data;
         memUsedIncrement(-m_cols * m_rows * sizeof(double));
         m_cols = Arg.m_cols;
         m_rows = Arg.m_rows;
@@ -162,7 +162,6 @@ public:
             B = C;
             C = (B * *this);
         }
-        free(B.data);
         return C;
     }
 
@@ -200,7 +199,6 @@ public:
             else sign = 1;
             det += Temp.Determinant()*data[col]*sign;
         }
-        free(Temp.data);
         return det;
     }
 
@@ -248,11 +246,11 @@ public:
     }
 
     Polinom(int power):     maxPower(power){
-        data = (double*)malloc(maxPower * sizeof(double));
+        data = new double[maxPower];
     }
 
     Polinom(int power, double min, double max):   maxPower(power){
-        data = (double*)malloc(maxPower * sizeof(double));
+        data = new double[maxPower];
         srand(time(NULL));
         for(int i = 0; i < maxPower; i++){
             data[i] = min + (rand() * (max - min) / RAND_MAX);
@@ -260,7 +258,7 @@ public:
     }
     ~Polinom(){
         if(data != (double *)0)
-            free(data);
+            delete [] data;
     }
 
     Polinom operator + (const Polinom& Arg2){
@@ -342,9 +340,9 @@ public:
 
     void operator = (const Polinom& Arg){
         if(data != (double *)0)
-            free(data);
+            delete [] data;
         maxPower = Arg.maxPower;
-        data = (double*)malloc(maxPower * sizeof(double));
+        data = new double[maxPower];
         for(int i = 0; i < maxPower; i++){
             data[i] = Arg.data[i];
         }
@@ -355,7 +353,7 @@ public:
         for(int i = 0; i < out.maxPower; i++){
             out.data[i] = data[i+1] * (i+1);
         }
-        return (out);
+        return out;
     }
 
     double Calc(double lyambda){
@@ -363,7 +361,7 @@ public:
         double k = 1;
         for(int i = 0; i < maxPower; i++){
             out += data[i]*k;
-            k*=lyambda;
+            k *= lyambda;
         }
         return out;
     }
@@ -399,7 +397,7 @@ public:
     }
 
     Matrix Solve(){
-        Matrix out(1,maxPower - 1);
+        Matrix out(1,maxPower - 1,0);
         if(maxPower == 3){
             double D = data[1]*data[1] - 4 * data[2]*data[0];
             out.data[0] = (-data[1]-sqrt(D))/2/data[2];
@@ -412,7 +410,7 @@ public:
         }
         Polinom tempP;
         tempP = this->Pr();
-        Matrix tempM(1,maxPower - 2);
+        Matrix tempM(1,maxPower - 2,0);
         tempM = tempP.Solve();
         double x1 = halfDivideSq(tempM.data[0], tempM.data[1]);
         Polinom Sq(2);
@@ -420,8 +418,8 @@ public:
         Sq.data[0] = -x1;
         tempP = *this / Sq;
         tempM = tempP.Solve();
-        memcpy(out.data, tempM.data, maxPower - 2);
-        out.data[maxPower - 1] = x1;
+        memcpy(out.data, tempM.data, (maxPower - 2)*sizeof(double));
+        out.data[maxPower - 2] = x1;
         return out;
     }
 };

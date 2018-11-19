@@ -17,34 +17,19 @@ int main(){
 
 
 
-    Polinom P1(5,-3,3);
-    Polinom P2(2,-3,3);
 
-    P1.Print();
-    P2.Print();
+    Polinom P01(5);
+    P01.data[0] = -0.001;
+    P01.data[1] = 2;
+    P01.data[2] = -1;
+    P01.data[3] = -4;
+    P01.data[4] = 3;
 
-    Polinom P3 = P1 / P2;
+    P01.Print();
+    Matrix M02;
+    M02 = P01.Solve();
 
-    P1.Print();
-    P2.Print();
-    P3.Print();
-
-    Matrix M;
-    M = P3.Solve();
-    M.Print();
-
-    Polinom P01(2);
-    P01.data[0] = -M.data[0];
-    P01.data[1] = 1;
-    Polinom P02(2);
-    P02.data[0] = -M.data[1];
-    P02.data[1] = 1;
-    Polinom P03(2);
-    P03.data[0] = -M.data[2];
-    P03.data[1] = 1;
-    Polinom P04(2);
-    P04 = P01 * P02 * P03;
-    P04.Print();
+    M02.Print();
 
     return  0;
 }
