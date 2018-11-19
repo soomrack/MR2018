@@ -61,6 +61,14 @@ public:
         memUsedIncrement(m_cols * m_rows * sizeof(double));
     }
 
+    void beSymmetric(){
+        for(int i = 0; i < m_rows; i++){
+            for(int j = i; j < m_cols; j++){
+                data[j + ( i * m_cols)] = data[i + ( j * m_rows)];
+            }
+        }
+    }
+
     void countPrint(){
         printf("%d\n", countIncrement(0));
     }

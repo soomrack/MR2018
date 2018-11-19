@@ -4,7 +4,7 @@
 
 int main(){
 
-    Matrix M7(2,2);
+    Matrix M7(4,4);
     Matrix M8;
     M8 = M7.Invert();
     Matrix M9;
@@ -14,16 +14,21 @@ int main(){
     M8.Print();
     M9.Print();
 
-    PowerMatrix M(M7);
+    M8.beSymmetric();
+    M8.Print();
+
+    PowerMatrix M(M8);
     M.Print();
 
-    Polinom test(1);
+    Polinom test;
     test = M.Determinant();
     test.Print();
 
     Matrix V;
     V = test.Solve();
     V.Print();
+
+
 
     return  0;
 }
