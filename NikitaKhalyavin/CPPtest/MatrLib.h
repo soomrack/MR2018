@@ -253,6 +253,14 @@ public:
         maxPower = 0;
     }
 
+    Polinom(Polinom& Arg){
+        maxPower = Arg.maxPower;
+        data = new double[maxPower];
+        for(int i = 0; i < maxPower; i++){
+            data[i] = Arg.data[i];
+        }
+    }
+
     Polinom(int power):     maxPower(power){
         data = new double[maxPower];
     }
@@ -336,6 +344,12 @@ public:
             printf("%lf l^%d     ", data[i-1], i-1);
         }
         printf("\n");
+    }
+
+    void Print2() {
+        for(int i = maxPower; i > 0; i--){
+            printf("%lf l^%d     ", data[i-1], i-1);
+        }
     }
 
     Polinom operator * (double Arg){
@@ -505,7 +519,7 @@ public:
     void Print(){
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
-                data[col + ( row * cols)].Print();
+                data[col + ( row * cols)].Print2();
                 printf("\t|||\t");
             }
             printf("\n");
@@ -517,7 +531,8 @@ public:
 
 Matrix getEigenValue(Matrix A){
     PowerMatrix Temp(A);
-    Polinom temp = Temp.Determinant();
+    Polinom temp;
+    temp = Temp.Determinant();
     Matrix out = temp.Solve();
     return out;
 }

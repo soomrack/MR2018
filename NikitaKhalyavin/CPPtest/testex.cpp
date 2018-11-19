@@ -15,10 +15,13 @@ int main(){
     PowerMatrix M(M8);
     M.Print();
 
-    Polinom tesssst = M.Determinant();
-    tesssst.Print();
-    tesssst.Print();
+    Polinom test(1);
+    test = M.Determinant();
+    test.Print();
 
+    Matrix V;
+    V = test.Solve();
+    V.Print();
 
     return  0;
 }
