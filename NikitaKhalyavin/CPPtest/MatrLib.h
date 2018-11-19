@@ -35,6 +35,14 @@ private:
 public:
     double * data;
 
+    int getCols(){
+        return m_cols;
+    }
+
+    int getRows(){
+        return m_rows;
+    }
+
     Matrix(){
         data = (double *)0;
         countIncrement(1);
@@ -423,3 +431,93 @@ public:
         return out;
     }
 };
+
+class PowerMatrix{
+private:
+    int rows;
+    int cols;
+public:
+    Polinom* data;
+
+    Polinom Determinant(){
+
+        if(cols == 1)return data[0];
+        PowerMatrix Temp(cols - 1, rows - 1);
+        Polinom det(cols);
+        for(int i = 0; i < cols; i++){
+            det.data[i] = 0;
+        }
+
+        int row = 0;
+        int sign;
+
+        for(int col = 0; col < cols; col++){
+            for(int i = 0; i < Temp.rows; i++){     //construction sub-matrix
+                for(int j = 0; j < Temp.cols; j++){
+                        if (j < col)  Temp.data[j + (i * Temp.cols)] = data[j + ((i + 1) * cols)];
+                        else          Temp.data[j + (i * Temp.cols)] = data[(j + 1) + ((i + 1) * cols)];
+                }
+            }
+            if(col % 2) sign = -1;
+            else sign = 1;
+            det = det + data[col] * Temp.Determinant() * sign;
+        }
+        return det;
+    }
+
+    PowerMatrix (Matrix A){
+        cols = A.getCols();
+        rows = A.getRows();
+        data = new Polinom [cols * rows];
+        for(int row = 0; row < rows; row++){
+            for(int col = 0; col < cols; col++){
+                Polinom temp(2);
+                if(col == row)  temp.data[1] = -1;
+                else temp.data[1] = 0;
+                temp.data[0] = A.data[col + ( row * A.getCols())];
+                data[col + ( row * cols)] = temp;
+            }
+        }
+    }
+
+    PowerMatrix (int cols, int rows):cols(cols), rows(rows){
+        data = new Polinom [cols * rows];
+    }
+
+    void operator = (PowerMatrix A){
+        cols = A.cols;
+        rows = A.rows;
+        if(data != (Polinom *) 0)
+            delete [] data;
+        data = new Polinom [cols * rows];
+        for(int row = 0; row < rows; row++){
+            for(int col = 0; col < cols; col++){
+                data[col + row * cols] = A.data[col + row * cols];
+            }
+        }
+    }
+
+    ~PowerMatrix(){
+        if(data != (Polinom *) 0)
+            delete [] data;
+    }
+
+    void Print(){
+        for(int row = 0; row < rows; row++){
+            for(int col = 0; col < cols; col++){
+                data[col + ( row * cols)].Print();
+                printf("\t|||\t");
+            }
+            printf("\n");
+        }
+        printf("|||||||||||\n");
+    }
+};
+
+
+Matrix getEigenValue(Matrix A){
+    PowerMatrix Temp(A);
+    Polinom temp = Temp.Determinant();
+    Matrix out = temp.Solve();
+    return out;
+}
