@@ -1,12 +1,14 @@
 #include"library.h"
 
 
+template <double> class Matrix ;
+
 void Matrix::matrix_rand(const int Mrows, const int Mcols)
 {
     srand((unsigned int)time(nullptr));
     rows=Mrows;
     cols=Mcols;
-    data=(double *) malloc(rows * cols * sizeof(double));
+    data=(T *) malloc(rows * cols * sizeof(T));
     for(int t=0;t<rows;t++)
     {
         for(int i=0;i<cols;i++)
@@ -239,5 +241,42 @@ Matrix Matrix::matrix_exp()
         B.matrix_sum(matrix_power(i).matrix_mult__scalar(1/F));
     }
     return B;
+
+}
+
+extern Matrix Matrix::matrix_eigen_values()
+{
+    Matrix B;
+    B.rows=rows;
+    B.cols=1;
+    double w0[100],w[100],summ=0,w0norm[100],e,d,d0;
+    int i,j,k;
+    for (i=0;i<rows;i++)
+        w0[i]=0;
+    w0[0]=1;
+    do
+    {
+        for (i=0;i<rows;i++)
+            summ=summ+w0[i]*w0[i];
+        d0=sqrt(summ);
+        for (i=0;i<rows;i++)
+            B.data[i]=w0[i]/d0;
+        for (i=0;i<rows;i++)
+        {
+            w[i]=0;
+            for (j=0;j<rows;j++)
+                w[i]=w[i]+data[i+j*cols]*B.data[j];
+        }
+        summ=0;
+        for (i=0;i<rows;i++)
+            summ=summ+w[i]*w[i];
+        d=sqrt(summ);
+        e=fabs(d-d0);
+        for (i=0;i<rows;i++)
+            w0[i]=w[i];
+        summ=0;
+    }
+    while(e>0.001);
+   return B;
 
 }
