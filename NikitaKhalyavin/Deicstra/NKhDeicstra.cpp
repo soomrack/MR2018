@@ -72,10 +72,12 @@ int main() {
     Graph[5] = p5;
 
     while(Graph[0].areNotAllVisited(Graph,6)){
-        Graph[Graph[0].getMinNumber(Graph,6)].Visit(Graph);
+        int thisPoint = Graph[0].getMinNumber(Graph,6);
+        Graph[thisPoint].Visit(Graph, thisPoint);
     }
 
-    Graph[0].printLabels(Graph, 6);
+    Graph[0].printResults(Graph, 6);
+    Graph[0].printWayTo(Graph, 4,0);
 
     return 0;
 }
