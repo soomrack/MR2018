@@ -2,7 +2,7 @@
 #include <cmath>
 #include "ClassMatrix.h"
 
-double ClassMatrix::matrix_trace(ClassMatrix A) {
+double ClassMatrix::matrix_trace(const ClassMatrix A) {
     double sum=0.0;
     for (int i = 0; i < A.rows ; i++) {
         sum += A.data[i + A.cols * i];
@@ -80,11 +80,21 @@ extern double add_matrix(double* G, int n, int m, int max){
 
 
 
-double ClassMatrix::matrix_determinant(ClassMatrix A) {
+double ClassMatrix::matrix_determinant(const ClassMatrix A) {
     double determin = determinant(A.data, A.cols);
     printf("determinant \n");
     printf("%f", determin);
     return determin;
+}
+
+void ClassMatrix::matrix_mult__scalar(const double scalar, ClassMatrix &A) {
+    for (int i = 0; i < A.rows; i++) {
+        for (int j = 0; j < A.cols; j++){
+            A.data[i*(A.cols)+j] *= scalar ;
+            std::cout << A.data[i*(A.cols)+j];
+        }
+        std::cout << std::endl;
+    }
 }
 
 extern ClassMatrix& matrix_sum(const ClassMatrix A, const ClassMatrix B, ClassMatrix& C) {
@@ -98,3 +108,4 @@ extern ClassMatrix& matrix_sum(const ClassMatrix A, const ClassMatrix B, ClassMa
     }
     return C;
 }
+

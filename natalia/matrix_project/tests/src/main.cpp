@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../../libraries/ClassMatrix.h"
 int main() {
-    int k = 0;
-    std::cout << "Hello, World!" << k <<   std::endl;
+
+    std::cout << "Hello, World!" << std::endl;
     return 0;
 }

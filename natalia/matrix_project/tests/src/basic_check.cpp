@@ -39,37 +39,41 @@ TEST(test_trace, Simple) {
     EXPECT_EQ( C4.matrix_trace(C4),  61.65  );
 }
 
-TEST(test_det, Simple) {
-    double B2[2][2] ={{1.0, 0},
-                      {0, 1.0}};
+TEST(test_det, Simple_2) {
+    double B2[2][2] = {{1.0, 0},
+                       {0,   1.0}};
     ClassMatrix C2 = {2, 2, *B2};
     EXPECT_EQ(C2.matrix_determinant(C2), 1.0);
 
     double M2[2][2] = {{3.0, 3.0},
-                    {3.0, 3.0}};
+                       {3.0, 3.0}};
     ClassMatrix D2 = {2, 2, *M2};
     EXPECT_EQ(D2.matrix_determinant(D2), 0.0);
+}
+    TEST(test_det, Simple_3) {
 
-    double B3[3][3] ={{1.0, 1.0, 1.0},
-                      {1.0, 1.0, 1.0},
-                      {1.0, 1.0, 1.0}};
+    double B3[3][3] = {{1.0, 1.0, 1.0},
+                       {1.0, 1.0, 1.0},
+                       {1.0, 1.0, 1.0}};
     ClassMatrix C3 = {3, 3, *B3};
-    EXPECT_EQ( C3.matrix_determinant(C3),  0.0  );
+    EXPECT_EQ(C3.matrix_determinant(C3), 0.0);
 
-    double M3[3][3] ={{2.0, 1.0, 1.0},
-                      {1.0, 2.0, 1.0},
-                      {1.0, 1.0, 2.0}};
+    double M3[3][3] = {{2.0, 1.0, 1.0},
+                       {1.0, 2.0, 1.0},
+                       {1.0, 1.0, 2.0}};
     ClassMatrix D3 = {3, 3, *M3};
-    EXPECT_EQ( D3.matrix_determinant(D3),  4.0  );
-    /*double B4[4][4] = {{20.0, 13.1, 14.0, -6.38},
+    EXPECT_EQ(D3.matrix_determinant(D3), 4.0);
+}
+/*TEST(test_det, Simple_4) {
+    double B4[4][4] = {{20.0, 13.1, 14.0, -6.38},
                        {15.2, 16.0, 17.4, 5.25},
                        {18.0, 19.3, 20.0, -9.99},
                        {25.45, 15.0, 57.1, 5.65}};
     ClassMatrix C4 = {4, 4, *B4};
-    EXPECT_EQ( C4.matrix_determinant(C4),  81552.67  );*/
-}
+    EXPECT_EQ( C4.matrix_determinant(C4),  81552.67  );
+}*/
 
-TEST(test_sum, Simple) {
+TEST(test_sum, Simple_2) {
     double B2[2][2] = {{1.0, 0},
                        {0,   1.0}};
     ClassMatrix C2 = {2, 2, *B2};
@@ -120,6 +124,24 @@ TEST(test_sum, Simple_3) {
         for (int j = 0; j < 3; j++) {
             double exp = S3.data[i * 3 + j];
             double eq = K3.data[i * 3 + j];
+            EXPECT_EQ(eq, exp);
+        }
+    }
+}
+
+TEST(test_scalar, Simple_2) {
+    double B2[2][2] = {{2.0, 5.0},
+                       {10.0,   1.0}};
+    ClassMatrix C2 = {2, 2, *B2};
+    double K2[2][2] = {{4.0, 10.0},
+                       {20.0,   2.0}};
+    ClassMatrix S2 = {2, 2, *K2};
+    const double scalar = 2.0;
+    C2.matrix_mult__scalar(scalar,C2);
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            double exp = S2.data[i * 2 + j];
+            double eq = C2.data[i * 2 + j];
             EXPECT_EQ(eq, exp);
         }
     }
