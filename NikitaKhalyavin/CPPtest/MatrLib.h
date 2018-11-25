@@ -35,10 +35,38 @@ private:
 public:
     double * data;
 
+    int getCols(){
+        return m_cols;
+    }
+
+    int getRows(){
+        return m_rows;
+    }
+
     Matrix(){
         data = (double *)0;
         countIncrement(1);
         memUsedIncrement(sizeof(Matrix));
+    }
+
+    Matrix(Matrix& Arg){
+        m_cols = Arg.m_cols;
+        m_rows = Arg.m_rows;
+        data = new double[m_cols * m_rows];
+        for(int i = 0; i < m_rows; i++){
+            for(int j = 0; j < m_cols; j++){
+                data[j + ( i * m_cols)] = Arg.data[j + ( i * m_cols)];
+            }
+        }
+        memUsedIncrement(m_cols * m_rows * sizeof(double));
+    }
+
+    void beSymmetric(){
+        for(int i = 0; i < m_rows; i++){
+            for(int j = i; j < m_cols; j++){
+                data[j + ( i * m_cols)] = data[i + ( j * m_rows)];
+            }
+        }
     }
 
     void countPrint(){
@@ -74,14 +102,14 @@ public:
 
     ~Matrix(){
         if(data != (double *)0)
-            delete data;
+            delete [] data;
 
     }
 
     void Print() {
         for (int i = 0; i < m_rows; i++) {
             for (int j = 0; j < m_cols; j++) {
-                printf("%5.2lf\t", data[j + (i * m_cols)]);
+                printf("%5.6lf\t", data[j + (i * m_cols)]);
             }
             printf("\n");
         }
@@ -142,7 +170,7 @@ public:
 
     void operator = (const Matrix& Arg){
         if(data != (double *)0)
-            delete data;
+            delete [] data;
         memUsedIncrement(-m_cols * m_rows * sizeof(double));
         m_cols = Arg.m_cols;
         m_rows = Arg.m_rows;
@@ -162,7 +190,6 @@ public:
             B = C;
             C = (B * *this);
         }
-        free(B.data);
         return C;
     }
 
@@ -200,7 +227,6 @@ public:
             else sign = 1;
             det += Temp.Determinant()*data[col]*sign;
         }
-        free(Temp.data);
         return det;
     }
 
@@ -227,7 +253,8 @@ public:
         for(int col = 0; col < m_cols; col++){
             det += Algd.data[col]*data[col];
         }
-        Matrix Out =   Algd.Trans() * ( 1 / det );
+        Matrix Out;
+        Out = Algd.Trans() * ( 1 / det );
         return Out;
     }
 };
@@ -247,12 +274,20 @@ public:
         maxPower = 0;
     }
 
+    Polinom(Polinom& Arg){
+        maxPower = Arg.maxPower;
+        data = new double[maxPower];
+        for(int i = 0; i < maxPower; i++){
+            data[i] = Arg.data[i];
+        }
+    }
+
     Polinom(int power):     maxPower(power){
-        data = (double*)malloc(maxPower * sizeof(double));
+        data = new double[maxPower];
     }
 
     Polinom(int power, double min, double max):   maxPower(power){
-        data = (double*)malloc(maxPower * sizeof(double));
+        data = new double[maxPower];
         srand(time(NULL));
         for(int i = 0; i < maxPower; i++){
             data[i] = min + (rand() * (max - min) / RAND_MAX);
@@ -260,7 +295,7 @@ public:
     }
     ~Polinom(){
         if(data != (double *)0)
-            free(data);
+            delete [] data;
     }
 
     Polinom operator + (const Polinom& Arg2){
@@ -332,6 +367,12 @@ public:
         printf("\n");
     }
 
+    void Print2() {
+        for(int i = maxPower; i > 0; i--){
+            printf("%lf l^%d     ", data[i-1], i-1);
+        }
+    }
+
     Polinom operator * (double Arg){
         Polinom out(maxPower);
         for(int p1 = 0; p1 < maxPower; p1++){
@@ -342,9 +383,9 @@ public:
 
     void operator = (const Polinom& Arg){
         if(data != (double *)0)
-            free(data);
+            delete [] data;
         maxPower = Arg.maxPower;
-        data = (double*)malloc(maxPower * sizeof(double));
+        data = new double[maxPower];
         for(int i = 0; i < maxPower; i++){
             data[i] = Arg.data[i];
         }
@@ -355,7 +396,7 @@ public:
         for(int i = 0; i < out.maxPower; i++){
             out.data[i] = data[i+1] * (i+1);
         }
-        return (out);
+        return out;
     }
 
     double Calc(double lyambda){
@@ -363,7 +404,7 @@ public:
         double k = 1;
         for(int i = 0; i < maxPower; i++){
             out += data[i]*k;
-            k*=lyambda;
+            k *= lyambda;
         }
         return out;
     }
@@ -391,7 +432,7 @@ public:
     }
 
     double halfDivideSq(double a, double b){
-        if(abs(b-a) < 0.001)return a;
+        if( (b - a < 0.001) && (b - a > -0.001) )return a;
         if( (Calc(a) >= 0) && (Calc( (a+b)/2 ) <=0) ){
             return halfDivideSq(a,(a+b)/2);
         }
@@ -399,7 +440,7 @@ public:
     }
 
     Matrix Solve(){
-        Matrix out(1,maxPower - 1);
+        Matrix out(1,maxPower - 1,0);
         if(maxPower == 3){
             double D = data[1]*data[1] - 4 * data[2]*data[0];
             out.data[0] = (-data[1]-sqrt(D))/2/data[2];
@@ -412,7 +453,7 @@ public:
         }
         Polinom tempP;
         tempP = this->Pr();
-        Matrix tempM(1,maxPower - 2);
+        Matrix tempM(1,maxPower - 2,0);
         tempM = tempP.Solve();
         double x1 = halfDivideSq(tempM.data[0], tempM.data[1]);
         Polinom Sq(2);
@@ -420,8 +461,100 @@ public:
         Sq.data[0] = -x1;
         tempP = *this / Sq;
         tempM = tempP.Solve();
-        memcpy(out.data, tempM.data, maxPower - 2);
-        out.data[maxPower - 1] = x1;
+        memcpy(out.data, tempM.data, (maxPower - 2)*sizeof(double));
+        out.data[maxPower - 2] = x1;
         return out;
     }
 };
+
+class PowerMatrix{
+private:
+    int rows;
+    int cols;
+public:
+    Polinom* data;
+
+    Polinom Determinant(){
+
+        if(cols == 1)return data[0];
+        PowerMatrix Temp(cols - 1, rows - 1);
+        Polinom det(cols);
+        for(int i = 0; i < cols; i++){
+            det.data[i] = 0;
+        }
+
+        int row = 0;
+        int sign;
+
+        for(int col = 0; col < cols; col++){
+            for(int i = 0; i < Temp.rows; i++){     //construction sub-matrix
+                for(int j = 0; j < Temp.cols; j++){
+                        if (j < col)  Temp.data[j + (i * Temp.cols)] = data[j + ((i + 1) * cols)];
+                        else          Temp.data[j + (i * Temp.cols)] = data[(j + 1) + ((i + 1) * cols)];
+                }
+            }
+            if(col % 2) sign = -1;
+            else sign = 1;
+            det = det + data[col] * Temp.Determinant() * sign;
+        }
+        return det;
+    }
+
+    PowerMatrix (Matrix A){
+        cols = A.getCols();
+        rows = A.getRows();
+        data = new Polinom [cols * rows];
+        for(int row = 0; row < rows; row++){
+            for(int col = 0; col < cols; col++){
+                Polinom temp(2);
+                if(col == row)  temp.data[1] = -1;
+                else temp.data[1] = 0;
+                temp.data[0] = A.data[col + ( row * A.getCols())];
+                data[col + ( row * cols)] = temp;
+            }
+        }
+    }
+
+    PowerMatrix (int cols, int rows):cols(cols), rows(rows){
+        data = new Polinom [cols * rows];
+    }
+
+    void operator = (PowerMatrix A){
+        cols = A.cols;
+        rows = A.rows;
+        if(data != (Polinom *) 0)
+            delete [] data;
+        data = new Polinom [cols * rows];
+        for(int row = 0; row < rows; row++){
+            for(int col = 0; col < cols; col++){
+                data[col + row * cols] = A.data[col + row * cols];
+            }
+        }
+    }
+
+    ~PowerMatrix(){
+        if(data != (Polinom *) 0)
+            delete [] data;
+    }
+
+    void Print(){
+        for(int row = 0; row < rows; row++){
+            for(int col = 0; col < cols; col++){
+                data[col + ( row * cols)].Print2();
+                printf("\t|||\t");
+            }
+            printf("\n");
+        }
+        printf("|||||||||||\n");
+    }
+};
+
+
+Matrix getEigenValue(Matrix A){
+    PowerMatrix Temp(A);
+    Polinom temp;
+    temp = Temp.Determinant();
+    Matrix out;
+    out = temp.Solve();
+    return out;
+}

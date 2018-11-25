@@ -18,6 +18,10 @@ int main() {
     A.print();
     //A.search(30);
     cout<<"The address of "<<*A.search(30)<<" is "<<A.search(30)<<endl;
+    //A.deletekey(10);
+    A.print();
+    A.deletekey(50);
+    A.print();
 
     return 0;
 }

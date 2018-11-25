@@ -7,6 +7,77 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#define TOWNS 4
+
+//курсач
+
+Table table_rand(const unsigned int size){
+    Table A;
+    A.size = size;
+    A.data = malloc(A.size * A.size * sizeof(int));
+    for(int i = 0; i < A.size; i++) {
+        for(int j = 0; j < A.size; j++) {
+            if (i == j) A.data[A.size * i + j] = WINT_MAX;
+            else A.data[A.size * i + j] = rand() % 10;
+        };
+    };
+    return A;
+};
+
+void table_print(const Table A){
+    for (int i = 0; i < A.size; i++){
+        for (int j = 0; j < A.size; j++) {
+            if (A.data[A.size * i + j] == WINT_MAX) printf("-\t\t");
+            else printf("%d \t\t", A.data[A.size * i + j]);
+        };
+        printf("\n");
+    }
+};
+
+
+Table table_trans(const Table A){
+    Table B;
+    B.size = A.size;
+    B.data = malloc(B.size * B.size * sizeof(int));
+    for (int i = 0; i < B.size; i++){
+        for (int j = 0; j < B.size; j++) {
+            B.data[B.size * i + j] = A.data[A.size * j + i];
+        };
+    }
+    return B;
+};
+
+
+int method(const Table input){
+    int a[input.size], b[input.size];
+    int max = WINT_MAX;
+
+    for (int i = 0; i < input.size; i++) {
+        a[i] = input.data[input.size * i];
+        for (int j = 1; j < input.size; j++) {
+            if (input.data[input.size * i + j] < a[i]) a[i] = input.data[input.size * i + j];
+        }
+    }
+
+    Table trans = table_trans(input);
+
+    for (int i = 0; i < trans.size; i++) {
+        b[i] = trans.data[trans.size * i] - a[0];
+        for (int j = 1; j < trans.size; j++) {
+            if ((trans.data[trans.size * i + j] - a[j]) < b[i]) b[i] = trans.data[trans.size * i + j] - a[j];
+        }
+    }
+
+    int r = 0;
+    for (int i = 0; i < input.size; i++) r += a[i] + b[i];
+
+
+
+}
+
+
+
+//курсач
 
 void matrix_print(const Matrix A){
     for (int i = 0; i < A.cols; i++){
@@ -38,7 +109,7 @@ double matrix_trace(const Matrix A){
 double matrix_determinant(const Matrix A){
     double det = 0;
     if (A.cols != A.rows){
-        printf("sasi");
+        printf("Матрица не квадртаная");
         exit(1);
     }
     else{
@@ -94,7 +165,7 @@ Matrix matrix_trans(const Matrix A){
 
 Matrix matrix_invert(const Matrix A){
     if(A.cols != A.rows){
-        printf("sasi");
+        printf("Матрица не квадратная");
         exit(1);
     };
     if(A.cols < 1) exit(1);
@@ -144,7 +215,7 @@ Matrix matrix_mult(const Matrix A, const Matrix B){
     C.cols = B.cols;
     C.data = malloc(C.cols * C.rows * sizeof(double));
     if(A.cols != B.rows) {
-        printf("sasi");
+        printf("Матрица не квадратная");
         exit(1);
     }
     else for(int i = 0; i < C.rows; i++){
@@ -161,7 +232,7 @@ Matrix matrix_mult(const Matrix A, const Matrix B){
 Matrix matrix_power(const Matrix A, const unsigned int power){
     Matrix B = A;
     if (B.cols != B.rows) {
-        printf("sasi");
+        printf("Матрица не квадратная");
         exit(1);
     }
     else{

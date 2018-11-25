@@ -3,7 +3,8 @@
 
 
 int main(){
-    Matrix A;
+    Matrix <double> A;
+    //Matrix A;
     A.matrix_rand(3,3);
     A.matrix_print();
     Matrix B;

@@ -16,6 +16,7 @@ struct node{
     double keys[2*t];
     int keyscount;
     int childrencount;
+    int childorder;
 };
 
 class tree{
@@ -27,6 +28,7 @@ public:
     void sort(node *curnode);
     void print();
     double *search(double var);
+    void deletekey(double var);
     tree()
     {
         currentnode=new node;
@@ -44,9 +46,10 @@ public:
     };
 private:
     void addtonode(double var,node *curnode);
-    node *create(node *parent);
-    node* searchinnode(node *curnode,double var);
-    double *searchresult(node *curnode, double var);
+    node *create(node *parent,int CO);
+    node* searchnode(node *curnode,double var);
+    double *searchinnode(node *curnode, double var);
+    void deleteinnode(double var, node *curnode);
 
 
 };
