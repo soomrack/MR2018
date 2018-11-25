@@ -19,7 +19,7 @@ extern double matrix_determinant(const Matrix A); //
 
 // Собственные числа матрицы
 
-extern Matrix matrix_eigen_values(const Matrix A);
+extern double matrix_eigen_values(const Matrix A);
 
 
 // Матрица собственных векторов

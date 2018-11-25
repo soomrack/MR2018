@@ -27,13 +27,19 @@ return Result;
 // Определитель матрицы
 extern double matrix_determinant(const Matrix A)
 {
+    if(A.cols==1)
+    {
+        return A.data[0];
+    }
+
+
     double Result=0;
 
     if (A.rows>2)
     {
         for(int k=0;k<A.cols;k++)
         {
-            double *Mdata=(double*)malloc(A.cols*A.cols*sizeof(double));
+            double *Mdata=(double*)malloc((A.cols-1)*(A.cols-1)*sizeof(double));
             int f=0;
             for(int i=A.cols;i<A.rows*A.cols;i++)
                 {
@@ -52,6 +58,7 @@ extern double matrix_determinant(const Matrix A)
 
     else
     {
+
        Result=A.data[0]*A.data[3]-A.data[1]*A.data[2];
     }
 
@@ -289,35 +296,9 @@ extern Matrix matrix_invert(const Matrix A)
 
 }
 
-int main() {
 
-    double Data1[2][2] = {
-            {2,1},
-            {2,3}
-            };
-
-
-    Matrix One={2,2,*Data1};
-
-    double Data2[4][4] = {
-            {1,7,5,6},
-            {4,5,7,8},
-            {9,8,4,2},
-            {99,12,19,7},
-    };
-
-    Matrix Two={4,4,*Data2};
-
-
-  Matrix C=matrix_invert(Two);
-
-
-  matrix_print(C);
-
-//double efe=matrix_addition(Two,0,3);
-
-//printf("%f ",efe);
-
-return 0;
+// Собственные числа матрицы
+extern Matrix matrix_eigen_values(const Matrix A)
+{
 
 }
