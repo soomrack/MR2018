@@ -22,10 +22,13 @@ public:
 
     }
     // След матрицы
-    double matrix_trace(ClassMatrix A);
+    double matrix_trace(const ClassMatrix A);
     // Определитель матрицы
-    double matrix_determinant(ClassMatrix A);
+    double matrix_determinant(const ClassMatrix A);
     // Сумма матриц
+
+    // Умножение матрицы на скаляр
+    void matrix_mult__scalar(const double scalar, ClassMatrix& A);
 
     ~ClassMatrix()
     {
@@ -43,5 +46,5 @@ double add_matrix(double* G, int n, int m, int max);
 
 ClassMatrix& matrix_sum(const ClassMatrix A, const ClassMatrix B, ClassMatrix& C);
 #endif
-gt add natalia/matrix_project/libraries/ClassMatrix.h
-        
+
+

@@ -171,18 +171,18 @@ double *tree::search(double var)
 {
     using namespace std;
      //searchinnode(root,var);
-     node *targetnode=searchinnode(root,var);
-     double *ret=searchresult(targetnode,var);
+     node *targetnode=searchnode(root,var);
+     double *ret=searchinnode(targetnode,var);
      //cout<<"The address of "<<var<<" is "<<ret<<endl;
      return ret;
 }
 
-node *tree::searchinnode(node *curnode, double var)
+node *tree::searchnode(node *curnode, double var)
 {
     node *ret=0;
-    if(var>curnode->keys[curnode->keyscount-1]) ret=searchinnode(curnode->children[curnode->keyscount-1],var);
-    if(var<curnode->keys[0]) ret=searchinnode(curnode->children[0],var);
-    for(int i=1;i<curnode->keyscount;i++)
+    if(var>curnode->keys[curnode->keyscount-1]) ret=searchnode(curnode->children[curnode->keyscount-1],var);
+    if(var<curnode->keys[0]) ret=searchnode(curnode->children[0],var);
+    for(int i=0;i<curnode->keyscount;i++)
     {
         if(var==curnode->keys[i])
         {
@@ -192,7 +192,7 @@ node *tree::searchinnode(node *curnode, double var)
         }
         if((var>curnode->keys[i-1])&&(var<curnode->keys[i]))
         {
-            searchinnode(curnode->children[i],var);
+            searchnode(curnode->children[i],var);
         }
 
     }
@@ -201,7 +201,7 @@ node *tree::searchinnode(node *curnode, double var)
 }
 
 
-double *tree::searchresult(node *curnode, double var)
+double *tree::searchinnode(node *curnode, double var)
 {
     double *ret=0;
     for(int i=0;i<curnode->keyscount;i++)
@@ -220,7 +220,7 @@ void tree::deletekey(double var)
     }
     else
     {
-        node *curnode=searchinnode(root,var);
+        node *curnode=searchnode(root,var);
         if (curnode->leaf)
         {
             if((curnode->keyscount>t-1)) {
@@ -236,6 +236,7 @@ void tree::deletekey(double var)
                 add(curnode->parent->keys[curnode->childorder]);
                 curnode->parent->keys[curnode->childorder]=postchild->keys[0];
                 deleteinnode(postchild->keys[0],postchild);
+                return;
             }
             if((postchild->keyscount<(t-1))&&(prechild->keyscount>(t-1)))
             {
@@ -248,6 +249,17 @@ void tree::deletekey(double var)
         }
         else
         {
+            node* Dnode=curnode;
+            int keynumber;
+            for(int i=0;i<curnode->keyscount;i++) if(var==curnode->keys[i]) keynumber=i;
+            do {
+                curnode=curnode->children[keynumber];
+            }
+            while(!curnode->leaf);
+            double Replacekey=curnode->keys[curnode->keyscount-1];
+            deleteinnode(Replacekey,curnode);
+            Dnode->keys[keynumber]=Replacekey;
+
 
 
         }

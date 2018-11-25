@@ -47,8 +47,8 @@ public:
 private:
     void addtonode(double var,node *curnode);
     node *create(node *parent,int CO);
-    node* searchinnode(node *curnode,double var);
-    double *searchresult(node *curnode, double var);
+    node* searchnode(node *curnode,double var);
+    double *searchinnode(node *curnode, double var);
     void deleteinnode(double var, node *curnode);
 
 
