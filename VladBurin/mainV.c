@@ -9,17 +9,18 @@
 #include <stdlib.h>
 #include "Matrix/MatrixOperations.h"
 
-int comp;
 
-void InsertionSort(int *Array, int Size) {
+void InsertionSort(int *Array, unsigned int Size) {
 
-    for(int i=1;i<Size;i++) {
-        int tmp = Array[i];
-        int j = i - 1;
-        while (j >= 0 && Array[j] > tmp) {
-            comp++;
-            Array[j + 1] = Array[j];
-            Array[j] = tmp;
+    for(unsigned int i=1; i<Size; i++)
+    {
+        int tmp=Array[i];
+        int j = i-1;
+        while (j >= 0 && Array[j] > Array[j + 1])
+        {
+            Array[j + 1]= Array[j + 1]^Array[j];
+            Array[j] = Array[j + 1]^Array[j];
+            Array[j + 1]= Array[j + 1]^Array[j];
             j--;
         }
     }
@@ -27,7 +28,11 @@ void InsertionSort(int *Array, int Size) {
 
 
 int main() {
-     double Data1[4] =
+
+
+
+/*
+    double Data1[4] =
              {2,2,3,3};
 
 
@@ -38,21 +43,18 @@ int main() {
      };
 
      Matrix Two={3,3,*Data2};
-    double lim=matrix_eigen_values(Two);
 
-     Matrix C=matrix_power(Two,3);
+     Matrix C=matrix_rand(3,3);
 
 
      matrix_print(C);
 
 
+*/
 
-
-
-/*
-for(int N=100;N<100000;N=N*2)
+for(int N=10000;N<100001;N=N+10000)
 {
-    srand(time(NULL));
+srand(time(NULL)-clock());
 int *Array=(int*)malloc(N*sizeof(int));
 for(int i=0;i<N;i++)
 {
@@ -62,43 +64,61 @@ for(int i=0;i<N;i++)
         Array[i]=-Array[i];
     }
 }
-comp=0;
+
+double Begin1=clock();
+double Begin=time(NULL);
 InsertionSort(Array, N);
-printf("N = %d    Comp = %d \n",N,comp);
+double End=time(NULL);
+double End1=clock();
+
+
+printf("N = %d    Time = %lf   Clock = %lf\n",N, (End-Begin),(End1-Begin1)/CLOCKS_PER_SEC);
 free(Array);
 }
 
 
+/*
 
-    int N = 5;
+srand(clock());
+
+    unsigned int N = 40000;
 
     int *Array = (int*)malloc(N*sizeof(int));
-    for (int i = 0; i < N; i++) {
+
+    for (unsigned int i = 0; i < N; i++) {
         Array[i] =rand()%100;
         if (rand() % 2) {
             Array[i] = -Array[i];
         }
     }
 
-
-
 //Вывод значений алгоритма изначального
     printf("---------------------------------------------------------------\n");
+
     printf(" Insert sorting method \n");
-    for (int i = 0; i < N; i++) {
+    for (unsigned i = 0; i < N; i++) {
         printf(" %d", Array[i]);
     }
+
+double Begin=time(NULL);
 
  InsertionSort(Array, N);
+
+ double End=time(NULL);
+
+
 //Вывод отсортированного
     printf("\n\n");
-    for (int i = 0; i < N; i++) {
+    for (unsigned i = 0; i < N; i++) {
         printf(" %d", Array[i]);
     }
-    printf("\n\n");
+    printf("\n\n%lf",End-Begin);
 
     free(Array);
-    */
+
+
+*/
+
     return 0;
 
 }

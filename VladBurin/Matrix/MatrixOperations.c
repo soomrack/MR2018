@@ -230,7 +230,7 @@ extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols)
 
     for(int i=0;i<rows * cols;i++)
     {
-        srand(clock());
+        srand(time(NULL)-clock());
         Cdata[i]=(double)(rand()%1000000)/1000000;
         if(rand()%2)
         {
@@ -297,8 +297,3 @@ extern Matrix matrix_invert(const Matrix A)
 }
 
 
-// Собственные числа матрицы
-extern Matrix matrix_eigen_values(const Matrix A)
-{
-
-}
