@@ -10,3 +10,12 @@ unsigned long long int fact(unsigned int n){
     for(int i = 2; i < n; i++)out*=i;
     return  out;
 }
+
+Matrix getEigenValue(Matrix A){
+    PowerMatrix Temp(A);
+    Polinom temp;
+    temp = Temp.Determinant();
+    Matrix out;
+    out = temp.Solve();
+    return out;
+}
