@@ -8,20 +8,19 @@
 using namespace std;
 
 int main() {
-    point Graph[6];
+    point Graph[6];               //граф объявляется как массив неинициализированных вершин
 
-    List input0(3);
+    List input0(3);               //создание и инициализация списка нулевой вершины
     input0.dataNames[0]  = 1;
     input0.dataLength[0] = 7;
     input0.dataNames[1]  = 2;
     input0.dataLength[1] = 9;
     input0.dataNames[2]  = 5;
     input0.dataLength[2] = 14;
-    point p0(input0);
-    p0.setLabel(0);
-    Graph[0] = p0;
+    point p0(input0);             //создание инициализированной вершины
+    Graph[0] = p0;                //копирование вершины в нулевую вершину массива
 
-    List input1(3);
+    List input1(3);               //аналогично - инициализация остальных вершин
     input1.dataNames[0]  = 3;
     input1.dataLength[0] = 15;
     input1.dataNames[1]  = 2;
@@ -71,13 +70,10 @@ int main() {
     point p5(input5);
     Graph[5] = p5;
 
-    while(Graph[0].areNotAllVisited(Graph,6)){
-        int thisPoint = Graph[0].getMinNumber(Graph,6);
-        Graph[thisPoint].Visit(Graph, thisPoint);
-    }
 
-    Graph[0].printResults(Graph, 6);
-    Graph[0].printWayTo(Graph, 4,0);
+    Graph[0].DeicstraAlg(Graph, 6, 0);      //выполнение алгоритма Дейкстры
+    Graph[0].printResults(Graph, 6);        //вывод длины кратчайшего пути для всех вершин
+    Graph[0].printWayTo(Graph, 4, 0);       //вывод пути в 4 вершину из 0
 
     return 0;
 }
