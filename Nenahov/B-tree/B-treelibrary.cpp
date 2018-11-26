@@ -30,8 +30,6 @@ void tree::sort(node *curnode)
     int i=1;
     int j=2;
     double k;
-    int t;
-    node *z;
     while(i<curnode->keyscount)
     {
         if(curnode->keys[i]>curnode->keys[i-1])
@@ -42,19 +40,38 @@ void tree::sort(node *curnode)
         else
         {
             k=curnode->keys[i];
-            z=curnode->children[i];
-            if(curnode->childrencount!=0) t=curnode->children[i]->childorder;
             curnode->keys[i]=curnode->keys[i-1];
-            curnode->children[i]=curnode->children[i-1];
-            if(curnode->childrencount!=0)curnode->children[i]->childorder=curnode->children[i-1]->childorder;
             curnode->keys[i-1]=k;
-            curnode->children[i-1]=z;
-           if(curnode->childrencount!=0) curnode->children[i]->childorder=t;
             i--;
             if (i==0)
             {
                 i=j;
                 j++;
+            }
+        }
+    }
+
+    if(curnode->childrencount!=0) {
+        i = 1;
+        j = 2;
+        int t;
+        node* z;
+        while (i<curnode->childrencount) {
+            if (curnode->children[i]->keys[0]>curnode->children[i-1]->keys[0]) {
+                i = j;
+                j++;
+            } else {
+                z = curnode->children[i];
+                if (curnode->childrencount!=0) t = curnode->children[i]->childorder;
+                curnode->children[i] = curnode->children[i-1];
+                if (curnode->childrencount!=0)curnode->children[i]->childorder = curnode->children[i-1]->childorder;
+                curnode->children[i-1] = z;
+                if (curnode->childrencount!=0) curnode->children[i]->childorder = t;
+                i--;
+                if (i==0) {
+                    i = j;
+                    j++;
+                }
             }
         }
     }
@@ -102,13 +119,14 @@ void tree::addtonode(double var, node *curnode) {
 
 
                     par->leaf = true;
-                    par->children[curnode->keyscount / 2] = create(curnode,curnode->keyscount / 2);    //создание второго узла
-                    node *child2 = par->children[curnode->keyscount / 2];
-                    addtonode(curnode->keys[curnode->keyscount / 2], par);    //вставка медианы в родиетльский узел
+                    addtonode(curnode->keys[curnode->keyscount / 2], par);                  //вставка медианы в родиетльский узел
+                    par->children[par->childrencount] = create(par,par->childrencount);    //создание второго узла
+                    node *child2 = par->children[par->childrencount-1];
+
                     par->leaf = false;
 
 
-                    for (int i = curnode->keyscount / 2; i < curnode->keyscount; i++)
+                    for (int i = curnode->keyscount / 2+1; i < curnode->keyscount; i++)
                     {
                         child2->keys[i - curnode->keyscount / 2] = curnode->keys[i];
                     }
