@@ -53,7 +53,7 @@ public:
         memcpy(dataLength, Arg.dataLength,listSize*sizeof(int));
     }
 
-    ~List(){                                //деструктор
+    ~List(){                                   //деструктор
         if(dataNames != (int*)0)
             delete dataNames;
         if(dataLength != (int*)0)
@@ -66,11 +66,11 @@ public:
 
 
 
-class point {                  //класс, экземпляр которого соответствует вершине графа
+class point {                                 //класс, экземпляр которого соответствует вершине графа
 private:
     bool isNotVisited;
     int label;
-    int way;                    //номер вершины, путь из которой можно добраться с весом label
+    int way;                                 //номер вершины, путь из которой можно добраться с весом label
     List ConnectTo;
 
     bool areNotAllVisited(point * Graph, int size){     //метод, проверяющий условие завершения работы алгоритма - посещение всех вершин
@@ -108,11 +108,11 @@ private:
     }
 
 public:
-    point(){                    //пустой конструктор для объявления в массиве
+    point(){                                        //пустой конструктор для объявления в массиве
 
     }
 
-    point(point& Arg){         //конструктор копий
+    point(point& Arg){                              //конструктор копий
         isNotVisited = Arg.isNotVisited;
         label = Arg.label;
         way = Arg.way;
@@ -131,7 +131,6 @@ public:
         way = 0;
         isNotVisited = 1;
     }
-
 
     void printResults(point * Graph, int size){     //вывод минимального веса пути в каждую вершину
         for(int i = 0; i < size; i++){
