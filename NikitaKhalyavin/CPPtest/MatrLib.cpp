@@ -11,8 +11,8 @@ unsigned long long int fact(unsigned int n){
     return  out;
 }
 
-Matrix getEigenValue(Matrix A){
-    PowerMatrix Temp(A);
+Matrix Matrix::getEigenValues(){
+    PowerMatrix Temp(*this);
     Polinom temp;
     temp = Temp.Determinant();
     Matrix out;
