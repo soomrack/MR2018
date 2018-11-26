@@ -14,7 +14,7 @@
 #endif //MR2018_MATRLIB_H
 
 
-static unsigned long long int fact(unsigned int n);
+unsigned long long int fact(unsigned int n);
 
 
 class Matrix{
@@ -203,7 +203,7 @@ public:
             for (int i = 0; i < C.m_rows; i++) {
                 for (int j = 0; j < C.m_cols; j++) {
                     C.data[j + (i * C.m_cols)] += B.data[j + (i * B.m_cols)] / f;
-                    flag &=  !( ( B.data[j + (i * B.m_cols)] / f / C.data[j + (i * C.m_cols)] ) > 0.0001);
+                    flag &=  !( ( B.data[j + (i * B.m_cols)] / f / C.data[j + (i * C.m_cols)] ) > 0.000001);
                 }
             }
             if(flag) break;
