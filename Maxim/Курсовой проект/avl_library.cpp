@@ -2,17 +2,17 @@
 #include <iostream>
 //вспомогательные функции
 //----------------------------------------------
-unsigned short height(node* p)
+unsigned short tree::height(node* p)
 {
     return p?p->height:0;
 }
 
-int8_t bfactor(node* p)
+int8_t tree::bfactor(node* p)
 {
     return (int8_t)(height(p->right)-height(p->left));
 }
 
-void realheight(node* p)
+void tree::realheight(node* p)
 {
     unsigned short hleft = height(p->left);
     unsigned short hright = height(p->right);
@@ -20,7 +20,7 @@ void realheight(node* p)
 }
 //-------------------------------------------
 //основные функции
-extern node* turnright(node* p) // правый поворот вокруг p
+node* tree::turnright(node* p) // правый поворот вокруг p
 {
     node* q = p->left;
     p->left = q->right;
@@ -30,7 +30,7 @@ extern node* turnright(node* p) // правый поворот вокруг p
     return q;
 }
 
-extern node* turnleft(node* q) // левый поворот вокруг q
+node* tree::turnleft(node* q) // левый поворот вокруг q
 {
     node* p = q->right;
     q->right = p->left;
@@ -39,7 +39,7 @@ extern node* turnleft(node* q) // левый поворот вокруг q
     return p;
 }
 
-extern node* balance(node* p) // балансировка узла p
+node* tree::balance(node* p) // балансировка узла p
 {
     realheight(p);
     if( bfactor(p)==2 )
@@ -57,9 +57,15 @@ extern node* balance(node* p) // балансировка узла p
     return p; // балансировка не нужна
 }
 
-extern node* insert(node* p, int k) // вставка ключа k в дерево с корнем p
+node* tree::insert(node* p, int k) // вставка ключа k в дерево с корнем p
 {
-    if( !p ) return new node(k);
+    if( !p ) {
+        node* A=new node;
+A->height=1;
+A->key=k;
+A->left=0;
+A->right=0;
+    return A;}
     if( k<p->key )
         p->left = insert(p->left,k);
     else
@@ -67,12 +73,12 @@ extern node* insert(node* p, int k) // вставка ключа k в дерев
     return balance(p);
 }
 
-extern node* findmin(node* p) // поиск узла с минимальным ключом в дереве p
+node* tree::findmin(node* p) // поиск узла с минимальным ключом в дереве p
 {
     return p->left?findmin(p->left):p;
 }
 
-extern node* removemin(node* p) // удаление узла с минимальным ключом из дерева p
+node* tree::removemin(node* p) // удаление узла с минимальным ключом из дерева p
 {
     if( p->left==0 )
         return p->right;
@@ -80,7 +86,7 @@ extern node* removemin(node* p) // удаление узла с минималь
     return balance(p);
 }
 
-extern node* remove(node* p, int k) // удаление ключа k из дерева p
+node* tree::remove(node* p, int k) // удаление ключа k из дерева p
 {
     if( !p ) return 0;
     if( k < p->key )
