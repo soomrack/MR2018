@@ -8,14 +8,31 @@ struct node // структура для представления узлов �
     unsigned short height;//высота поддерева с корнем в текущем узле
     node* left;//указатель на левое дерево
     node* right;//указатель на правое дерево
-    node(int k) { key = k; left = right = 0; height = 1; }//конструктор создания нового узла с ключом k
-    node(){ key = 0; left = right = 0; height = 1; }//конструктор создания нового узла
+
+
 };
-extern node* turnright(node* p);
-extern node* turnleft(node* q);
-extern node* findmin(node* p);
-extern node* removemin(node* p);
-extern node* remove(node* p, int k);
-extern node* insert(node* p, int k);
-extern node* balance(node* p);
+class tree{
+
+public:
+    node *root;
+    node* turnright(node* p);
+    node* turnleft(node* q);
+    node* findmin(node* p);
+    node* removemin(node* p);
+    node* remove(node* p, int k);
+    node* insert(node* p, int k);
+    node* balance(node* p);
+    tree()
+    {
+        root=new node;
+        root->left=0;
+        root->right=0;
+        root->key=0;
+        root->height=1;
+    };
+private:
+    unsigned short height(node* p);
+    int8_t bfactor(node* p);
+    void realheight(node* p);
+};
 #endif //AVL_TREES_AVL_LIBRARY_H
