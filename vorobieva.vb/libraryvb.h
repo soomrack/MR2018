@@ -14,11 +14,14 @@ typedef struct {
     int* data;
 } Table;
 
-
+extern int road;
 //Для таблиц в курсаче
+
+
 extern Table table_rand(const unsigned int size);
 extern void table_print(const Table A);
-Table table_trans(const Table A);
+extern Table table_trans(const Table A);
+extern Table method(const Table input);
 
 // След матрицы
 extern double matrix_trace(const Matrix A);
