@@ -273,7 +273,7 @@ public:
     Matrix SolveForEigen(){
         Matrix temp;
         temp = *this;
-        for (int i = 0; i < temp.m_rows; i++){
+        for (int i = 0; i < temp.m_rows - 1; i++){
             for(int j = i + 1; j < temp.m_rows; j++){
                 double M = temp.data[j * m_cols + i] / temp.data[i * m_cols + i];
                 for(int col = i; col < temp.m_cols; col++){
@@ -281,23 +281,21 @@ public:
                 }
             }
         }
+        if(temp.data[temp.m_cols * temp.m_rows - 1] != 0)
+            temp = temp * (1 / temp.data[temp.m_cols * temp.m_rows - 1] / 10000000);
 
+        ///double k = -temp.data[temp.m_cols * temp.m_rows - 1] / temp.data[temp.m_cols * temp.m_rows - 2];
+        temp.Print();
         Matrix out(1, temp.m_rows);
         out.data[temp.m_rows - 1] = 1;
         for(int i = temp.m_rows - 2; i >= 0; i--){
             out.data[i] = 0;
-            double bla = 0;
-            for(int j = i + 1; j < temp.m_rows; j++){
-                bla -= temp.data[i * temp.m_cols + j] * out.data[j];
+            for(int j = i + 1; j < temp.m_cols; j++){
                 out.data[i] -= temp.data[i * temp.m_cols + j] * out.data[j];
             }
             out.data[i] /= temp.data[i * temp.m_cols + i];
-            bla /= temp.data[i * temp.m_cols + i];
         }
 
-        for(int i = 0; i < out.m_rows; i++){
-
-        }
         return out;
     }
 
@@ -499,8 +497,13 @@ public:
     }
 
     double halfDivideSq(double a, double b){
-        if( (b - a < 0.00000001) && (b - a > -0.00000001) )return a;
-        if( (Calc(a) >= 0) && (Calc( (a+b)/2 ) <=0) ){
+        if(a==0){
+            if( (b < 0.000000000001) && (b > -0.000000000001) )return (a+b)/2;
+        }
+        else{
+            if( ((b - a)/a < 0.000000001) && ((b - a)/a > -0.000000001) )return (a+b)/2;
+        }
+        if( (Calc(a) >= 0) && (Calc( (a + b)/2 ) <=0) ){
             return halfDivideSq(a,(a+b)/2);
         }
         else return halfDivideSq((a+b)/2,b);
