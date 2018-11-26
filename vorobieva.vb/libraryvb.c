@@ -10,6 +10,7 @@
 #define TOWNS 4
 
 //курсач
+int road = 0;
 
 Table table_rand(const unsigned int size){
     Table A;
@@ -18,7 +19,7 @@ Table table_rand(const unsigned int size){
     for(int i = 0; i < A.size; i++) {
         for(int j = 0; j < A.size; j++) {
             if (i == j) A.data[A.size * i + j] = WINT_MAX;
-            else A.data[A.size * i + j] = rand() % 10;
+            else A.data[A.size * i + j] = rand() % 10 + 1;
         };
     };
     return A;
@@ -32,6 +33,7 @@ void table_print(const Table A){
         };
         printf("\n");
     }
+    printf("\n");
 };
 
 
@@ -48,9 +50,9 @@ Table table_trans(const Table A){
 };
 
 
-int method(const Table input){
+Table method(const Table input){
+    //нахождение минимума по строкам
     int a[input.size], b[input.size];
-    int max = WINT_MAX;
 
     for (int i = 0; i < input.size; i++) {
         a[i] = input.data[input.size * i];
@@ -59,6 +61,7 @@ int method(const Table input){
         }
     }
 
+    //нахождение минимума по столбцам
     Table trans = table_trans(input);
 
     for (int i = 0; i < trans.size; i++) {
@@ -68,11 +71,76 @@ int method(const Table input){
         }
     }
 
-    int r = 0;
-    for (int i = 0; i < input.size; i++) r += a[i] + b[i];
+    Table output;
+    output.size = input.size;
+    output.data = malloc(output.size * output.size * sizeof(int));
 
+    //редукция матрицы
+    for (int i = 0; i < output.size; i++) {
+        for (int j = 0; j < output.size; j++) {
+            if (input.data[input.size * i + j] == WINT_MAX) output.data[output.size * i + j] = WINT_MAX;
+            else output.data[output.size * i + j] = input.data[input.size * i + j] - a[i] - b[j];
+        }
+    }
+    table_print(output);
 
+    //нахождение клетки с минимальной оценкой
+    int max = 0, str = -1, col = -1;
+    for (int i = 0; i < output.size; i++) {
+        for (int j = 0; j < output.size; j++) {
+            if (output.data[output.size * i + j] == 0){
+                int minstr = WINT_MAX, mincol = WINT_MAX;
+                for (int k = 0; k < output.size; k++) {
+                    if ((output.data[output.size * i + k] < minstr) && (k != j)) minstr = output.data[output.size * i + k];
+                }
+                for (int k = 0; k < output.size; k++) {
+                    if ((output.data[output.size * k + j] < mincol) && (k != i)) mincol = output.data[output.size * k + j];
+                }
+                if ((minstr + mincol) > max) {
+                    max = minstr + mincol;
+                    str = i;
+                    col = j;
+                }
+            }
+        }
+    }
 
+    //редукция матрицы
+    output.size = output.size - 1;
+    for (int i = 0; i < output.size; i++) {
+        for (int j = 0; j < output.size; j++) {
+            if((i < str) && (j < col)) {
+                if ((i == col) && (j == str)) output.data[output.size * i + j] = WINT_MAX;
+                else output.data[output.size * i + j] = input.data[input.size * i + j];
+            }
+            if((i < str) && (j >= col)){
+                if ((i == col) && (j == str - 1)) output.data[output.size * i + j] = WINT_MAX;
+                else output.data[output.size * i + j] = input.data[input.size * i + j + 1];
+            }
+            if((i >= str) && (j < col)){
+                if ((i == col - 1) && (j == str)) output.data[output.size * i + j] = WINT_MAX;
+                else output.data[output.size * i + j] = input.data[input.size * (i + 1) + j];
+            }
+            if((i >= str) && (j >= col)){
+                if ((i == col - 1) && (j == str - 1)) output.data[output.size * i + j] = WINT_MAX;
+                else output.data[output.size * i + j] = input.data[input.size * (i + 1) + j + 1];
+            }
+        }
+    }
+
+    table_print(output);
+
+    printf("Длина = %d, строка = %d, столбец = %d\n", road, str, col);
+
+    //увеличиваем длину пути и выводим часть пути
+    static int shiftstr = 1, shiftcol = 1;
+
+    road += input.data[input.size * str + col];
+    printf("%d -> %d -> \n", str + shiftstr, col + shiftcol);
+
+    //отдача на рекурсию/вывод результата
+    if (output.size == 2) return output;
+    else return method(output);
 }
 
 
