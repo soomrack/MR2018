@@ -25,10 +25,15 @@ target_link_libraries(NKhZeroTest NKhTestLib)
 add_executable(NKhExpTest tests/testExp.cpp)
 target_link_libraries(NKhExpTest NKhTestLib)
 
+add_executable(NKhEigenTest tests/testEigen.cpp)
+target_link_libraries(NKhEigenTest NKhTestLib)
+
 add_test(NAME NKhInvert COMMAND NKhInvertTest)
 add_test(NAME NKhOne COMMAND NKhOneTest)
 add_test(NAME NKhZero COMMAND NKhZeroTest)
 add_test(NAME NKhExp COMMAND NKhExpTest)
+add_test(NAME NKhEigen COMMAND NKhEigenTest)
+
 
 
 

@@ -270,24 +270,35 @@ public:
 
     Matrix getEigenValues();
 
-    Matrix Solve(){
+    Matrix SolveForEigen(){
         Matrix temp;
         temp = *this;
         for (int i = 0; i < temp.m_rows; i++){
             for(int j = i + 1; j < temp.m_rows; j++){
-                double M = temp.data[j * m_cols] / temp.data[i * m_cols];
+                double M = temp.data[j * m_cols + i] / temp.data[i * m_cols + i];
                 for(int col = i; col < temp.m_cols; col++){
                     temp.data[j*m_cols + col] -= temp.data[i*m_cols+col]*M;
                 }
             }
         }
+
         Matrix out(1, temp.m_rows);
-        for(int i = temp.m_rows - 1; i >= 0; i++){
-            out.data[i] = temp.data[i*m_cols + m_cols];
-            for(int j = 0; j < temp.m_rows - i; j++){
-                out.data[i] = 0;
+        out.data[temp.m_rows - 1] = 1;
+        for(int i = temp.m_rows - 2; i >= 0; i--){
+            out.data[i] = 0;
+            double bla = 0;
+            for(int j = i + 1; j < temp.m_rows; j++){
+                bla -= temp.data[i * temp.m_cols + j] * out.data[j];
+                out.data[i] -= temp.data[i * temp.m_cols + j] * out.data[j];
             }
+            out.data[i] /= temp.data[i * temp.m_cols + i];
+            bla /= temp.data[i * temp.m_cols + i];
         }
+
+        for(int i = 0; i < out.m_rows; i++){
+
+        }
+        return out;
     }
 
     Matrix getEigenVectors(){
@@ -295,11 +306,23 @@ public:
         EV = getEigenValues();
         Matrix One(m_cols, m_rows, 1);
         Matrix temp;
-        Matrix out;
+        Matrix out(m_cols, m_rows, 0);
         for(int i = 0; i < EV.m_rows; i++){
             temp = *this - (One * EV.data[i]);
-
+            temp = temp.SolveForEigen();
+            memcpy(&out.data[i*out.m_cols], temp.data, temp.m_rows * sizeof(double));
         }
+        out = out.Trans();
+        return out;
+    }
+
+    Matrix getVector(int col){
+        Matrix temp;
+        temp = this->Trans();
+        Matrix out(temp.m_cols, 1, 0);
+        memcpy(out.data, &temp.data[m_cols * col], temp.m_cols * sizeof(double));
+        out = out.Trans();
+        return out;
     }
 };
 
@@ -476,7 +499,7 @@ public:
     }
 
     double halfDivideSq(double a, double b){
-        if( (b - a < 0.001) && (b - a > -0.001) )return a;
+        if( (b - a < 0.00000001) && (b - a > -0.00000001) )return a;
         if( (Calc(a) >= 0) && (Calc( (a+b)/2 ) <=0) ){
             return halfDivideSq(a,(a+b)/2);
         }
