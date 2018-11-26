@@ -10,7 +10,6 @@
 #define TOWNS 4
 
 //курсач
-int road = 0;
 
 Table table_rand(const unsigned int size){
     Table A;
@@ -49,8 +48,84 @@ Table table_trans(const Table A){
     return B;
 };
 
+Table table_zero(const unsigned int size){
+    Table A;
+    A.size = size;
+    A.data = malloc(A.size * A.size * sizeof(double));
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < size; j++) {
+            A.data[A.size * i + j] = 0;
+        }
+    };
+    return A;
+};
 
-Table method(const Table input){
+
+Table method(const Table input, const Table shift){
+    static int road = 0;
+    static int oldshiftstr = 0, oldshiftcol = 0;
+    int str = -1, col = -1;
+    //если осталась только матрица 2х2 в любом порядкн вывести две оставшиеся дороги и прибавить их длину к общей
+    if (input.size == 2){
+        for (int i = 0; i < input.size; i++) {
+             for (int j = 0; j < input.size; j++) {
+               if (input.data[input.size * i + j] != WINT_MAX) {
+                   str = i;
+                   col = j;
+               }
+             }
+         }
+        road += input.data[input.size * str + col];
+        if (input.size == TOWNS) printf("%d -> %d -> \n", str + 1, col + 1);
+        else{
+            switch(shift.data[shift.size * str + col]) {
+                case 0:
+                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                    break;
+                case 01:
+                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                    break;
+                case 10:
+                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                    break;
+                case 11:
+                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                    break;
+            }
+
+        }
+        input.data[input.size * str + col] = WINT_MAX;
+        for (int i = 0; i < input.size; i++) {
+            for (int j = 0; j < input.size; j++) {
+                if (input.data[input.size * i + j] != WINT_MAX) {
+                    str = i;
+                    col = j;
+                }
+            }
+        }
+        road += input.data[input.size * str + col];
+        if (input.size == TOWNS) printf("%d -> %d -> \n", str + 1, col + 1);
+        else{
+            switch(shift.data[shift.size * str + col]) {
+                case 0:
+                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                    break;
+                case 01:
+                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                    break;
+                case 10:
+                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                    break;
+                case 11:
+                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                    break;
+            }
+
+        }
+        printf("Длина дороги - %d\n", road);
+        return (input);
+    }
+
     //нахождение минимума по строкам
     int a[input.size], b[input.size];
 
@@ -82,10 +157,9 @@ Table method(const Table input){
             else output.data[output.size * i + j] = input.data[input.size * i + j] - a[i] - b[j];
         }
     }
-    table_print(output);
 
     //нахождение клетки с минимальной оценкой
-    int max = 0, str = -1, col = -1;
+    int max = 0;
     for (int i = 0; i < output.size; i++) {
         for (int j = 0; j < output.size; j++) {
             if (output.data[output.size * i + j] == 0){
@@ -110,37 +184,75 @@ Table method(const Table input){
     for (int i = 0; i < output.size; i++) {
         for (int j = 0; j < output.size; j++) {
             if((i < str) && (j < col)) {
-                if ((i == col) && (j == str)) output.data[output.size * i + j] = WINT_MAX;
+                if ((i == col + oldshiftcol) && (j == str + oldshiftstr)) output.data[output.size * i + j] = WINT_MAX;
                 else output.data[output.size * i + j] = input.data[input.size * i + j];
             }
             if((i < str) && (j >= col)){
-                if ((i == col) && (j == str - 1)) output.data[output.size * i + j] = WINT_MAX;
+                if ((i == col + oldshiftcol) && (j == str + oldshiftstr - 1)) output.data[output.size * i + j] = WINT_MAX;
                 else output.data[output.size * i + j] = input.data[input.size * i + j + 1];
             }
             if((i >= str) && (j < col)){
-                if ((i == col - 1) && (j == str)) output.data[output.size * i + j] = WINT_MAX;
+                if ((i == col + oldshiftcol - 1) && (j == str + oldshiftstr)) output.data[output.size * i + j] = WINT_MAX;
                 else output.data[output.size * i + j] = input.data[input.size * (i + 1) + j];
             }
             if((i >= str) && (j >= col)){
-                if ((i == col - 1) && (j == str - 1)) output.data[output.size * i + j] = WINT_MAX;
+                if ((i == col + oldshiftcol - 1) && (j == str + oldshiftstr - 1)) output.data[output.size * i + j] = WINT_MAX;
                 else output.data[output.size * i + j] = input.data[input.size * (i + 1) + j + 1];
             }
         }
     }
-
     table_print(output);
+    printf("%d, %d\n", oldshiftstr, oldshiftcol);
 
-    printf("Длина = %d, строка = %d, столбец = %d\n", road, str, col);
 
     //увеличиваем длину пути и выводим часть пути
-    static int shiftstr = 1, shiftcol = 1;
-
     road += input.data[input.size * str + col];
-    printf("%d -> %d -> \n", str + shiftstr, col + shiftcol);
+    printf("Длина = %d, строка = %d, столбец = %d\n", road, str, col);
+    if (input.size == TOWNS) printf("%d -> %d \n", str + 1, col + 1);
+    else{
+        switch(shift.data[shift.size * str + col]) {
+            case 0:
+                printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                break;
+            case 01:
+                oldshiftcol++;
+                printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                break;
+            case 10:
+                oldshiftstr++;
+                printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                break;
+            case 11:
+                oldshiftstr++;
+                oldshiftcol++;
+                printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
+                break;
+        }
 
-    //отдача на рекурсию/вывод результата
-    if (output.size == 2) return output;
-    else return method(output);
+    }
+
+    //создаем таблицу смещений для следующего захода рекурсии
+    Table nextshift;
+    nextshift.size = output.size;
+    nextshift.data = malloc(nextshift.size * nextshift.size * sizeof(int));
+    for (int i = 0; i < nextshift.size; i++) {
+        for (int j = 0; j < nextshift.size; j++) {
+            if((i < str) && (j < col)) {
+                nextshift.data[nextshift.size * i + j] = 0;
+            }
+            if((i < str) && (j >= col)){
+                nextshift.data[nextshift.size * i + j] = 01;
+            }
+            if((i >= str) && (j < col)){
+                nextshift.data[nextshift.size * i + j] = 10;
+            }
+            if((i >= str) && (j >= col)){
+                nextshift.data[nextshift.size * i + j] = 11;
+            }
+        }
+    }
+    //рекурсия
+    return method(output, nextshift);
 }
 
 
