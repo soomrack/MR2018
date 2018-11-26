@@ -23,7 +23,6 @@ class tree{
 
 public:
     node *root;
-    node *currentnode;
     void add(double var);
     void sort(node *curnode);
     void print();
@@ -31,7 +30,6 @@ public:
     void deletekey(double var);
     tree()
     {
-        currentnode=new node;
         root=new node;
         root->leaf=true;
         root->keyscount=0;

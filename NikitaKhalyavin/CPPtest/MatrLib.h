@@ -14,7 +14,7 @@
 #endif //MR2018_MATRLIB_H
 
 
-static unsigned long long int fact(unsigned int n);
+unsigned long long int fact(unsigned int n);
 
 
 class Matrix{
@@ -137,9 +137,19 @@ public:
 
     Matrix operator + (const Matrix& Arg){
         Matrix out(m_cols, m_rows);
-        for(int i = 0; i < m_cols; i++){     //construction sub-matrix
+        for(int i = 0; i < m_cols; i++){
             for(int j = 0; j < m_rows; j++){
                 out.data[j + ( i * m_rows)] = data[j + ( i * m_rows)] + Arg.data[j + ( i * m_rows)];
+            }
+        }
+        return out;
+    }
+
+    Matrix operator - (const Matrix& Arg){
+        Matrix out(m_cols, m_rows);
+        for(int i = 0; i < m_cols; i++){     //construction sub-matrix
+            for(int j = 0; j < m_rows; j++){
+                out.data[j + ( i * m_rows)] = data[j + ( i * m_rows)] - Arg.data[j + ( i * m_rows)];
             }
         }
         return out;
@@ -203,7 +213,7 @@ public:
             for (int i = 0; i < C.m_rows; i++) {
                 for (int j = 0; j < C.m_cols; j++) {
                     C.data[j + (i * C.m_cols)] += B.data[j + (i * B.m_cols)] / f;
-                    flag &=  !( ( B.data[j + (i * B.m_cols)] / f / C.data[j + (i * C.m_cols)] ) > 0.0001);
+                    flag &=  !( ( B.data[j + (i * B.m_cols)] / f / C.data[j + (i * C.m_cols)] ) > 0.000001);
                 }
             }
             if(flag) break;
@@ -256,6 +266,40 @@ public:
         Matrix Out;
         Out = Algd.Trans() * ( 1 / det );
         return Out;
+    }
+
+    Matrix getEigenValues();
+
+    Matrix Solve(){
+        Matrix temp;
+        temp = *this;
+        for (int i = 0; i < temp.m_rows; i++){
+            for(int j = i + 1; j < temp.m_rows; j++){
+                double M = temp.data[j * m_cols] / temp.data[i * m_cols];
+                for(int col = i; col < temp.m_cols; col++){
+                    temp.data[j*m_cols + col] -= temp.data[i*m_cols+col]*M;
+                }
+            }
+        }
+        Matrix out(1, temp.m_rows);
+        for(int i = temp.m_rows - 1; i >= 0; i++){
+            out.data[i] = temp.data[i*m_cols + m_cols];
+            for(int j = 0; j < temp.m_rows - i; j++){
+                out.data[i] = 0;
+            }
+        }
+    }
+
+    Matrix getEigenVectors(){
+        Matrix EV;
+        EV = getEigenValues();
+        Matrix One(m_cols, m_rows, 1);
+        Matrix temp;
+        Matrix out;
+        for(int i = 0; i < EV.m_rows; i++){
+            temp = *this - (One * EV.data[i]);
+
+        }
     }
 };
 
@@ -548,13 +592,3 @@ public:
         printf("|||||||||||\n");
     }
 };
-
-
-Matrix getEigenValue(Matrix A){
-    PowerMatrix Temp(A);
-    Polinom temp;
-    temp = Temp.Determinant();
-    Matrix out;
-    out = temp.Solve();
-    return out;
-}

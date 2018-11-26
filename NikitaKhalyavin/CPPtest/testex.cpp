@@ -17,18 +17,10 @@ int main(){
     M8.beSymmetric();
     M8.Print();
 
-    PowerMatrix M(M8);
-    M.Print();
+    Matrix M10;
 
-    Polinom test;
-    test = M.Determinant();
-    test.Print();
-
-    Matrix V;
-    V = test.Solve();
-    V.Print();
-
-
+    M10 = M8.getEigenValues();
+    M10.Print();
 
     return  0;
 }
