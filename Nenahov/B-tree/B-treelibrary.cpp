@@ -21,6 +21,10 @@ node *tree::create(node *parent,int CO)
     {
         curnode->children[i]=0;
     }
+        for(int i=0;i<2*t-1;i++)
+        {
+                curnode->keys[i]=0;
+        }
     return curnode;
 }
 
@@ -88,13 +92,13 @@ void tree::addtonode(double var, node *curnode) {
     if (!curnode->leaf ) {
         if(var<curnode->keys[0])
         {
-            if(curnode->children[0]==0) curnode->children[0]=create(curnode,0);
+            //if(curnode->children[0]==0) curnode->children[0]=create(curnode,0);
             addtonode(var, curnode->children[0]);
         }
 
         if(var>curnode->keys[curnode->keyscount-1])
         {
-            if(curnode->children[curnode->keyscount]==0) curnode->children[curnode->keyscount]=create(curnode,curnode->keyscount);
+            //if(curnode->children[curnode->keyscount]==0) curnode->children[curnode->keyscount]=create(curnode,curnode->keyscount);
             addtonode(var, curnode->children[curnode->keyscount]);
         }
 
@@ -124,15 +128,15 @@ void tree::addtonode(double var, node *curnode) {
                     node *child2 = par->children[par->childrencount-1];
 
                     par->leaf = false;
-
-
+                    int t=0;
                     for (int i = curnode->keyscount / 2+1; i < curnode->keyscount; i++)
                     {
-                        child2->keys[i - curnode->keyscount / 2] = curnode->keys[i];
+                        child2->keys[t++] = curnode->keys[i];
+                        child2->keyscount++;
                     }
 
                     child2->parent = par;
-                    child2->keyscount = curnode->keyscount - curnode->keyscount / 2;
+                    //child2->keyscount = curnode->keyscount - curnode->keyscount / 2;
 
                     curnode->keyscount /= 2;
                     addtonode(var,curnode);
