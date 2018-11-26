@@ -51,13 +51,14 @@ int main() {
     Matrix Test4 = {4, 4, *Test4data};
     TEST_EQUAL(Test4, -5545.3962);
 
-    double Test5data[5][5] = {{1,	0	,0,	0,	0},
+    double Test5data[5][5] = {
+    {1,	0	,0,	0,	0},
     {0,	1,	0,	0,	0},
-    {0,	0,	1,	0,	0},
+    {0,	0,	-1,	0,	0},
     {0,	0,	0,	1,	0},
     {0, 0,	0,	0,	1}};
     Matrix Test5 = {5, 5, *Test5data};
-    TEST_EQUAL(Test5, 1);
+    TEST_EQUAL(Test5, -1);
 
 
     return 0;
