@@ -7,13 +7,19 @@ int main() {
     using namespace std;
     tree A;
     double var;
-    for(int i=0;i<15;i++) {
+    for(int i=0;i<50;i++) {
         var=rand();
         A.add(var);
         cout<<var<<"\t";
     }
     cout<<endl;
-
+    A.add(1000);
+    /*for(int i=35;i<38;i++) {
+        var=rand();
+        A.add(var);
+        cout<<var<<"\t";
+    }
+    cout<<endl;
 //    A.add(1);
     /*A.add(10);
     A.add(30);

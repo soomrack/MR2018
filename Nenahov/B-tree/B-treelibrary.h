@@ -34,6 +34,7 @@ public:
         root->leaf=true;
         root->keyscount=0;
         root->childrencount=0;
+        //root->childorder=NULL;
         root->parent=0;
         for(int i=0;i<2*t;i++)
         {
@@ -48,6 +49,8 @@ private:
     node* searchnode(node *curnode,double var);
     double *searchinnode(node *curnode, double var);
     void deleteinnode(double var, node *curnode);
+    void sortchildren(node * curnode);
+    node *createuppernode(node *root);
 
 
 };
