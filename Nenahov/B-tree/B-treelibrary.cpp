@@ -21,10 +21,10 @@ node *tree::create(node *parent,int CO)
     {
         curnode->children[i]=0;
     }
-        for(int i=0;i<2*t-1;i++)
-        {
-                curnode->keys[i]=0;
-        }
+    for(int i=0;i<2*t-1;i++)
+    {
+        curnode->keys[i]=0;
+    }
     return curnode;
 }
 
@@ -81,6 +81,8 @@ void tree::sort(node *curnode)
     int i=1;
     int j=2;
     double k;
+    int t;
+    node *z;
     while(i<curnode->keyscount)
     {
         if(curnode->keys[i]>curnode->keys[i-1])
@@ -91,8 +93,18 @@ void tree::sort(node *curnode)
         else
         {
             k=curnode->keys[i];
+            z=curnode->children[i];
+
             curnode->keys[i]=curnode->keys[i-1];
+            curnode->children[i]=curnode->children[i-1];
+
             curnode->keys[i-1]=k;
+            curnode->children[i-1]=z;
+            if(curnode->childrencount!=0)
+            {   t=curnode->children[i]->childorder;
+                curnode->children[i]->childorder=t;
+                curnode->children[i]->childorder=curnode->children[i-1]->childorder;
+            }
             i--;
             if (i==0)
             {
@@ -101,11 +113,9 @@ void tree::sort(node *curnode)
             }
         }
     }
-
-    if(curnode->childrencount!=0) {
-        sortchildren(curnode);
-    }
 }
+
+
 
 void tree::add(double var)
 {
@@ -118,14 +128,14 @@ void tree::addtonode(double var, node *curnode) {
     if (!curnode->leaf ) {
         if(var<curnode->keys[0])
         {
-            //if(curnode->children[0]==0) curnode->children[0]=create(curnode,0);
+            if(curnode->children[0]==0) curnode->children[0]=create(curnode,0);
             addtonode(var, curnode->children[0]);
             return;
         }
 
         if(var>curnode->keys[curnode->keyscount-1])
         {
-            //if(curnode->children[curnode->keyscount]==0) curnode->children[curnode->keyscount]=create(curnode,curnode->keyscount);
+            if(curnode->children[curnode->keyscount]==0) curnode->children[curnode->keyscount]=create(curnode,curnode->keyscount);
             addtonode(var, curnode->children[curnode->keyscount]);
             return;
         }
@@ -139,7 +149,7 @@ void tree::addtonode(double var, node *curnode) {
         }
 
     } else {
-        if (curnode->keyscount < 2*t) {
+        if (curnode->keyscount < 2*t-1) {
             curnode->keys[curnode->keyscount] = var;
             curnode->keyscount++;
             sort(curnode);
@@ -150,52 +160,70 @@ void tree::addtonode(double var, node *curnode) {
                     node *par = curnode->parent;
 
 
-                    par->leaf = true;
-                    addtonode(curnode->keys[curnode->keyscount / 2], par);                  //вставка медианы в родиетльский узел
-                    par->children[par->childrencount] = create(par,par->childrencount);    //создание второго узла
-                    node *child2 = par->children[par->childrencount-1];
-
-                    par->leaf = false;
-                    int t=0;
-                    for (int i = curnode->keyscount / 2+1; i < curnode->keyscount; i++)
+                    if(par->keyscount<2*t-1)
                     {
-                        child2->keys[t++] = curnode->keys[i];
-                        child2->keyscount++;
+                        par->keys[par->keyscount]=curnode->keys[curnode->keyscount / 2];
+                        par->keyscount++;
+                        par->children[par->keyscount] = create(par,par->keyscount-1);
+                        node *child2 = par->children[par->keyscount];
+                        sort(par);
+                       // par->children[curnode->childorder+2] = create(par,curnode->childorder+2);    //создание второго узла
+
+                        int z=0;
+                        for (int i = t/2+2; i < 2*t-1; i++)
+                        {
+                            child2->keys[z++] = curnode->keys[i];
+                            child2->keyscount++;
+                        }
+                        curnode->keyscount = t-1;
+                        add(var);
+
+
+                    }
+                    else
+                    {
+
+
+
                     }
 
-                    child2->parent = par;
-                    //child2->keyscount = curnode->keyscount - curnode->keyscount / 2;
 
-                    curnode->keyscount /= 2;
-                    sortchildren(par);
-                    add(var);
+
+
+
+
+
 
                 }
                 else
                 {
 
+
+
+
                     curnode->parent=createuppernode(curnode);
                     node *par=curnode->parent;
                     par->children[0]=curnode;
-                    par->keys[0]=curnode->keys[curnode->keyscount/2];
+                    par->keys[0]=curnode->keys[curnode->keyscount/2+1];
                     par->keyscount++;
-                    par->children[par->childrencount]=create(par,par->childrencount);
-                    node *child2=par->children[par->childrencount-1];
-                    for(int i=curnode->keyscount/2+1;i<curnode->keyscount;i++)
+                    par->children[1]=create(par,1);
+                    node *child2=par->children[1];
+                    for(int i=curnode->keyscount/2+2;i<curnode->keyscount;i++)
                     {
-                        child2->keys[i-(curnode->keyscount/2+1)]=curnode->keys[i];
+                        child2->keys[i-(curnode->keyscount/2+2)]=curnode->keys[i];
                         child2->keyscount++;
                     }
                     sort(child2);
-                    for(int i=curnode->childrencount/2+1;i<curnode->childrencount;i++)
-                    {
-                        child2->children[i-(curnode->childrencount/2+1)]=curnode->children[i];
-                        curnode->children[i]->parent=child2;
-                        child2->childrencount++;
+                    if(child2->childrencount!=0) {
+                        for (int i = curnode->keyscount / 2 + 2; i < curnode->keyscount; i++) {
+                            child2->children[i - (curnode->keyscount / 2 + 2)] = curnode->children[i];
+                            curnode->children[i]->parent = child2;
+                        }
                     }
 
                     curnode->keyscount/=2;
-                    curnode->childrencount/=2;
+                    curnode->keyscount++;
+                   // curnode->childrencount/=2+1;
                     root=par;
                     add(var);
 

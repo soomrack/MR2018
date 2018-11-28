@@ -11,9 +11,9 @@ const int t=3;
 
 struct node{
     node *parent;
-    node *children[2*t+1];
+    node *children[2*t];
     bool leaf;
-    double keys[2*t];
+    double keys[2*t-1];
     int keyscount;
     int childrencount;
     int childorder;
