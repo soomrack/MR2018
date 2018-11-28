@@ -35,8 +35,7 @@ node *tree::createuppernode(node *downnode)
     curnode->children[0]=downnode;
     curnode->keyscount=0;
     curnode->leaf=false;
-    curnode->childorder=-1;
-
+    downnode->childorder=0;
     curnode->parent=0;
     for(int i=1;i<2*t+1;i++)
     {
@@ -100,11 +99,11 @@ void tree::sort(node *curnode)
 
             curnode->keys[i-1]=k;
             curnode->children[i-1]=z;
-            if(curnode->childrencount!=0)
+            /*if(curnode->childrencount!=0)
             {   t=curnode->children[i]->childorder;
                 curnode->children[i]->childorder=t;
                 curnode->children[i]->childorder=curnode->children[i-1]->childorder;
-            }
+            }*/
             i--;
             if (i==0)
             {
@@ -162,144 +161,68 @@ void tree::addtonode(double var, node *curnode) {
 
                     if(par->keyscount<2*t-1)
                     {
-                        par->keys[par->keyscount]=curnode->keys[curnode->keyscount / 2];
+                        par->keys[par->keyscount] = curnode->keys[t-1];
                         par->keyscount++;
-                        par->children[par->keyscount] = create(par,par->keyscount-1);
+                    }
+                    else{
+                        par->leaf=true;
+                        addtonode(curnode->keys[t-1], par);
+                        par->leaf=false;
+                    }
+                        par->children[par->keyscount] = create(par,par->keyscount);
                         node *child2 = par->children[par->keyscount];
                         sort(par);
-                       // par->children[curnode->childorder+2] = create(par,curnode->childorder+2);    //создание второго узла
 
                         int z=0;
-                        for (int i = t/2+2; i < 2*t-1; i++)
-                        {
-                            child2->keys[z++] = curnode->keys[i];
-                            child2->keyscount++;
+                    for (int i = t; i < 2*t-1; i++)
+                    {
+                        child2->keys[z] = curnode->keys[i];
+                        child2->keyscount++;
+                        if(curnode->children[i]) {
+                            child2->childrencount++;
+                            curnode->children[i]=0;
+                            child2->children[z]=curnode->children[i];
                         }
+                        z++;
+
+                    }
                         curnode->keyscount = t-1;
                         add(var);
-
-
                     }
-                    else
-                    {
-
-
-
-                    }
-
-
-
-
-
-
-
-
-                }
                 else
                 {
-
-
-
-
                     curnode->parent=createuppernode(curnode);
-                    node *par=curnode->parent;
-                    par->children[0]=curnode;
-                    par->keys[0]=curnode->keys[curnode->keyscount/2+1];
-                    par->keyscount++;
-                    par->children[1]=create(par,1);
-                    node *child2=par->children[1];
-                    for(int i=curnode->keyscount/2+2;i<curnode->keyscount;i++)
-                    {
-                        child2->keys[i-(curnode->keyscount/2+2)]=curnode->keys[i];
-                        child2->keyscount++;
-                    }
-                    sort(child2);
-                    if(child2->childrencount!=0) {
-                        for (int i = curnode->keyscount / 2 + 2; i < curnode->keyscount; i++) {
-                            child2->children[i - (curnode->keyscount / 2 + 2)] = curnode->children[i];
-                            curnode->children[i]->parent = child2;
-                        }
-                    }
-
-                    curnode->keyscount/=2;
-                    curnode->keyscount++;
-                   // curnode->childrencount/=2+1;
+                    node *par = curnode->parent;
                     root=par;
-                    add(var);
+                    par->keys[0] = curnode->keys[t-1];
+                    par->keyscount++;
+                    par->children[par->keyscount] = create(par,par->keyscount);
+                    node *child2 = par->children[par->keyscount];
+                    sort(par);
+                    // par->children[curnode->childorder+2] = create(par,curnode->childorder+2);    //создание второго узла
 
-
-
-
-
-
-
-
-
-
-
-
-                    /*
-                    if(!curnode->leaf) {
-                        // curnode->children[curnode->childrencount]=create(curnode,curnode->childrencount);
-                        node child1 = *curnode;
-                        node child2 = *curnode;
-                        child1.childrencount /= 2;
-                        child1.keyscount /= 2;
-
-                        /*for(int i = curnode->keyscount / 2+1; i < curnode->keyscount; i++)
-                        {
-                            child1.keys[i] = curnode->keys[i];
-                            child1.keyscount++;
-                            child1.children[i]=curnode->children[i];
-                            child1.childrencount++;
-                        }
-    */
-                        //curnode->children[curnode->childrencount]=create(curnode,curnode->childrencount);
-                        /*for (int i = 0; i < curnode->keyscount / 2; i++) {
-                            child2.keys[i] = curnode->keys[i + curnode->keyscount / 2];
-                            curnode->children[i + curnode->keyscount / 2]->parent = &child2;
-                        }
-                        child2.childrencount /= 2;
-                        child2.keyscount /= 2;
-                        curnode->keys[0] = curnode->keyscount / 2;
-                        curnode->keyscount = 1;
-                        curnode->childrencount++;
-                        curnode->childrencount++;
-                        curnode->children[0] = &child1;
-                        curnode->children[1] = &child2;
-
-
-                        /*curnode->keys[0] = curnode->keys[curnode->keyscount / 2];
-                        curnode->keyscount = 1;
-                        curnode->leaf = false;
-                        sortchildren(curnode);*/
-                       /* add(var);
-                    }
-                    else
+                    int z=0;
+                    for (int i = t; i < 2*t-1; i++)
                     {
-                        curnode->children[curnode->childrencount]=create(curnode,curnode->childrencount);
-                        for(int i=0;i<curnode->keyscount / 2;i++)
-                        {
-                            curnode->children[0]->keys[i] = curnode->keys[i];
-                            curnode->children[0]->keyscount++;
-                        }
+                        child2->keys[z] = curnode->keys[i];
+                        child2->keyscount++;
+                        if(curnode->children[i]) {
+                            child2->childrencount++;
+                            curnode->children[i]=0;
 
-                        curnode->children[curnode->childrencount]=create(curnode,curnode->childrencount);
-                        for (int i = curnode->keyscount / 2+1; i < curnode->keyscount; i++)
-                        {
-                            curnode->children[1]->keys[i - curnode->keyscount / 2-1] = curnode->keys[i];
-                            curnode->children[1]->keyscount++;
+                            child2->children[z]=curnode->children[i];
                         }
+                        z++;
 
-                        curnode->keys[0]=curnode->keys[curnode->keyscount/2];
-                        curnode->keyscount=1;
-                        curnode->leaf=false;
-                        addtonode(var,curnode);*/
+                    }
+                    curnode->keyscount = t-1;
+                    add(var);
+                }
 
                     }
                 }
             }
-        }
+
 
 
 
@@ -338,9 +261,10 @@ double *tree::search(double var)
 node *tree::searchnode(node *curnode, double var)
 {
     node *ret=0;
-    if(var>curnode->keys[curnode->keyscount-1]) ret=searchnode(curnode->children[curnode->keyscount-1],var);
+    if(var>curnode->keys[curnode->keyscount-1]) ret=searchnode(curnode->children[curnode->keyscount],var);
     if(var<curnode->keys[0]) ret=searchnode(curnode->children[0],var);
-    for(int i=0;i<curnode->keyscount;i++)
+    if(var==curnode->keys[0]) ret=curnode;
+    for(int i=1;i<curnode->keyscount;i++)
     {
         if(var==curnode->keys[i])
         {
@@ -350,7 +274,7 @@ node *tree::searchnode(node *curnode, double var)
         }
         if((var>curnode->keys[i-1])&&(var<curnode->keys[i]))
         {
-            searchnode(curnode->children[i],var);
+            ret=searchnode(curnode->children[i],var);
         }
 
     }
@@ -381,18 +305,24 @@ void tree::deletekey(double var)
         node *curnode=searchnode(root,var);
         if (curnode->leaf)
         {
+            int order=-1;
+            for(int i=0;i<curnode->parent->keyscount;i++)
+            {
+                if(curnode->parent->children[i]==curnode) order=i;
+            }
             if((curnode->keyscount>t-1)) {
                 deleteinnode(var,curnode);
                 return;
             }
-            node *prechild=curnode->parent->children[curnode->childorder-1];
-            node *postchild=curnode->parent->children[curnode->childorder+1];
+
+            node *prechild=curnode->parent->children[order-1];
+            node *postchild=curnode->parent->children[order+1];
             if(postchild->keyscount>(t-1))
             {
                 deleteinnode(var,curnode);
 
-                add(curnode->parent->keys[curnode->childorder]);
-                curnode->parent->keys[curnode->childorder]=postchild->keys[0];
+                add(curnode->parent->keys[order]);
+                curnode->parent->keys[order]=postchild->keys[0];
                 deleteinnode(postchild->keys[0],postchild);
                 return;
             }
@@ -400,8 +330,8 @@ void tree::deletekey(double var)
             {
 
                 deleteinnode(var,curnode);
-                add(curnode->parent->keys[curnode->childorder]);
-                curnode->parent->keys[curnode->childorder]=prechild->keys[prechild->keyscount-1];
+                add(curnode->parent->keys[order]);
+                curnode->parent->keys[order]=prechild->keys[prechild->keyscount-1];
                 deleteinnode(prechild->keys[prechild->keyscount-1],prechild);
             }
         }
@@ -431,7 +361,7 @@ void tree::deleteinnode(double var, node *curnode) {
             for (int k = i; k < curnode->keyscount-1; k++) {
                 curnode->keys[k] = curnode->keys[k+1];
                 curnode->children[k]=curnode->children[k+1];
-                if(curnode->childrencount!=0) curnode->children[k]->childorder--;
+                //if(curnode->childrencount!=0) curnode->children[k]->childorder--;
             }
             curnode->keyscount--;
         }
