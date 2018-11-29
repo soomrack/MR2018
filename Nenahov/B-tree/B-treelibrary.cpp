@@ -289,6 +289,20 @@ double *tree::searchinnode(node *curnode, double var)
 
 void tree::deletekey(double var)
 {
+    deleteinnode(var,searchnode(root,var));
+
+
+
+
+
+
+
+
+
+
+
+
+
     if(root->leaf)
     {
         deleteinnode(var,root);
@@ -350,14 +364,60 @@ void tree::deletekey(double var)
 }
 
 void tree::deleteinnode(double var, node *curnode) {
-    for (int i = 0; i < curnode->keyscount; i++) {
-        if (var == curnode->keys[i]) {
-            for (int k = i; k < curnode->keyscount-1; k++) {
-                curnode->keys[k] = curnode->keys[k+1];
-                curnode->children[k]=curnode->children[k+1];
-                //if(curnode->childrencount!=0) curnode->children[k]->childorder--;
+    if(curnode->children[0]==0) {
+        for (int i = 0; i < curnode->keyscount; i++) {
+            if (var == curnode->keys[i]) {
+                for (int k = i; k < curnode->keyscount - 1; k++) {
+                    curnode->keys[k] = curnode->keys[k + 1];
+                    curnode->children[k] = curnode->children[k + 1];
+                    //if(curnode->childrencount!=0) curnode->children[k]->childorder--;
+                }
+                curnode->keyscount--;
             }
-            curnode->keyscount--;
         }
+
+        if(curnode->keyscount<=t-1)
+        {
+            int order=-1;
+            for(int i=0;i<curnode->parent->keyscount;i++)
+            {
+                if(curnode->parent->children[i]==curnode) order=i;
+            }
+            node *prechild=curnode->parent->children[order-1];
+            node *postchild=curnode->parent->children[order+1];
+            if(postchild->keyscount>(t-1))
+            {
+                deleteinnode(var,curnode);
+
+                add(curnode->parent->keys[order]);
+                curnode->parent->keys[order]=postchild->keys[0];
+                deleteinnode(postchild->keys[0],postchild);
+                return;
+            }
+            if((postchild->keyscount<(t-1))&&(prechild->keyscount>(t-1)))
+            {
+
+                deleteinnode(var,curnode);
+                add(curnode->parent->keys[order]);
+                curnode->parent->keys[order]=prechild->keys[prechild->keyscount-1];
+                deleteinnode(prechild->keys[prechild->keyscount-1],prechild);
+            }
+        }
+
+        }
+
+    else
+    {
+        node* Dnode=curnode;
+        int keynumber;
+        for(int i=0;i<curnode->keyscount;i++) if(var==curnode->keys[i]) keynumber=i;
+        do {
+            curnode=curnode->children[keynumber];
+        }
+        while(!curnode->leaf);
+        double Replacekey=curnode->keys[curnode->keyscount-1];
+        deleteinnode(Replacekey,curnode);
+        Dnode->keys[keynumber]=Replacekey;
+
     }
 }
