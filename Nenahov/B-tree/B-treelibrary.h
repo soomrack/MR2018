@@ -45,12 +45,12 @@ public:
     };
 private:
     void addtonode(double var,node *curnode);
-    node *create(node *parent,int CO);
+    node *create(node *parent);
     node* searchnode(node *curnode,double var);
     double *searchinnode(node *curnode, double var);
     void deleteinnode(double var, node *curnode);
     void sortchildren(node * curnode);
-    node *createuppernode(node *root);
+    node *createuppernode();
 
 
 };

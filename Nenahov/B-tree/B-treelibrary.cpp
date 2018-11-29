@@ -7,13 +7,13 @@
 
 
 
-node *tree::create(node *parent,int CO)
+node *tree::create(node *parent)
 {
     node *curnode=new node;
     curnode->childrencount=0;
     curnode->keyscount=0;
     curnode->leaf=true;
-    curnode->childorder=CO;
+    //curnode->childorder=CO;
 
     parent->childrencount++;
     curnode->parent=parent;
@@ -28,20 +28,24 @@ node *tree::create(node *parent,int CO)
     return curnode;
 }
 
-node *tree::createuppernode(node *downnode)
+node *tree::createuppernode()
 {
     node *curnode=new node;
+    root->parent=curnode;
     curnode->childrencount=1;
-    curnode->children[0]=downnode;
+    root->childorder=0;
+    curnode->children[0]=root;
     curnode->keyscount=0;
     curnode->leaf=false;
-    downnode->childorder=0;
+    //curnode->keys[0]=root->keys[t-1];
+    //curnode->keyscount++;
+    root=curnode;
     curnode->parent=0;
-    for(int i=1;i<2*t+1;i++)
+    for(int i=1;i<2*t;i++)
     {
         curnode->children[i]=0;
     }
-    for(int i=0;i<2*t;i++)
+    for(int i=1;i<2*t-1;i++)
     {
         curnode->keys[i]=0;
     }
@@ -118,13 +122,74 @@ void tree::sort(node *curnode)
 
 void tree::add(double var)
 {
-    addtonode(var,root);
+    node *node=searchnode(root,var);
+    addtonode(var,node);
 }
 
 
 
 void tree::addtonode(double var, node *curnode) {
-    if (!curnode->leaf ) {
+    if ((curnode->keyscount < 2 * t - 1)) {
+        curnode->keys[curnode->keyscount] = var;
+        curnode->keyscount++;
+        sort(curnode);
+    } else {
+
+        if (!curnode->parent) createuppernode();
+        addtonode(curnode->keys[t-1],curnode->parent);
+        node *par = curnode->parent;
+        par->children[par->keyscount] = create(par);
+        node *child2 = par->children[par->keyscount];
+        sort(par);
+        int z = 0;
+        for (int i = t; i < 2 * t - 1; i++) {
+            child2->keys[z] = curnode->keys[i];
+            child2->keyscount++;
+            curnode->keys[i]=0;
+            curnode->keyscount--;
+            if (curnode->children[i]) {
+                child2->childrencount++;
+                child2->children[z] = curnode->children[i];
+                curnode->children[i]->parent=child2;
+                curnode->children[i] = 0;
+
+
+            }
+            z++;
+        }
+        if (curnode->children[2 * t - 1]) {
+            child2->childrencount++;
+            child2->children[z] = curnode->children[2 * t - 1];
+            curnode->children[2 * t - 1]->parent=child2;
+            curnode->children[2 * t - 1] = 0;
+        }
+        double key=curnode->keys[t-1];
+        curnode->keys[t-1]=0;
+        curnode->keyscount--;
+        if(var<key) {
+            curnode->keys[t-1]=var;
+            curnode->keyscount++;
+        }
+        else {
+            child2->keys[child2->keyscount]=var;
+            child2->keyscount++;
+        }
+
+
+        //addtonode(var,curnode);
+
+
+    }
+}
+
+
+
+
+
+
+
+
+    /*if (!curnode->leaf ) {
         if(var<curnode->keys[0])
         {
             if(curnode->children[0]==0) curnode->children[0]=create(curnode,0);
@@ -154,6 +219,9 @@ void tree::addtonode(double var, node *curnode) {
             sort(curnode);
         } else
             {
+
+
+
                 if (curnode->parent != 0)
                 {
                     node *par = curnode->parent;
@@ -222,7 +290,7 @@ void tree::addtonode(double var, node *curnode) {
                     }
                 }
             }
-
+*/
 
 
 
@@ -261,11 +329,28 @@ double *tree::search(double var)
 node *tree::searchnode(node *curnode, double var)
 {
     node *ret=0;
-    if(var>curnode->keys[curnode->keyscount-1]) ret=searchnode(curnode->children[curnode->keyscount],var);
+    //if((curnode->leaf)&&(var>curnode->parent->keys[i]) return
+    if(var>curnode->keys[curnode->keyscount-1])
+    {
+        if(curnode->children[0]==0) return curnode;
+        else return searchnode(curnode->children[curnode->keyscount],var);
+    }
+    for(int i=0;i<curnode->keyscount;i++)
+    {
+        if(var<curnode->keys[i])
+        {
+            if(curnode->leaf) return curnode;
+            else return searchnode(curnode->children[i],var);
+        }
+    }
+
+
+   /* if(var>curnode->keys[curnode->keyscount-1]) ret=searchnode(curnode->children[curnode->keyscount],var);
     if(var<curnode->keys[0]) ret=searchnode(curnode->children[0],var);
     if(var==curnode->keys[0]) ret=curnode;
     for(int i=1;i<curnode->keyscount;i++)
     {
+        if((curnode->leaf)&&(var>curnode->parent->keys[i])
         if(var==curnode->keys[i])
         {
             ret=curnode;
@@ -279,7 +364,8 @@ node *tree::searchnode(node *curnode, double var)
 
     }
     if (ret==0) std::cout<<"key "<<var<<" not found"<<std::endl;
-    return ret;
+    return ret;*/
+   return 0;
 }
 
 
