@@ -20,7 +20,7 @@ typedef struct {
 extern Table table_rand(const unsigned int size);
 extern void table_print(const Table A);
 extern Table table_trans(const Table A);
-extern Table method(const Table input, const Table shift);
+extern Table method(const Table input, const Table shift0, const Table shift1);
 extern Table table_zero(const unsigned int size);
 
 // След матрицы

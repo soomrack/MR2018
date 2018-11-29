@@ -61,11 +61,10 @@ Table table_zero(const unsigned int size){
 };
 
 
-Table method(const Table input, const Table shift){
+Table method(const Table input, const Table shift1, const Table shift2){
     static int road = 0;
-    static int oldshiftstr = 0, oldshiftcol = 0;
     int str = -1, col = -1;
-    //если осталась только матрица 2х2 в любом порядкн вывести две оставшиеся дороги и прибавить их длину к общей
+    //если осталась только матрица 2х2 обработка отдельно
     if (input.size == 2){
         for (int i = 0; i < input.size; i++) {
              for (int j = 0; j < input.size; j++) {
@@ -76,24 +75,9 @@ Table method(const Table input, const Table shift){
              }
          }
         road += input.data[input.size * str + col];
-        if (input.size == TOWNS) printf("%d -> %d -> \n", str + 1, col + 1);
-        else{
-            switch(shift.data[shift.size * str + col]) {
-                case 0:
-                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                    break;
-                case 01:
-                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                    break;
-                case 10:
-                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                    break;
-                case 11:
-                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                    break;
-            }
 
-        }
+        printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col], col + 1 + shift2.data[shift2.size * str + col]);
+
         input.data[input.size * str + col] = WINT_MAX;
         for (int i = 0; i < input.size; i++) {
             for (int j = 0; j < input.size; j++) {
@@ -104,24 +88,8 @@ Table method(const Table input, const Table shift){
             }
         }
         road += input.data[input.size * str + col];
-        if (input.size == TOWNS) printf("%d -> %d -> \n", str + 1, col + 1);
-        else{
-            switch(shift.data[shift.size * str + col]) {
-                case 0:
-                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                    break;
-                case 01:
-                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                    break;
-                case 10:
-                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                    break;
-                case 11:
-                    printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                    break;
-            }
+        printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col], col + 1 + shift2.data[shift2.size * str + col]);
 
-        }
         printf("Длина дороги - %d\n", road);
         return (input);
     }
@@ -179,80 +147,66 @@ Table method(const Table input, const Table shift){
         }
     }
 
+    //увеличиваем длину пути и выводим часть пути
+    road += input.data[input.size * str + col];
+    printf("Длина = %d, строка = %d, столбец = %d\n", road, str + 1, col + 1);
+
+    //создаем таблицу смещений для следующего захода рекурсии
+    static Table nextshift[2];
+    if (input.size == TOWNS){
+        for (int i = 0; i < nextshift[0].size; i++) {
+            for (int j = 0; j < nextshift[0].size; j++) {
+                nextshift[0].data[nextshift[0].size * i + j] = 0;
+                nextshift[1].data[nextshift[1].size * i + j] = 0;
+            }
+        }
+    }
+
+    nextshift[0].size = output.size;
+    nextshift[0].data = malloc(nextshift[0].size * nextshift[0].size * sizeof(int));
+    nextshift[1].size = output.size;
+    nextshift[1].data = malloc(nextshift[1].size * nextshift[1].size * sizeof(int));
+    for (int i = 0; i < nextshift[0].size; i++) {
+        for (int j = 0; j < nextshift[0].size; j++) {
+            if (j >= col){
+                nextshift[1].data[nextshift[1].size * i + j]++;
+                shift2.data[shift2.size * i + j]++;
+            }
+            if(i >= str) {
+                nextshift[0].data[nextshift[0].size * i + j]++;
+                shift1.data[shift1.size * i + j]++;
+            }
+        }
+    }
+    printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col], col + 1 + shift2.data[shift2.size * str + col]);
+
     //редукция матрицы
     output.size = output.size - 1;
     for (int i = 0; i < output.size; i++) {
         for (int j = 0; j < output.size; j++) {
             if((i < str) && (j < col)) {
-                if ((i == col + oldshiftcol) && (j == str + oldshiftstr)) output.data[output.size * i + j] = WINT_MAX;
+                if ((i == col + shift2.data[shift2.size * i + j]) && (j == str + shift1.data[shift1.size * i + j])) output.data[output.size * i + j] = WINT_MAX;
                 else output.data[output.size * i + j] = input.data[input.size * i + j];
             }
             if((i < str) && (j >= col)){
-                if ((i == col + oldshiftcol) && (j == str + oldshiftstr - 1)) output.data[output.size * i + j] = WINT_MAX;
+                if ((i == col + shift2.data[shift2.size * i + j]) && (j == str + shift1.data[shift1.size * i + j] - 1)) output.data[output.size * i + j] = WINT_MAX;
                 else output.data[output.size * i + j] = input.data[input.size * i + j + 1];
             }
             if((i >= str) && (j < col)){
-                if ((i == col + oldshiftcol - 1) && (j == str + oldshiftstr)) output.data[output.size * i + j] = WINT_MAX;
+                if ((i == col + shift2.data[shift2.size * i + j] - 1) && (j == str + shift1.data[shift1.size * i + j])) output.data[output.size * i + j] = WINT_MAX;
                 else output.data[output.size * i + j] = input.data[input.size * (i + 1) + j];
             }
             if((i >= str) && (j >= col)){
-                if ((i == col + oldshiftcol - 1) && (j == str + oldshiftstr - 1)) output.data[output.size * i + j] = WINT_MAX;
+                if ((i == col + shift2.data[shift2.size * i + j] - 1) && (j == str + shift1.data[shift1.size * i + j] - 1)) output.data[output.size * i + j] = WINT_MAX;
                 else output.data[output.size * i + j] = input.data[input.size * (i + 1) + j + 1];
             }
         }
     }
     table_print(output);
-    printf("%d, %d\n", oldshiftstr, oldshiftcol);
 
 
-    //увеличиваем длину пути и выводим часть пути
-    road += input.data[input.size * str + col];
-    printf("Длина = %d, строка = %d, столбец = %d\n", road, str, col);
-    if (input.size == TOWNS) printf("%d -> %d \n", str + 1, col + 1);
-    else{
-        switch(shift.data[shift.size * str + col]) {
-            case 0:
-                printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                break;
-            case 01:
-                oldshiftcol++;
-                printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                break;
-            case 10:
-                oldshiftstr++;
-                printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                break;
-            case 11:
-                oldshiftstr++;
-                oldshiftcol++;
-                printf("%d -> %d \n", str + 1 + oldshiftstr, col + 1 + oldshiftcol);
-                break;
-        }
-
-    }
-
-    //создаем таблицу смещений для следующего захода рекурсии
-    Table nextshift;
-    nextshift.size = output.size;
-    nextshift.data = malloc(nextshift.size * nextshift.size * sizeof(int));
-    for (int i = 0; i < nextshift.size; i++) {
-        for (int j = 0; j < nextshift.size; j++) {
-            if((i < str) && (j < col)) {
-                nextshift.data[nextshift.size * i + j] = 0;
-            }
-            if((i < str) && (j >= col)){
-                nextshift.data[nextshift.size * i + j] = 01;
-            }
-            if((i >= str) && (j < col)){
-                nextshift.data[nextshift.size * i + j] = 10;
-            }
-            if((i >= str) && (j >= col)){
-                nextshift.data[nextshift.size * i + j] = 11;
-            }
-        }
-    }
     //рекурсия
-    return method(output, nextshift);
+    return method(output, nextshift[0], nextshift[1]);
 }
 
 
