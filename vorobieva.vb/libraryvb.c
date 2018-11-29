@@ -61,22 +61,23 @@ Table table_zero(const unsigned int size){
 };
 
 
-Table method(const Table input, const Table shift1, const Table shift2){
+Table method(const Table input, const Table shift1, const Table shift2) {
     static int road = 0;
     int str = -1, col = -1;
     //если осталась только матрица 2х2 обработка отдельно
-    if (input.size == 2){
+    if (input.size == 2) {
         for (int i = 0; i < input.size; i++) {
-             for (int j = 0; j < input.size; j++) {
-               if (input.data[input.size * i + j] != WINT_MAX) {
-                   str = i;
-                   col = j;
-               }
-             }
-         }
+            for (int j = 0; j < input.size; j++) {
+                if (input.data[input.size * i + j] != WINT_MAX) {
+                    str = i;
+                    col = j;
+                }
+            }
+        }
         road += input.data[input.size * str + col];
 
-        printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col], col + 1 + shift2.data[shift2.size * str + col]);
+        printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col],
+               col + 1 + shift2.data[shift2.size * str + col]);
 
         input.data[input.size * str + col] = WINT_MAX;
         for (int i = 0; i < input.size; i++) {
@@ -88,7 +89,8 @@ Table method(const Table input, const Table shift1, const Table shift2){
             }
         }
         road += input.data[input.size * str + col];
-        printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col], col + 1 + shift2.data[shift2.size * str + col]);
+        printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col],
+               col + 1 + shift2.data[shift2.size * str + col]);
 
         printf("Длина дороги - %d\n", road);
         return (input);
@@ -130,13 +132,15 @@ Table method(const Table input, const Table shift1, const Table shift2){
     int max = 0;
     for (int i = 0; i < output.size; i++) {
         for (int j = 0; j < output.size; j++) {
-            if (output.data[output.size * i + j] == 0){
+            if (output.data[output.size * i + j] == 0) {
                 int minstr = WINT_MAX, mincol = WINT_MAX;
                 for (int k = 0; k < output.size; k++) {
-                    if ((output.data[output.size * i + k] < minstr) && (k != j)) minstr = output.data[output.size * i + k];
+                    if ((output.data[output.size * i + k] < minstr) && (k != j))
+                        minstr = output.data[output.size * i + k];
                 }
                 for (int k = 0; k < output.size; k++) {
-                    if ((output.data[output.size * k + j] < mincol) && (k != i)) mincol = output.data[output.size * k + j];
+                    if ((output.data[output.size * k + j] < mincol) && (k != i))
+                        mincol = output.data[output.size * k + j];
                 }
                 if ((minstr + mincol) > max) {
                     max = minstr + mincol;
@@ -153,7 +157,13 @@ Table method(const Table input, const Table shift1, const Table shift2){
 
     //создаем таблицу смещений для следующего захода рекурсии
     static Table nextshift[2];
-    if (input.size == TOWNS){
+    nextshift[0].size = output.size - 1;
+    nextshift[1].size = output.size - 1;
+    nextshift[1].data = malloc(nextshift[1].size * nextshift[1].size * sizeof(int));
+
+    if (input.size == TOWNS) {
+        nextshift[0].data = malloc(nextshift[0].size * nextshift[0].size * sizeof(int));
+        nextshift[1].data = malloc(nextshift[1].size * nextshift[1].size * sizeof(int));
         for (int i = 0; i < nextshift[0].size; i++) {
             for (int j = 0; j < nextshift[0].size; j++) {
                 nextshift[0].data[nextshift[0].size * i + j] = 0;
@@ -161,23 +171,24 @@ Table method(const Table input, const Table shift1, const Table shift2){
             }
         }
     }
-
-    nextshift[0].size = output.size;
-    nextshift[0].data = malloc(nextshift[0].size * nextshift[0].size * sizeof(int));
-    nextshift[1].size = output.size;
-    nextshift[1].data = malloc(nextshift[1].size * nextshift[1].size * sizeof(int));
-    for (int i = 0; i < nextshift[0].size; i++) {
-        for (int j = 0; j < nextshift[0].size; j++) {
-            if (j >= col){
-                nextshift[1].data[nextshift[1].size * i + j]++;
-                shift2.data[shift2.size * i + j]++;
-            }
-            if(i >= str) {
-                nextshift[0].data[nextshift[0].size * i + j]++;
-                shift1.data[shift1.size * i + j]++;
+    else {
+        for (int i = 0; i < nextshift[0].size; i++) {
+            for (int j = 0; j < nextshift[0].size; j++) {
+                if (j >= col) {
+                    nextshift[1].data[nextshift[1].size * i + j]++;
+                    shift2.data[shift2.size * i + j]++;
+                }
+                if (i >= str) {
+                    nextshift[0].data[nextshift[0].size * i + j]++;
+                    shift1.data[shift1.size * i + j]++;
+                }
             }
         }
     }
+
+    table_print(nextshift[0]);
+    table_print(nextshift[1]);
+
     printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col], col + 1 + shift2.data[shift2.size * str + col]);
 
     //редукция матрицы
