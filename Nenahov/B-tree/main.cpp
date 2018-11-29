@@ -7,14 +7,14 @@ int main() {
     using namespace std;
     tree A;
     double var;
-    for(int i=0;i<40;i++) {
+    for(int i=0;i<100;i++) {
         var=rand();
-        A.add(i);
-        //cout<<i<<'\t'<<var<<'\t'<<"The address of "<<*A.search(var)<<" is "<<A.search(var)<<endl;
+        A.add(var);
+    //    cout<<i<<'\t'<<var<<'\t'<<"The address of "<<*A.search(var)<<" is "<<A.search(var)<<endl;
     }
 
-    //for(int i=0;i<100;i++) cout<<i<<'\t'<<"The address of "<<*A.search(i)<<" is "<<A.search(i)<<endl;
-    A.add(1000);
+    //for(int i=0;i<30;i++) cout<<i<<'\t'<<"The address of "<<*A.search(i)<<" is "<<A.search(i)<<endl;
+    A.add(rand());
     A.add(2000);
     A.deletekey(50);
 
