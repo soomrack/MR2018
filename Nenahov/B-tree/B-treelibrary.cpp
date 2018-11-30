@@ -115,7 +115,10 @@ void tree::sort(node *curnode)
 
 void tree::add(double var)
 {
+    using namespace std;
     node *node=searchnode(root,var);
+    double *position=searchinnode(node,var);
+    if(position!=0) cout<<var<<" has already been added to address "<<search(var)<<endl;
     addtonode(var,node);
 }
 
@@ -184,22 +187,11 @@ void tree::addtonode(double var, node *curnode) {
         sortchildren(par);
 
 
-        //addtonode(var,curnode);
+
 
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 void tree::print()
@@ -215,8 +207,6 @@ void tree::print()
      curnode=curnode->children[0];
 
     }
-
-
     std::cout<<"(\t";
     for(int i=0;i<curnode->keyscount;i++)
         std::cout<<curnode->keys[i]<<"\t";
@@ -228,16 +218,14 @@ double *tree::search(double var)
     using namespace std;
      node *targetnode=searchnode(root,var);
      double *ret=searchinnode(targetnode,var);
-     //cout<<"The address of "<<var<<" is "<<ret<<endl;
+
      return ret;
 }
 
 node *tree::searchnode(node *curnode, double var)
 {
-    node *ret=0;
-    //if((curnode->leaf)&&(var>curnode->parent->keys[i]) return
     if(curnode->keyscount==0) return curnode;
-    if(var>curnode->keys[curnode->keyscount-1])
+    if(var>=curnode->keys[curnode->keyscount-1])
     {
         if(curnode->children[0]==0) return curnode;
         else return searchnode(curnode->children[curnode->keyscount],var);
@@ -251,28 +239,6 @@ node *tree::searchnode(node *curnode, double var)
         }
         if((curnode->keyscount==1)&&(var==curnode->keys[0])) return curnode;
     }
-
-
-   /* if(var>curnode->keys[curnode->keyscount-1]) ret=searchnode(curnode->children[curnode->keyscount],var);
-    if(var<curnode->keys[0]) ret=searchnode(curnode->children[0],var);
-    if(var==curnode->keys[0]) ret=curnode;
-    for(int i=1;i<curnode->keyscount;i++)
-    {
-        if((curnode->leaf)&&(var>curnode->parent->keys[i])
-        if(var==curnode->keys[i])
-        {
-            ret=curnode;
-
-
-        }
-        if((var>curnode->keys[i-1])&&(var<curnode->keys[i]))
-        {
-            ret=searchnode(curnode->children[i],var);
-        }
-
-    }
-    if (ret==0) std::cout<<"key "<<var<<" not found"<<std::endl;
-    return ret;*/
    return 0;
 }
 
@@ -291,117 +257,73 @@ void tree::deletekey(double var)
 {
     deleteinnode(var,searchnode(root,var));
 
-
-
-
-
-
-
-
-
-
-
-
-
-    if(root->leaf)
-    {
-        deleteinnode(var,root);
-        return;
-    }
-    else
-    {
-        node *curnode=searchnode(root,var);
-        if (curnode->leaf)
-        {
-            int order=-1;
-            for(int i=0;i<curnode->parent->keyscount;i++)
-            {
-                if(curnode->parent->children[i]==curnode) order=i;
-            }
-            if((curnode->keyscount>t-1)) {
-                deleteinnode(var,curnode);
-                return;
-            }
-
-            node *prechild=curnode->parent->children[order-1];
-            node *postchild=curnode->parent->children[order+1];
-            if(postchild->keyscount>(t-1))
-            {
-                deleteinnode(var,curnode);
-
-                add(curnode->parent->keys[order]);
-                curnode->parent->keys[order]=postchild->keys[0];
-                deleteinnode(postchild->keys[0],postchild);
-                return;
-            }
-            if((postchild->keyscount<(t-1))&&(prechild->keyscount>(t-1)))
-            {
-
-                deleteinnode(var,curnode);
-                add(curnode->parent->keys[order]);
-                curnode->parent->keys[order]=prechild->keys[prechild->keyscount-1];
-                deleteinnode(prechild->keys[prechild->keyscount-1],prechild);
-            }
-        }
-        else
-        {
-            node* Dnode=curnode;
-            int keynumber;
-            for(int i=0;i<curnode->keyscount;i++) if(var==curnode->keys[i]) keynumber=i;
-            do {
-                curnode=curnode->children[keynumber];
-            }
-            while(!curnode->leaf);
-            double Replacekey=curnode->keys[curnode->keyscount-1];
-            deleteinnode(Replacekey,curnode);
-            Dnode->keys[keynumber]=Replacekey;
-
-
-
-        }
-    }
-
 }
 
 void tree::deleteinnode(double var, node *curnode) {
     if(curnode->children[0]==0) {
         for (int i = 0; i < curnode->keyscount; i++) {
             if (var == curnode->keys[i]) {
-                for (int k = i; k < curnode->keyscount - 1; k++) {
+                for (int k = i; k < curnode->keyscount; k++) {
                     curnode->keys[k] = curnode->keys[k + 1];
                     curnode->children[k] = curnode->children[k + 1];
-                    //if(curnode->childrencount!=0) curnode->children[k]->childorder--;
+
                 }
                 curnode->keyscount--;
             }
         }
 
-        if(curnode->keyscount<=t-1)
+        if(curnode->keyscount<t-1)
         {
             int order=-1;
-            for(int i=0;i<curnode->parent->keyscount;i++)
+            for(int i=0;i<curnode->parent->keyscount+1;i++)
             {
                 if(curnode->parent->children[i]==curnode) order=i;
             }
             node *prechild=curnode->parent->children[order-1];
             node *postchild=curnode->parent->children[order+1];
-            if(postchild->keyscount>(t-1))
-            {
-                deleteinnode(var,curnode);
+            if(postchild!=NULL) {
+                if (postchild->keyscount > (t - 1))
+                {
 
-                add(curnode->parent->keys[order]);
-                curnode->parent->keys[order]=postchild->keys[0];
-                deleteinnode(postchild->keys[0],postchild);
+
+                    add(curnode->parent->keys[order+1]);
+                    curnode->parent->keys[order+1] = postchild->keys[0];
+                    deleteinnode(postchild->keys[0], postchild);
+                    return;
+                }
+                for(int i=curnode->keyscount-1;i<curnode->keyscount+postchild->keyscount;i++)
+                {
+                    curnode->keys[i]=postchild->keys[i];
+                    curnode->keyscount++;
+
+                }
+                delete curnode->parent->children[order+1];
+                sort(curnode->parent);
+                deleteinnode(curnode->parent->keys[order+1],curnode->parent);
                 return;
             }
-            if((postchild->keyscount<(t-1))&&(prechild->keyscount>(t-1)))
-            {
+            if(prechild!=NULL) {
+                if (prechild->keyscount > (t - 1)) {
 
-                deleteinnode(var,curnode);
-                add(curnode->parent->keys[order]);
-                curnode->parent->keys[order]=prechild->keys[prechild->keyscount-1];
-                deleteinnode(prechild->keys[prechild->keyscount-1],prechild);
+
+                    addtonode(curnode->parent->keys[order],curnode);
+                    curnode->parent->keys[order] = prechild->keys[prechild->keyscount - 1];
+                    deleteinnode(prechild->keys[prechild->keyscount - 1], prechild);
+                    return;
+                }
+                for(int i=curnode->keyscount-1;i<curnode->keyscount+prechild->keyscount;i++)
+                {
+                    curnode->keys[i]=prechild->keys[i];
+                    curnode->keyscount++;
+
+                }
+                delete curnode->parent->children[order];
+                sort(curnode->parent);
+                deleteinnode(curnode->parent->keys[order],curnode->parent);
+                return;
             }
+
+
         }
 
         }
@@ -411,10 +333,12 @@ void tree::deleteinnode(double var, node *curnode) {
         node* Dnode=curnode;
         int keynumber;
         for(int i=0;i<curnode->keyscount;i++) if(var==curnode->keys[i]) keynumber=i;
+        curnode=curnode->children[keynumber];
+
         do {
-            curnode=curnode->children[keynumber];
+            curnode=curnode->children[curnode->keyscount];
         }
-        while(!curnode->leaf);
+        while(curnode->children[0]!=0);
         double Replacekey=curnode->keys[curnode->keyscount-1];
         deleteinnode(Replacekey,curnode);
         Dnode->keys[keynumber]=Replacekey;
