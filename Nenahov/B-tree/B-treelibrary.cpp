@@ -118,7 +118,10 @@ void tree::add(double var)
     using namespace std;
     node *node=searchnode(root,var);
     double *position=searchinnode(node,var);
-    if(position!=0) cout<<var<<" has already been added to address "<<search(var)<<endl;
+    if(position!=0) {
+        cout<<var<<" has already been added to address "<<search(var)<<endl;
+        return;
+    }
     addtonode(var,node);
 }
 
@@ -140,12 +143,12 @@ void tree::addtonode(double var, node *curnode) {
         par->children[par->keyscount] = create(par);
         node *child2 = par->children[par->keyscount];
 
-        int medianposition;
+        /*int medianposition;
         for(int i=0;i<par->keyscount;i++)
         {
             if(par->keys[i]==curnode->keys[t-1]) medianposition=i;
         }
-
+*/
 
 
         int z = 0;
@@ -185,7 +188,7 @@ void tree::addtonode(double var, node *curnode) {
         }
         sort(par);
         sortchildren(par);
-
+        if((child2->children[0]!=0)&&(child2->children[child2->keyscount]==0)) std::cout<<"children count is incorrect"<<child2->keys[0]<<std::endl;
 
 
 

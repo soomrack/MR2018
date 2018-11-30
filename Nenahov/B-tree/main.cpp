@@ -1,15 +1,23 @@
 #include <iostream>
 #include "B-treelibrary.h"
-#include <ctime>
+
 int main() {
     //srand((unsigned int)time(nullptr));
    srand(10);
     using namespace std;
     tree A;
     double var;
-    for(int i=0;i<500;i++) {
+    for(int i=0;i<1000000;i++) {
         var=rand();
+        int time0=clock();
+        time(0);
+
         A.add(var);
+        int time1=clock();
+
+        int elapsedtime=time1-time0;
+
+        cout<<"adding "<<i+1<<" key has spent "<<clock()<<" msec"<<endl;
     //    cout<<i<<'\t'<<var<<'\t'<<"The address of "<<*A.search(var)<<" is "<<A.search(var)<<endl;
     }
 
