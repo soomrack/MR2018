@@ -281,11 +281,8 @@ public:
                 }
             }
         }
-        if(temp.data[temp.m_cols * temp.m_rows - 1] != 0)
-            temp = temp * (1 / temp.data[temp.m_cols * temp.m_rows - 1] / 10000000);
 
-        ///double k = -temp.data[temp.m_cols * temp.m_rows - 1] / temp.data[temp.m_cols * temp.m_rows - 2];
-        temp.Print();
+        //temp.Print();
         Matrix out(1, temp.m_rows);
         out.data[temp.m_rows - 1] = 1;
         for(int i = temp.m_rows - 2; i >= 0; i--){
@@ -496,17 +493,27 @@ public:
         return out;
     }
 
-    double halfDivideSq(double a, double b){
+    double halfDivideSq(double a, double b, double starta, double startb){
         if(a==0){
-            if( (b < 0.000000000001) && (b > -0.000000000001) )return (a+b)/2;
+            if( (b < 0.000000000001) && (b > -0.000000000001) ){
+                double temp = Calc(a + b / 2);
+                if((temp < 0.0000000001) && (temp > -0.0000000001))
+                    return ( a + b ) / 2;
+                else return halfDivideSq(starta*1.1, startb*1.1, starta*1.1, startb*1.1);
+            }
         }
         else{
-            if( ((b - a)/a < 0.000000001) && ((b - a)/a > -0.000000001) )return (a+b)/2;
+            if( ((b - a)/a < 0.000000001) && ( (b - a) / a > -0.000000001 ) ){
+                double temp = Calc(a + b / 2);
+                if((temp < 0.0000000001) && (temp > -0.0000000001))
+                    return ( a + b ) / 2;
+                else return halfDivideSq(starta*1.1, startb*1.1, starta*1.1, startb*1.1);
+            }
         }
-        if( (Calc(a) >= 0) && (Calc( (a + b)/2 ) <=0) ){
-            return halfDivideSq(a,(a+b)/2);
+        if( ( Calc(a) >= 0 ) && ( Calc( (a + b) / 2 ) <= 0 ) ){
+            return halfDivideSq( a,(a + b) / 2, starta, startb );
         }
-        else return halfDivideSq((a+b)/2,b);
+        else return halfDivideSq( (a + b) / 2, b, starta, startb );
     }
 
     Matrix Solve(){
@@ -525,11 +532,13 @@ public:
         tempP = this->Pr();
         Matrix tempM(1,maxPower - 2,0);
         tempM = tempP.Solve();
-        double x1 = halfDivideSq(tempM.data[0], tempM.data[1]);
+        double x1 = halfDivideSq(tempM.data[0], tempM.data[1], tempM.data[0], tempM.data[1]);
         Polinom Sq(2);
         Sq.data[1] = 1;
         Sq.data[0] = -x1;
+        Sq.Print();
         tempP = *this / Sq;
+        tempP.Print();
         tempM = tempP.Solve();
         memcpy(out.data, tempM.data, (maxPower - 2)*sizeof(double));
         out.data[maxPower - 2] = x1;
