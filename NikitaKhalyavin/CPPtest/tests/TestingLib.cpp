@@ -14,5 +14,6 @@ bool MatrixCompare(Matrix A, Matrix B){
             returnCode += ((temp > PRECISION) || (temp < -PRECISION));
         }
     }
+    if(returnCode)returnCode = 1;
     return (bool)returnCode;
 }

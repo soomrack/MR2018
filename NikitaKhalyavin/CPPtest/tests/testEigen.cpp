@@ -5,7 +5,8 @@
 #include "TestingLib.h"
 
 int main(){
-    int returnCode;
+    int returnCode = 0;
+    int count = 0;
     for(int i = 2; i < 10; i++){
 
         Matrix A(i,i);
@@ -14,6 +15,7 @@ int main(){
         B = A.getEigenValues();
         Matrix C;
         C = A.getEigenVectors();
+
 
         for(int j = 0; j < i; j++) {
 
@@ -25,20 +27,26 @@ int main(){
             E = A * D;
             F = D * B.data[j];
 
-            returnCode = MatrixCompare(E, F);
+            returnCode += MatrixCompare(E, F);
+            count++;
+
             if(returnCode) {
-                A.Print();
-                B.Print();
-                C.Print();
-                D.Print();
-                E.Print();
-                F.Print();
-                Matrix Err;
-                Err = E - F;
-                Err.Print();
-                return 1;
+                //A.Print();
+                //B.Print();
+                //C.Print();
+                //D.Print();
+                //E.Print();
+                //F.Print();
+                //Matrix Err;
+                //Err = E - F;
+                //Err.Print();
+                //return 1;
             }
         }
+    }
+    if(returnCode){
+        printf("failed %d of %d", returnCode, count);
+        return 1;
     }
     return 0;
 }

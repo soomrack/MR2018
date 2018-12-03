@@ -4,10 +4,62 @@
 
 #include "NKhDeicstraLib.h"
 #include <iostream>
+#include "../CPPtest/MatrLib.h"
 
 using namespace std;
 
 int main() {
+
+    int n = 1000;
+    int mn = 400;
+
+    Matrix MConnection(n, n, -50);
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < i + mn; j++){
+
+            MConnection.data[i * n + (j % n)] = 10;
+        }
+    }
+    MConnection.data[n-1] = 10;
+
+
+    MConnection = MConnection.Trans();
+    MConnection.beSymmetric();
+    MConnection = MConnection.Trans();
+
+    point Graph2[n];
+
+
+    for(int i = 0; i < n; i ++){
+        List temp(2 * mn);
+        int k = 0;
+        for(int j = 0; j < n; j++){
+            if(MConnection.data[i * n + j] > 5){
+                temp.dataNames[k] = j;
+                temp.dataLength[k] = (int)MConnection.data[i * n + j];
+                k++;
+                //if(k==mn)break;
+            }
+        }
+        List temp2(k);
+        memcpy(temp2.dataNames,temp.dataNames,k*sizeof(int));
+        memcpy(temp2.dataLength,temp.dataLength,k*sizeof(int));
+        point tempP(temp2);
+        Graph2[i] = tempP;
+    }
+
+    int start;
+    start = clock();
+    int stop;
+
+    Graph2[0].DeicstraAlg(Graph2, n, 0);
+
+    stop = clock();
+    //Graph2[0].printResults(Graph2, n);
+    //Graph2[0].printWayTo(Graph2, n / 2 , 0);
+
+    printf("time for Deicstra: %d", stop - start);
+/*
     point Graph[6];               //граф объявляется как массив неинициализированных вершин
 
     List input0(3);               //создание и инициализация списка нулевой вершины
@@ -74,6 +126,6 @@ int main() {
     Graph[0].DeicstraAlg(Graph, 6, 0);      //выполнение алгоритма Дейкстры
     Graph[0].printResults(Graph, 6);        //вывод длины кратчайшего пути для всех вершин
     Graph[0].printWayTo(Graph, 4, 0);       //вывод пути в 4 вершину из 0
-
+*/
     return 0;
 }

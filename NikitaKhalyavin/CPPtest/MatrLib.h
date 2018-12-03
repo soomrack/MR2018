@@ -69,6 +69,23 @@ public:
         }
     }
 
+
+    void dataSort(){
+        for (int i = 0; i < m_cols*m_rows - 1; i++){
+            double min = data[i];
+            int minInd = i;
+            for(int j = i + 1; j < m_cols*m_rows; j ++){
+                if (data[j] < data[i]){
+                    min = data[j];
+                    minInd = j;
+                }
+            }
+            double temp = data[i];
+            data[i] = min;
+            data[minInd] = temp;
+        }
+    }
+
     void countPrint(){
         printf("%d\n", countIncrement(0));
     }
@@ -493,27 +510,21 @@ public:
         return out;
     }
 
-    double halfDivideSq(double a, double b, double starta, double startb){
+    double halfDivideSq(double a, double b){
         if(a==0){
             if( (b < 0.000000000001) && (b > -0.000000000001) ){
-                double temp = Calc(a + b / 2);
-                if((temp < 0.0000000001) && (temp > -0.0000000001))
-                    return ( a + b ) / 2;
-                else return halfDivideSq(starta*1.1, startb*1.1, starta*1.1, startb*1.1);
+                return ( a + b ) / 2;
             }
         }
         else{
             if( ((b - a)/a < 0.000000001) && ( (b - a) / a > -0.000000001 ) ){
-                double temp = Calc(a + b / 2);
-                if((temp < 0.0000000001) && (temp > -0.0000000001))
-                    return ( a + b ) / 2;
-                else return halfDivideSq(starta*1.1, startb*1.1, starta*1.1, startb*1.1);
+                return ( a + b ) / 2;
             }
         }
         if( ( Calc(a) >= 0 ) && ( Calc( (a + b) / 2 ) <= 0 ) ){
-            return halfDivideSq( a,(a + b) / 2, starta, startb );
+            return halfDivideSq( a,(a + b) / 2 );
         }
-        else return halfDivideSq( (a + b) / 2, b, starta, startb );
+        else return halfDivideSq( (a + b) / 2, b );
     }
 
     Matrix Solve(){
@@ -532,13 +543,15 @@ public:
         tempP = this->Pr();
         Matrix tempM(1,maxPower - 2,0);
         tempM = tempP.Solve();
-        double x1 = halfDivideSq(tempM.data[0], tempM.data[1], tempM.data[0], tempM.data[1]);
+        tempM.dataSort();
+        double t1 = Calc(tempM.data[0]);
+        double t2 = Calc(tempM.data[1]);
+        double temp = t1 * t2;
+        double x1 = halfDivideSq(tempM.data[0], tempM.data[1]);
         Polinom Sq(2);
         Sq.data[1] = 1;
         Sq.data[0] = -x1;
-        Sq.Print();
         tempP = *this / Sq;
-        tempP.Print();
         tempM = tempP.Solve();
         memcpy(out.data, tempM.data, (maxPower - 2)*sizeof(double));
         out.data[maxPower - 2] = x1;
