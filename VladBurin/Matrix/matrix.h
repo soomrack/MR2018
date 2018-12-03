@@ -1,51 +1,58 @@
-#ifndef C_LIBRARY_H
-#define C_LIBRARY_H
-#define TOWNS 4
+//
+// Created by vladburin on 30.11.18.
+//
+
+#ifndef VLADBURIN_MATRIX_H
+#define VLADBURIN_MATRIX_H
+#include <vector>
+using namespace std;
 
 
-typedef struct {
+class Matrix
+{
+public:
+
+    Matrix(unsigned int Valrows, unsigned int Valcols, vector<double> &Valdata)
+    {
+        rows=Valrows;
+        cols=Valcols;
+        data=Valdata;
+        Valdata.clear();
+    }
+
     unsigned int rows;
     unsigned int cols;
-    double* data;
-} Matrix;
-
-typedef struct {
-    unsigned int size;
-    int* data;
-} Table;
-
-//Для таблиц в курсаче
+    vector<double> data;
+};
 
 
-extern Table table_rand(const unsigned int size);
-extern void table_print(const Table A);
-extern Table table_trans(const Table A);
-extern Table method(const Table input, const Table shift0, const Table shift1);
-extern Table table_zero(const unsigned int size);
 
 // След матрицы
-extern double matrix_trace(const Matrix A);
+extern double matrix_trace(const Matrix A); //
 
 // Определитель матрицы
-extern double matrix_determinant(const Matrix A);
+extern double matrix_determinant(const Matrix A); //
 
 // Собственные числа матрицы
-extern Matrix matrix_eigen_values(const Matrix A);
+
+extern double matrix_eigen_values(const Matrix A);
+
 
 // Матрица собственных векторов
 extern Matrix matrix_eigen_vectors(const Matrix A);
 
+
 // Сумма матриц
-extern Matrix matrix_sum(const Matrix A, const Matrix B);
+extern Matrix matrix_sum(const Matrix A, const Matrix B); //
 
 // Умножение матриц
-extern Matrix matrix_mult(const Matrix A, const Matrix B);
+extern Matrix matrix_mult(const Matrix A, const Matrix B); //
 
 // Умножение матрицы на скаляр
-extern Matrix matrix_mult__scalar(const double scalar, const Matrix A);
+extern Matrix matrix_mult__scalar(const double scalar, const Matrix A); //
 
 // Транспонирование матрицы
-extern Matrix matrix_trans(const Matrix A);
+extern Matrix matrix_trans(const Matrix A); //
 
 // Обращение матрицы
 extern Matrix matrix_invert(const Matrix A);
@@ -56,11 +63,12 @@ extern Matrix matrix_exp(const Matrix A);
 // Возведение матрицы в степень (натуральное число или 0)
 extern Matrix matrix_power(const Matrix A, const unsigned int power);
 
+
 // Единичная матрица
-extern Matrix matrix_one(const unsigned int rows, const unsigned int cols);
+extern Matrix matrix_one(const unsigned int rows, const unsigned int cols); //
 
 // Нулевая матрица
-extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols);
+extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols); //
 
 // Матрица оставленная из случайных чисел из диапазона [-1, +1]
 extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols);
@@ -77,4 +85,7 @@ extern Matrix matrix_lyapunov_equation(const Matrix A, const Matrix C);
 
 
 
-#endif //C_LIBRARY_H
+
+#endif //VLADBURIN_MATRIX_H
+
+

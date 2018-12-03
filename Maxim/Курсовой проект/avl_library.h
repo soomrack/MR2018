@@ -20,6 +20,7 @@ public:
     node* findmin(node* p);
     node* removemin(node* p);
     node* remove(node* p, int k);
+    node* search(node* p, int k);
     node* insert(node* p, int k);
     node* balance(node* p);
     tree()

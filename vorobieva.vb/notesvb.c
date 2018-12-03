@@ -7,17 +7,14 @@
 #define TOWNS 4
 
 int main() {
+    clock_t begin = clock();
     srand(time(NULL));
     Table input = table_rand(TOWNS);
     table_print(input);
-    Table output = method(input);
-    int min = WINT_MAX;
-    for (int i = 0; i < output.size; i++) {
-        for (int j = 0; j < output.size; j++) {
-            if (output.data[output.size * i + j] < min) min = output.data[output.size * i + j];
-        }
-    }
-    road += min;
-
+    Table shift = table_zero(TOWNS - 1);
+    method(input, shift, shift);
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("%f\n", time_spent);
     return 0;
 }

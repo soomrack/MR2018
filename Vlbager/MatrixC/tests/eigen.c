@@ -8,22 +8,31 @@
 
 #define STRINGIFY( x ) #x
 
-#define TEST_INVERT( M )                                                                                           \
+#define TEST_EIGEN( M )                                                                                            \
 {                                                                                                                  \
     printf("%-40s","Testing "  STRINGIFY(M) " ");                                                                  \
     bool ifEqual = true;                                                                                           \
-    Matrix expected = matrix_one(M.rows);                                                                          \
-    Matrix inverted = matrix_invert(M);                                                                            \
-    Matrix m = matrix_mult(M, inverted);                                                                           \
-    for (int row = 0; row < m.rows; row++)                                                                         \
+    Matrix eigenValues = matrix_eigen_values(M);                                                                   \
+    Matrix eigenVectors = matrix_eigen_vectors(M);                                                                 \
+    for (int eigen = 0; eigen < M.rows; eigen++)                                                                   \
     {                                                                                                              \
-        for (int col = 0; col < m.cols; col++)                                                                     \
+        Matrix vector = {M.rows, 1, malloc(M.rows * sizeof(double))};                                              \
+        for (int row = 0; row < M.rows; row++)                                                                     \
         {                                                                                                          \
-        if (  !doublecomparison(m.data[row * m.cols + col], expected.data[row * expected.cols + col]) )            \
-            {                                                                                                      \
-                ifEqual = false;                                                                                   \
-            }                                                                                                      \
+            vector.data[row] = eigenVectors.data[row * M.cols + eigen];                                            \
         }                                                                                                          \
+        Matrix m1 = matrix_mult(M, vector);                                                                        \
+        Matrix m = matrix_mult__scalar(1/eigenValues.data[eigen], m1);                                             \
+        free(m1.data);                                                                                             \
+        for (int row = 0; row < m.rows; row++)                                                                     \
+        {                                                                                                          \
+            if (  !doublecomparison(m.data[row], vector.data[row]) )                                               \
+                {                                                                                                  \
+                    ifEqual = false;                                                                               \
+                }                                                                                                  \
+        }                                                                                                          \
+        free(vector.data);                                                                                         \
+        free(m.data);                                                                                              \
     }                                                                                                              \
     if (ifEqual)                                                                                                   \
     {                                                                                                              \
@@ -34,10 +43,10 @@
         printf("Shaitan!\n");                                                                                      \
         returnCode = 1;                                                                                            \
     }                                                                                                              \
-    matrix_print(inverted);                                                                                        \
-    free(m.data);                                                                                                  \
-    free(expected.data);                                                                                           \
-    free(inverted.data);                                                                                           \
+    matrix_print(eigenValues);                                                                                     \
+    matrix_print(eigenVectors);                                                                                    \
+    free(eigenValues.data);                                                                                        \
+    free(eigenVectors.data);                                                                                       \
     printf("\n");                                                                                                  \
 }                                                                                                                  \
 
@@ -67,20 +76,20 @@ int main()
     double dA[1][1] = {-1.0};
     Matrix A = {1, 1, *dA};
 
-
+    TEST_EIGEN(A);
 
     double dB[2][2] = {{1.0, 0},
                        {0, 1.0}};
     Matrix B = {2, 2, *dB};
 
 
-    //TEST_INVERT(B);
+    TEST_EIGEN(B);
 
     double dC[2][2] = {{1.0, -1.0},
-                       {1.0, 1.0}};
+                       {-1.0, 2.0}};
     Matrix C = {2, 2, *dC};
 
-    //TEST_INVERT(C);
+    TEST_EIGEN(C);
 
     double dD[2][2] = {{5.0, -2.0},
                        {-2.0, 8.0}};
@@ -88,22 +97,21 @@ int main()
 
 
 
-    //TEST_INVERT(D);
+    TEST_EIGEN(D);
 
     double dE[2][2] = {{-55.965, 38.325},
                        {-1.875, 69.123}};
     Matrix E = {2, 2, *dE};
 
-    //TEST_INVERT(E);
+    TEST_EIGEN(E);
 
     double dF[3][3] = {{1.0, 3.0, 5.0},
                        {7.0, 8.0, 5.0},
                        {5.0, 3.0, 1.0}};
     Matrix F = {3, 3, *dF};
 
-    matrix_print(matrix_eigen_vectors(D));
 
-    //TEST_INVERT(F);
+    TEST_EIGEN(F);
 
     double dG[4][4] = {{20.0, 13.1, 14.0, -6.38},
                        {15.2, 16.0, 17.4, 5.25},
@@ -111,7 +119,7 @@ int main()
                        {25.45, 15.0, 57.1, 5.65}};
     Matrix G = {4, 4, *dG};
 
-    //TEST_INVERT(G);
+    TEST_EIGEN(G);
 
     double dH[5][5] = {{54.0, 66.0, 11.0, 0.0, 1.0},
                        {10.0, 20.0, 1.0, 2.0, 15.0},
@@ -122,7 +130,7 @@ int main()
 
 
 
-    //TEST_INVERT(H);
+    TEST_EIGEN(H);
 
     return returnCode;
 }

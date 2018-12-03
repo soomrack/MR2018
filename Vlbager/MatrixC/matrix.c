@@ -394,9 +394,7 @@ extern Matrix matrix_exp(const Matrix A)
         p = (uint64_t) norm;
     }
 
-    //Matrix A2 = matrix_mult__scalar(1/(pow(2.0, p)), A);
-    Matrix A2 = {A.rows, A.cols, malloc(A.rows * A.cols * sizeof(double))};
-    matrix_datacopy(A2, A);
+    Matrix A2 = matrix_mult__scalar(1/(pow(2.0, p)), A);
 
     //вычисляем матричную экспоненту от A2
     Matrix exp = matrix_one(A.rows);
@@ -415,14 +413,14 @@ extern Matrix matrix_exp(const Matrix A)
     free(temp2.data);
     free(A2.data);
 
-    /*
+
     //теперь чтобы перейти обратно к матрице А, нужно перемножить exp саму на себя p раз
     for (int i = 0; i < p; i++)
     {
         matrix_mult_withoutCreate(exp, exp, temp);
         matrix_datacopy(exp, temp);
     }
-    */
+
     free(temp.data);
 
     return exp;
@@ -624,12 +622,11 @@ extern Matrix matrix_eigen_values(const Matrix A)
         matrix_mult_withoutCreate(R, Q, temp);
         i++;
     }
-    while ((i < 100) && (!matrix_checkTriangular(temp))); //пока матрица не станет треугольной либо не будет превышен лимит итераций
+    while ((i < 10000) && (!matrix_checkTriangular(temp))); //пока матрица не станет треугольной либо не будет превышен лимит итераций
 
     free(Q.data);
     free(R.data);
 
-    matrix_print(temp);
 
     Matrix result = {A.rows, 1, malloc(A.rows * sizeof(double))};
 
@@ -645,7 +642,7 @@ extern Matrix matrix_eigen_values(const Matrix A)
 
 }
 /*
- * Очень плохо
+ * Все работает для матриц, содержащих только вещественные собственные числа
  */
 extern Matrix matrix_eigen_vectors(const Matrix A)
 {
@@ -669,13 +666,14 @@ extern Matrix matrix_eigen_vectors(const Matrix A)
         matrix_mult_withoutCreate(result, Q, Qtemp);
         matrix_datacopy(result, Qtemp);
 
-        matrix_print(Q);
         i++;
     }
     while ((i < 100) && (!matrix_checkTriangular(temp))); //пока матрица не станет треугольной либо не будет превышен лимит итераций
 
     free(Q.data);
     free(R.data);
+    free(temp.data);
+
 
     return result;
 

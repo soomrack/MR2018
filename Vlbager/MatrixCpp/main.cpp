@@ -2,8 +2,11 @@
 #include "matrix.h"
 
 int main() {
-    Matrix test = matrix_one(3);
-    test.print();
+
+    Matrix test1(2);
+    test1.rand();
+    test1.print();
+
 /*
     Matrix test2 = test;
     test2.print();

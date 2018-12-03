@@ -41,11 +41,19 @@ public:
     }
 
     //constructor
-    Matrix(int newRows, int newCols)
+    Matrix(const int newRows, const int newCols)
     {
         std::cout << "standart constructor" << std::endl;
         setSize(newRows, newCols);
     }
+
+    //конструктор для квадратной матрицы
+    Matrix(int size)
+    {
+        std::cout << "quadro constructor" << std::endl;
+        setSize(size, size);
+    }
+
 
     //constructor copy
     Matrix(const Matrix &A)
@@ -67,11 +75,31 @@ public:
     //destructor
     ~Matrix()
     {
-        printf("Minus matrix\n");
+        printf("destructor\n");
         delete data;
     }
 
+    void operator = (const Matrix &A)
+    {
+        std::cout << "operator =" << std::endl;
+        for (int row = 0; row < A.rows; row++)
+        {
+            for (int col = 0; col < A.cols; col++)
+            {
+                this->data[row * this->cols + col] = A.data[row * A.cols + col];
+            }
+        }
+    }
+
+
     void print();
+
+    void one();
+
+    void zero();
+
+    void rand();
+
+    friend Matrix operator + (Matrix &B);
 };
 
-extern Matrix matrix_one(const unsigned int size);
