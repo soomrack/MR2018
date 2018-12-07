@@ -1,23 +1,26 @@
 
 #include "source.h"
+#include <chrono>
+#include <cstdlib>
+
+typedef std::chrono::high_resolution_clock Clock;
 
 int main()
 {
-    graph test2(4);
+    srand(123);
 
-    test2.print();
-
-/*
-    std::vector<node> nodes;
-
-    nodes.reserve(1);
-
-    node test(2);
-
-    nodes[0] = test;
-
-    std::cout << nodes[0].getValue() << std::endl;
-*/
+    for (unsigned int n = 2; n <= 512; n *= 2)
+    {
+        graph test(n);
+        uiVector sorted;
+        clock_t start, stop;
+        auto t1 = Clock::now();
+        test.topological_sort(sorted);
+        auto t2 = Clock::now();
+        std::cout << "Testing graph of " << n << " elements:  "
+                  << std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count()
+                  << std::endl;
+    }
     return 0;
 
 }
