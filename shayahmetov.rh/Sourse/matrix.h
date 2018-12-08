@@ -10,10 +10,10 @@ typedef struct {
 
 
 // След матрицы
-extern double matrix_trace(const Matrix A);                     //DONE
+extern double matrix_trace(const Matrix A);                     //DONE  //Had tested
 
 // Определитель матрицы
-extern double matrix_determinant(const Matrix A);
+extern double matrix_determinant(const Matrix A);               //DONE
 
 // Собственные числа матрицы
 extern Matrix matrix_eigen_values(const Matrix A);
@@ -23,7 +23,7 @@ extern Matrix matrix_eigen_vectors(const Matrix A);
 
 
 // Сумма матриц
-extern Matrix matrix_sum(const Matrix A, const Matrix B);       //DONE
+extern Matrix matrix_sum(const Matrix A, const Matrix B);       //DONE          //Had tested
 
 // Умножение матриц
 extern Matrix matrix_mult(const Matrix A, const Matrix B);      //DONE
@@ -38,25 +38,24 @@ extern Matrix matrix_trans(const Matrix A);             //Done
 extern Matrix matrix_invert(const Matrix A);
 
 // Матричная экспонента
-extern Matrix matrix_exp(const Matrix A);
+extern Matrix matrix_exp(const Matrix A);                       //DONE
 
 // Возведение матрицы в степень (натуральное число или 0)
 extern Matrix matrix_power(const Matrix A, const unsigned int power);           //DONE
 
 
 // Единичная матрица
-extern Matrix matrix_one(const unsigned int rows, const unsigned int cols);     //DONE
+extern Matrix matrix_one(const unsigned int rows, const unsigned int cols);     //DONE          //Not tested
 
 // Нулевая матрица
-extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols);    //DONE
+extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols);    //DONE          //Not tested
 
 // Матрица оставленная из случайных чисел из диапазона [-1, +1]
-extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols);    //DONE
+extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols);    //DONE          //Not tested
 
 
 // Вывести матрицу на экран
-extern void matrix_print(const Matrix A);                               //DONE
-
+extern void matrix_print(const Matrix A);                               //DONE          //Not Tested
 
 // ТАУ
 

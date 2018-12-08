@@ -1,5 +1,6 @@
 #ifndef C_LIBRARY_H
 #define C_LIBRARY_H
+#define TOWNS 4
 
 
 typedef struct {
@@ -8,6 +9,19 @@ typedef struct {
     double* data;
 } Matrix;
 
+typedef struct {
+    unsigned int size;
+    int* data;
+} Table;
+
+//Для таблиц в курсаче
+
+
+extern Table table_rand(const unsigned int size);
+extern void table_print(const Table A);
+extern Table table_trans(const Table A);
+extern Table method(const Table input, const Table shift0, const Table shift1);
+extern Table table_zero(const unsigned int size);
 
 // След матрицы
 extern double matrix_trace(const Matrix A);

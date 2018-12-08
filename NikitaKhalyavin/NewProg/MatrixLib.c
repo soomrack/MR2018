@@ -40,11 +40,205 @@ extern double matrix_determinant(const Matrix A){
         else sign = 1;
         det += matrix_determinant(Temp)*A.data[col]*sign;
     }
+    free(Temp.data);
     return det;
 }
 
+void polinomPrint(Polinom P){
+    for(int i = 0; i < P.maxPower; i++){
+        printf("%lf l^%d     ", P.data[i], i);
+    }
+}
+
+Polinom PolinomMul(Polinom P1, Polinom P2){
+    Polinom out;
+    out.maxPower = P1.maxPower + P2.maxPower - 1;
+    out.data = malloc(out.maxPower * sizeof(double));
+    for(int i = 0; i < out.maxPower; i++)out.data[i] = 0;
+    for(int p1 = 0; p1 < P1.maxPower; p1++){
+        for(int p2 = 0; p2 < P2.maxPower; p2++){
+            out.data[p1+p2] += P1.data[p1] * P2.data[p2];
+        }
+    }
+    return out;
+}
+
+Polinom PolinomAdd(Polinom P1, Polinom P2){
+    Polinom out;
+    int minMaxPower;
+    int flag;
+    if(P1.maxPower > P2.maxPower) {
+        out.maxPower = P1.maxPower;
+        minMaxPower = P2.maxPower;
+        flag = 1;
+    }
+    else {
+        out.maxPower = P2.maxPower;
+        minMaxPower = P1.maxPower;
+        flag = 0;
+    }
+    out.data = malloc(sizeof(double) * out.maxPower);
+    out.data = malloc(out.maxPower * sizeof(double));
+    for(int i = 0; i < minMaxPower; i++){
+        out.data[i] = P1.data[i] + P2.data[i];
+    }
+    for(int i = minMaxPower; i < out.maxPower; i++){
+        if(flag) out.data[i] = P1.data[i];
+        else out.data[i] = P2.data[i];
+    }
+    return out;
+}
+
+Polinom PolinomMulSc(Polinom P1, double Sc){
+    Polinom out;
+    out.maxPower = P1.maxPower;
+    out.data = malloc(out.maxPower * sizeof(double));
+    for(int p1 = 0; p1 < P1.maxPower; p1++){
+        out.data[p1] = P1.data[p1] * Sc;
+    }
+    return out;
+}
+
+Polinom determinant_PowerMatrix(PowerMatrix A){
+    if(A.cols == 1) return A.data[0];
+    PowerMatrix Temp;
+    Polinom det;
+    det.maxPower = A.cols;
+    det.data = malloc(det.maxPower * sizeof(double));
+    Polinom temp;
+    Temp.cols = A.cols - 1;
+    Temp.rows = A.rows - 1;
+    Temp.data = malloc(sizeof(Polinom) * Temp.cols * Temp.rows);
+    int row = 0;
+    int sign;
+    for(int i = 0; i < Temp.rows; i++){     //construction sub-matrix
+        for(int j = 0; j < Temp.cols; j++){
+            Temp.data[j + ( i * Temp.cols)].maxPower = A.data[j + ( i * Temp.cols)].maxPower;
+            Temp.data[j + ( i * Temp.cols)].data = malloc(Temp.data[j + ( i * Temp.cols)].maxPower*sizeof(double));
+        }
+    }
+
+    for(int col = 0; col < A.cols; col++){
+        for(int i = 0; i < Temp.rows; i++){     //construction sub-matrix
+            for(int j = 0; j < Temp.cols; j++){
+                for(int k = 0; k < A.data[j + ( i * A.cols)].maxPower; k++) {
+                    if ((i < row)  && (j < col))  Temp.data[j + (i * Temp.cols)].data[k] = A.data[j + (i * A.cols)].data[k];
+                    if ((i < row)  && (j >= col)) Temp.data[j + (i * Temp.cols)].data[k] = A.data[(j + 1) + (i * A.cols)].data[k];
+                    if ((i >= row) && (j < col))  Temp.data[j + (i * Temp.cols)].data[k] = A.data[j + ((i + 1) * A.cols)].data[k];
+                    if ((i >= row) && (j >= col)) Temp.data[j + (i * Temp.cols)].data[k] = A.data[(j + 1) + ((i + 1) * A.cols)].data[k];
+                }
+            }
+        }
+        if(col % 2) sign = -1;
+        else sign = 1;
+        temp = PolinomAdd(det,PolinomMul(A.data[col],PolinomMulSc(determinant_PowerMatrix(Temp),sign)));
+        free(det.data);
+        det = temp;
+    }
+    return det;
+}
+
+Polinom Pr(Polinom P){
+    Polinom out;
+    out.maxPower = P.maxPower - 1;
+    out.data = malloc(out.maxPower * sizeof(double));
+    for(int i = 0; i < out.maxPower; i++){
+        out.data[i] = P.data[i+1] * (i+1);
+    }
+    return (out);
+}
+
+double PolinomCalc(Polinom P, double lyambda){
+    double out = 0;
+    double k = 1;
+    for(int i = 0; i < P.maxPower; i++){
+        out += P.data[i]*k;
+        k*=lyambda;
+    }
+    return out;
+}
+
+double HalfDividingSquare(double start, double stop, Polinom P){
+    if(PolinomCalc(P,start)/PolinomCalc(P,stop) > 0)return 0;
+    if( (start - stop ) / start < 0.0001)return start;
+    if(PolinomCalc(P,start)/PolinomCalc(P,(start + stop) / 2)<0)return HalfDividingSquare(start,(start + stop) / 2,P);
+    return HalfDividingSquare((start + stop) / 2, stop, P);
+}
+
+Matrix PolynomEqvSolve(Polinom P){
+    Matrix out;
+    out.cols = 1;
+    out.rows = P.maxPower - 1;
+    out.data = malloc(out.rows*out.cols* sizeof(double));
+    if(P.maxPower == 2){
+        out.data[0] = -P.data[0]/P.data[1];
+        return out;
+    }
+    Matrix prSq;
+    prSq = PolynomEqvSolve(Pr(P));
+    double start = PolinomCalc(P,prSq.data[0]);
+    double value;
+    double temp = prSq.data[0];
+    for(int i = 0; i < 50; i++){
+        if(temp >= 0) temp -= temp + 1;
+        else temp *= 2;
+        value = PolinomCalc(P,temp);
+        if(value/start < 0) break;
+    }
+    out.data[0] = HalfDividingSquare(temp, prSq.data[0], P);
+    for(int i =0; i < prSq.rows - 1; i++){
+        out.data[i + 1] = HalfDividingSquare(temp, prSq.data[i], P);
+    }
+    start = PolinomCalc(P,prSq.data[prSq.rows - 1]);
+    temp = prSq.data[prSq.rows - 1];
+    for(int i = 0; i < 50; i++){
+        if(temp <= 0) temp += temp + 1;
+        else temp *= 2;
+        value = PolinomCalc(P,temp);
+        if(value/start < 0) break;
+    }
+    out.data[prSq.rows] = HalfDividingSquare(prSq.data[0], temp , P);
+    return out;
+}
+
 // Собственные числа матрицы
-extern Matrix matrix_eigen_values(const Matrix A);
+extern Matrix matrix_eigen_values(const Matrix A){
+
+    if(A.cols != A.rows)exit(1);
+    PowerMatrix Temp;
+    Temp = ToPowerMatrix(A);
+    Polinom temp = determinant_PowerMatrix(Temp);
+    return PolynomEqvSolve(temp);
+}
+
+PowerMatrix ToPowerMatrix(Matrix A){
+    if(A.cols != A.rows)exit(1);
+    PowerMatrix Temp;
+    Temp.cols = A.cols;
+    Temp.rows = A.rows;
+    Temp.data = malloc(sizeof(Polinom) * Temp.cols * Temp.rows);
+    for(int row = 0; row < Temp.rows; row++){
+        for(int col = 0; col < Temp.cols; col++){
+            Temp.data[col + ( row * Temp.cols)].maxPower = 2;
+            Temp.data[col + ( row * Temp.cols)].data = malloc(2*sizeof(double));
+            Temp.data[col + ( row * Temp.cols)].data[0] = A.data[col + ( row * A.cols)];
+            if(col == row)  Temp.data[col + ( row * Temp.cols)].data[1] = -1;
+            else Temp.data[col + ( row * Temp.cols)].data[1] = 0;
+        }
+    }
+    return Temp;
+}
+
+void print_PowerMatrix(PowerMatrix Temp){
+    for(int row = 0; row < Temp.rows; row++){
+        for(int col = 0; col < Temp.cols; col++){
+            polinomPrint(Temp.data[col + ( row * Temp.cols)]);
+            printf("\t|||\t");
+        }
+        printf("\n");
+    }
+    printf("\n\n\n");
+}
 
 // Матрица собственных векторов
 extern Matrix matrix_eigen_vectors(const Matrix A);
@@ -139,12 +333,15 @@ extern Matrix matrix_invert(const Matrix A){
             Algd.data[col + row*Algd.cols] = matrix_determinant(Temp)*sign;
         }
     }
-    return matrix_mult__scalar( ( 1 / matrix_determinant(A) ), matrix_trans(Algd));
+    Matrix Out = matrix_mult__scalar( ( 1 / matrix_determinant(A) ), matrix_trans(Algd));
+    free(Algd.data);
+    free(Temp.data);
+    return Out;
 }
 
 
 unsigned long long int fact(unsigned int n){
-    int out = 1;
+    unsigned long long int out = 1;
     for(int i = 2; i < n; i++)out*=i;
     return  out;
 }
@@ -164,6 +361,7 @@ extern Matrix matrix_exp(const Matrix A){
         }
         if(flag) break;
     }
+    free(B.data);
     return C;
 }
 
@@ -202,6 +400,7 @@ extern Matrix matrix_power(const Matrix A, const unsigned int power){
             }
         }
     }
+    free(B.data);
     return C;
 }
 

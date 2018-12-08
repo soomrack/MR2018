@@ -1,13 +1,16 @@
 #include <stdio.h>
+#include <malloc.h>
 #include "matrix.h"
 
 int main(){
-    Matrix M = matrix_rand(3,3);
-    matrix_print(M);
-    Matrix O = matrix_one(3,3);
-    matrix_print(matrix_exp(O));
 
-    matrix_print(matrix_invert(M));
-    matrix_print(matrix_mult(matrix_invert(M),M));
+    Matrix A = matrix_rand(3,3);
+    matrix_print(A);
+    PowerMatrix P = ToPowerMatrix(A);
+    print_PowerMatrix(P);
+    Polinom T = determinant_PowerMatrix(P);
+    polinomPrint(T);
+    polinomPrint(Pr(T));
+    matrix_print(matrix_eigen_values(A));
     return 0;
 }
