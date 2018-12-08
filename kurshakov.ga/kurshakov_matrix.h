@@ -30,7 +30,26 @@ public:
     //Выводит матрицу на экран
     void matrix_print();
 
+    // Сумма матриц
+    Matrix matrix_sum(const Matrix B);
 
+    // Умножение матриц
+    Matrix matrix_mult(const Matrix A, const Matrix B);
+
+    // Умножение матрицы на скаляр
+    Matrix matrix_mult__scalar(const double scalar, const Matrix A);
+
+    // Транспонирование матрицы
+    Matrix matrix_trans(const Matrix A);
+
+    // Обращение матрицы
+    Matrix matrix_invert(const Matrix A);
+
+    // Матричная экспонента
+    Matrix matrix_exp(const Matrix A);
+
+    // Возведение матрицы в степень (натуральное число или 0)
+    Matrix matrix_power(const Matrix A, const unsigned int power);
 };
 
 // Единичная матрица

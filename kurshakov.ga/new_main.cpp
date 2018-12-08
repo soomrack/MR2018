@@ -7,9 +7,7 @@
 
 
 int main() {
-    SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
-    SetConsoleOutputCP(1251);
-    Matrix A = matrix_one(14, 15);
+    Matrix A = matrix_rand(2, 3);
     A.matrix_print();
     return 0;
 }
