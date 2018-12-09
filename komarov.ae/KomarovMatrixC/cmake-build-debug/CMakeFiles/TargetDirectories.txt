@@ -1,0 +1,5 @@
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/KomarovMatrixC/cmake-build-debug/CMakeFiles/KomarovMatrixLibC.dir
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/KomarovMatrixC/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/KomarovMatrixC/cmake-build-debug/CMakeFiles/AlKomTestDeterminant.dir
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/KomarovMatrixC/cmake-build-debug/CMakeFiles/AlKomTestMatrix_Sum.dir
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/KomarovMatrixC/cmake-build-debug/CMakeFiles/rebuild_cache.dir

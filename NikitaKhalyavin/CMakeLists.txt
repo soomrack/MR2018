@@ -3,7 +3,6 @@ project(test)
 
 set(CMAKE_C_STANDARD 11)
 
-enable_testing()
 
 add_subdirectory(win_webserver)
 add_subdirectory(CMakeTestLib)
@@ -12,5 +11,4 @@ add_subdirectory(NewProg)
 add_subdirectory(CPPtest)
 add_subdirectory(Deicstra)
 
-add_test(test1 NKhTestMatrix)
 
