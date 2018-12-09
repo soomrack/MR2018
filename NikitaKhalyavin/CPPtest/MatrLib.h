@@ -126,7 +126,7 @@ public:
     void Print() {
         for (int i = 0; i < m_rows; i++) {
             for (int j = 0; j < m_cols; j++) {
-                printf("%5.6lf\t", data[j + (i * m_cols)]);
+                printf("%5.1lf\t", data[j + (i * m_cols)]);
             }
             printf("\n");
         }
