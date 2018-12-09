@@ -13,6 +13,18 @@ typedef struct tree
     struct tree *parent; //родитель
 } TREE;
 
+
+void insert_case1(TREE *n);
+void insert_case2(TREE *n);
+void insert_case3(TREE *n);
+void insert_case4(TREE *n);
+void insert_case5(TREE *n);
+void delete_node(TREE *root);
+void balance_delete_1(TREE *root);
+void balance_delete_2(TREE *root);
+void balance_delete_3(TREE *root);
+void balance_delete_4(TREE *root);
+
 TREE *grandparent(TREE *n)
 {
     if ((n != NULL) && (n->parent != NULL))
@@ -32,11 +44,13 @@ TREE *uncle(TREE *n)
         return g->left;
 }
 
-void insert_case1(TREE *n);
-void insert_case2(TREE *n);
-void insert_case3(TREE *n);
-void insert_case4(TREE *n);
-void insert_case5(TREE *n);
+TREE *sibling(TREE *n)
+{
+    if (n == n->parent->left)
+        return n->parent->right;
+    else
+        return n->parent->left;
+}
 
 void rotate_right(TREE *n)
 {
@@ -145,31 +159,9 @@ void insert_case4(TREE *n)
 
     if ((n == n->parent->right) && (n->parent == g->left)) {
         rotate_left(n->parent);
-
-        /*
-         * rotate_left может быть выполнен следующим образом, учитывая что уже есть *g =  grandparent(n)
-         *
-         * struct node *saved_p=g->left, *saved_left_n=n->left;
-         * g->left=n;
-         * n->left=saved_p;
-         * saved_p->right=saved_left_n;
-         *
-         */
-
         n = n->left;
     } else if ((n == n->parent->left) && (n->parent == g->right)) {
         rotate_right(n->parent);
-
-        /*
-         * rotate_right может быть выполнен следующим образом, учитывая что уже есть *g =  grandparent(n)
-         *
-         * struct node *saved_p=g->right, *saved_right_n=n->right;
-         * g->right=n;
-         * n->right=saved_p;
-         * saved_p->left=saved_right_n;
-         *
-         */
-
         n = n->right;
     }
     insert_case5(n);
@@ -182,113 +174,9 @@ void insert_case5(TREE *n) {
     g->color = RED;
     if ((n == n->parent->left) && (n->parent == g->left)) {
         rotate_right(g);
-    } else { /* (n == n->parent->right) && (n->parent == g->right) */
+    } else {
         rotate_left(g);
     }
-}
-
-void fixDeleting(TREE *key)
-{
-    // далее родственные связи относительно p
-    while (key->color ==BLACK && key->parent != NULL)
-        if (key->parent->left == key) { //if p — левый ребенок
-            if (key->parent->right->color == RED) { //if "брат" красный
-                key->parent->right->color = BLACK; //brother = black
-                key->parent->color = RED; //parent = red
-                rotate_left(key->parent);
-            }
-            if ((key->parent->right->left ==NULL && key->parent->right->right == NULL)||(key->parent->right->left->color == BLACK && key->parent->right->right->color == BLACK)) //if у "брата" черные дети
-                key->parent->right->color = RED;
-            else {
-                if (key->parent->right->right->color == BLACK) {
-                    key->parent->right->left->color = BLACK; // "брат" красный с черными правым ребенком
-                    key->parent->right->color = RED; //брат красный
-                    rotate_right(key->parent->right);
-                }
-                key->parent->right->color = key->parent->color;
-                key->parent->color = BLACK;
-                key->parent->right->right->color = BLACK;
-                rotate_left(key->parent);
-            }
-        }
-        else {
-            if (key->parent->left->color == RED) { //if "брат" красный
-                key->parent->left->color = BLACK; //brother = black
-                key->parent->color = RED; //parent = red
-                rotate_right(key->parent);
-            }
-            if (key->parent->left->left->color == BLACK && key->parent->left->right->color == BLACK)   //if у "брата" черные дети
-                key->parent->left->color = RED;
-            else {
-                if (key->parent->left->left->color == BLACK) {
-                    key->parent->left->right->color = BLACK; // "брат" красный с черными правым ребенком
-                    key->parent->left->color = RED; //брат красный
-                    rotate_left(key->parent->left);
-                }
-                key->parent->left->color = key->parent->color;
-                key->parent->color = BLACK;
-                key->parent->left->left->color = BLACK;
-                rotate_right(key->parent);
-            }
-        }
-        key->color = BLACK;
-}
-
-
-
-void delete(TREE *key)
-{
-    if (key->right == NULL && key->left == NULL) {
-        if (key->parent == NULL)
-            key = NULL;
-        else {
-            if (key->parent->right == key) { //НЕПРАВИЛЬНО!!!!!!!!
-                key->parent->right = NULL;
-                //if (key->color==BLACK)
-                    insert_case1(key);
-                    return;
-
-            }
-            else {
-                //if (key->color==BLACK)
-                key->parent->left = NULL;
-                    insert_case1(key);
-                    return;
-
-            }
-        }
-    }
-    else {
-        if (key->right && key->left == NULL) {
-            if (key->right->parent->parent->left = key)
-                key->right->parent->parent->left = key->right;
-            else key->right->parent->parent->right = key->right;
-            key->parent->right = NULL;
-        }
-        if (key->left && key->right == NULL) {
-            if (key->right->parent->parent->left = key)
-                key->left->parent->parent->left = key->left;
-            if (key->right->parent->parent->right = key)
-                key->left->parent->parent->right = key->left;
-            key->parent->left = NULL;
-        }
-        //if (key->left && key->right)
-            insert_case1(key);
-    }
-   // при удалении черной вершины могла быть нарушена балансировка
-}
-
-void* add_leaves(TREE *root) {
-    if (root->right == NULL) {
-        root->right = (TREE *) malloc(sizeof(TREE));
-        root->right->color = BLACK;
-    }
-    else if (root->right->parent) add_leaves(root->right);
-    if (root->left == NULL) {
-        root->left = (TREE *) malloc(sizeof(TREE));
-        root->left->color = BLACK;
-    }
-    else if (root->left->parent) add_leaves(root->left);
 }
 
 TREE *add_to_tree(TREE *root, int new_value)
@@ -299,93 +187,155 @@ TREE *add_to_tree(TREE *root, int new_value)
     new_node->data = new_value;
     new_node->left = new_node->right = NULL;
     new_node->color = RED;
-
-
     if (root==NULL)  // если нет сыновей - создаем новый элемент
     {
         root = (TREE*)malloc(sizeof(TREE));
         root = new_node;
         new_node->parent = NULL;
-        //return root;
     }
     else
     {
         root = find_succesor(root, new_node);
     }
-
-    insert_case1(new_node);/*
-
-    check_color(root, new_node);
-
-    /*if (root->data < new_value)          // добавлем ветвь
-    {
-        if(root->right != NULL)
-            root = find_succesor(root);
-        root->right = add_to_tree(root->right, new_value, root->color);
-        if (root->right->parent == NULL)
-            root->right->parent = root;
-    }
-    else
-    {
-        if(root->left != NULL)
-            root = find_succesor(root);
-        root->left = add_to_tree(root->left, new_value, root->color);
-        if (root->left->parent == NULL)
-            root->left->parent = root;
-    }*/
+    insert_case1(new_node);
     return root;
 }
 
 
-void tree_to_array(TREE *root, int a[]) // процедура заполнения массива
-{
-    static int max2=0;                      // счетчик элементов нового массива
-    if (root==NULL) return;             // условие окончания - нет сыновей
-    tree_to_array(root->right, a);       // обход левого поддерева
-    a[max2++] = root->data;
-    tree_to_array(root->left, a);      // обход правого поддерева
-    free(root);
-}
-
-void sort_tree(int a[], int elem_total)        // собственно сортировка
-{
-    bool done = 0;
-    TREE *root;
-    int i;
-    root = NULL;
-    for (i=0; i<elem_total; i++)        // проход массива и заполнение дерева
-        root = add_to_tree(root, a[i]);
-    i=0;
-    //TREE *new_root = root;
-
-    while (!done)
-    {
-        while (root->parent != NULL)
-            root = root->parent;
-        //add_leaves(root);   //ЭТО НУЖНО ПОПРАВИТЬ, ЧТОБЫ УДАЛЯТЬ УЗЛЫ
-        while (root->left != NULL) {
-            root = root->left;
-        }
-        a[i] = root->data;
-        delete(root); //ИЛИ ПОПРАВИТЬ ЭТО
-        if (root->parent == NULL) {
-            done = true;
-            return;
-        }
-        root = root->parent;
-        i++;
-
-    }
-    //tree_to_array(root, a);             // заполнение массива
-}
 /* тестовая программа */
 void main() {
     int i;
-    /* Это будем сортировать */
     int a[14]={ 0,7,8,3,52,14,16,18,15,13,42,30,35,26 };
+    TREE *root;
+    root = NULL;
+    for (i=0; i<14; i++)        // проход массива и заполнение дерева
+        root = add_to_tree(root, a[i]);
+    root = root->parent->parent;
+    delete_node(root);
 
-    sort_tree(a, 14);
+}
 
-    printf("sorted array:\n");
-    for (i=0;i<14;i++) printf("%d ",a[i]);
+void delete_node(TREE *root) {
+
+    if (root->parent == NULL) {
+        root = NULL;
+        return;
+    }
+    if ((root->right == NULL) && (root->left == NULL)) {
+        if (root->parent->left == root)
+            root->parent->left = NULL;
+        else root->parent->right = NULL;
+        if (root->color == RED)
+            root = root -> parent;
+        else {
+            root = root -> parent;
+            balance_delete_1(root);
+        }
+
+        //free(node);
+        return;
+    }
+    else {
+        if ((root->right == NULL) && (root->left != NULL))
+            if (root->parent->left == root)
+                root->parent->left = root->parent->left->left;
+            else root->parent->right = root->parent->right->left;
+        if ((root->right != NULL) && (root->left == NULL))
+            if (root->parent->left == root)
+                root->parent->left = root->parent->left->right;
+            else root->parent->right = root->parent->right->right;
+
+        if ((root->right != NULL) && (root->left != NULL)) {
+            TREE *node = root;
+            node = node->right;
+            while (node->left != NULL) {
+                node = node->left;
+            }
+            root -> data = node-> data;
+            //free (node);
+            root = root ->right;
+            while (root->left != NULL) {
+                root = root->left;
+            }
+            delete_node(root);
+
+        }
+    }
+}
+
+void balance_delete_1(TREE *root) {
+    if ((root->color != BLACK) || (root->parent == NULL) )
+        return;
+    TREE *s = sibling(root);
+    if ((s != NULL)&& (s->color == RED)) {
+        if (root->parent->left == s) {
+            root ->parent->color = RED;
+            root->parent->left->color = BLACK;
+            rotate_right(root->parent);
+        }
+        else {
+            root ->parent->color = RED;
+            root->parent->right->color = BLACK;
+            rotate_left(root->parent);
+        }
+        root = root->parent;
+        balance_delete_1(root);
+    }
+    else balance_delete_2(root);
+
+
+};
+
+void balance_delete_2(TREE *root) {
+    TREE *s = sibling(root);
+    if ((s->left == NULL)&&(s->right == NULL) || (s->left->color == BLACK)&&(s->right->color == BLACK)  ) {
+
+        if (root->parent->left == s)
+            root->parent->left->color = RED;
+        else root->parent->right->color = RED;
+        root->parent->color = BLACK;
+        root = root->parent;
+        balance_delete_1(root);
+    }
+    else balance_delete_3(root);
+}
+
+
+void balance_delete_3(TREE *root) {
+    TREE *s = sibling(root);
+    if (((s->right == NULL)||(s->right->color == BLACK)) && (s->left->color == RED)) {
+        if (root->parent->left == s) {
+            root->parent->left->color = RED;
+            root->parent->left->left->color = BLACK;
+            rotate_left(root->parent->left);
+        } else {
+            root->parent->right->color = RED;
+            root->parent->right->left->color = BLACK;
+            rotate_left(root->parent->right);
+        }
+        root = root->parent;
+        balance_delete_1(root);
+    }
+    else balance_delete_4(root);
+}
+
+
+
+void balance_delete_4(TREE *root) {
+    TREE *s = sibling(root);
+    if (s->right->color == RED) {
+        if (root->parent->left == s) {
+            root->parent->left->color = root->parent->color;
+            root->parent->left->right->color = BLACK;
+            root->parent->color = BLACK;
+            rotate_right(root->parent);
+        } else {
+            root->parent->right->color = root->parent->color;
+            root->parent->right->right->color = BLACK;
+            root->parent->color = BLACK;
+            rotate_right(root->parent);
+        }
+    }
+    root = root->parent;
+    balance_delete_1(root);
 }
