@@ -73,6 +73,19 @@ A->right=0;
     return balance(p);
 }
 
+
+node* tree::search(node* p, int k){ // удаление ключа k из дерева p
+    while(1) {
+        if (k < p->key)p = p->left;
+        if (k > p->key) p = p->right;
+        if (k == p->key) return p;
+        if ((p->left == 0) && (p->right == 0)) {
+            std::cout << "can't find the key\n"<<"return zero pointer"<<std::endl;
+            return p;
+        }
+    }
+}
+
 node* tree::findmin(node* p) // поиск узла с минимальным ключом в дереве p
 {
     return p->left?findmin(p->left):p;

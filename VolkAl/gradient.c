@@ -2,7 +2,7 @@
 #include <math.h>
 #ifndef GRADIENTSP_H
 #define GRADIENTSP_H
-#define NMAX 10
+#define NMAX 1000
 
 //Собственно здесь записывается наша функция
 double f(double x,double y)
@@ -28,10 +28,10 @@ double norma(double x, double y)
     return sqrt(x*x+y*y);
 }
 
-//Это функция g d методе наискорейшего (градиентного) спуска
-double g(double x, double y, double alpha)
+//Это функция g в методе наискорейшего (градиентного) спуска
+double g(double x, double y, double lambda)
 {
-    return f(x - alpha*f_dx(x,y), y - alpha*f_dy(x,y));
+    return f(x - lambda*f_dx(x,y), y - lambda*f_dy(x,y));
 }
 
 
@@ -42,7 +42,7 @@ double Dihotomia(double a0, double b0, double epsilon, double x, double y)
     int k;
     //Отклонени от середины отрезка влево, вправо
     double lk, mk;
-    //Величина на которую мы отклонимся от середины отрезка
+    //Величина, на которую мы отклонимся от середины отрезка
     double delta=0.5*epsilon;
     //Точка минимума
     double x_;
@@ -82,7 +82,7 @@ double GreatDescent(int bx, int by,double epsilon)
 {
     double x[NMAX];
     double y[NMAX];
-    double alpha[NMAX];
+    double lambda[NMAX];
     int k;
 
     //Начальное приближение u[0]
@@ -93,11 +93,11 @@ double GreatDescent(int bx, int by,double epsilon)
 
     for (k=0; ; k++)
     {
-        //Находим alpha_k как минимум функции g на отрезке -10000,100000
-        alpha[k]=Dihotomia(-10000,100000,epsilon,x[k],y[k]);
+        //Находим lambda_k как минимум функции g на отрезке -10000,100000
+        lambda[k]=Dihotomia(-10000,100000,epsilon,x[k],y[k]);
         //Вычисляем u[k]
-        x[k+1]=x[k]-alpha[k]*f_dx(x[k], y[k]);
-        y[k+1]=y[k]-alpha[k]*f_dy(x[k], y[k]);
+        x[k+1]=x[k]-lambda[k]*f_dx(x[k], y[k]);
+        y[k+1]=y[k]-lambda[k]*f_dy(x[k], y[k]);
 
 
         if (k>1)

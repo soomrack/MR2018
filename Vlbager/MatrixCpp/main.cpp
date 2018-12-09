@@ -1,16 +1,17 @@
 #include <iostream>
-#include "matrix.h"
+#include "matrix.hpp"
 
 int main() {
-    Matrix test = matrix_one(3);
-    test.print();
-/*
-    Matrix test2 = test;
-    test2.print();
 
-    Matrix test3(3,3);
-    test3 = test2;
-    test3.print();
-*/
+    Matrix test(3);
+    test.rand();
+    test.print();
+
+    Matrix eigenValues = test.eigenValues();
+    eigenValues.print();
+
+    Matrix eigenVectors = test.eigenVectors();
+    eigenVectors.print();
+
     return 0;
 }

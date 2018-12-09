@@ -86,7 +86,7 @@ private:
         int out = 0;
         for(int i = 0; i < size; i++){
             if(Graph[i].isNotVisited)
-                if(Graph[i].label < min){
+                if(Graph[i].label <= min){
                     out = i;
                     min = Graph[i].label;
                 }
@@ -150,8 +150,8 @@ public:
 
     void DeicstraAlg(point * Graph, int size, int startNumber){     //функция, исполняющая алгоритм Дейкстры
         Graph[startNumber].label = 0;
-        while(Graph[0].areNotAllVisited(Graph,6)){
-            int thisPoint = Graph[0].getMinNumber(Graph,6);
+        while(Graph[0].areNotAllVisited(Graph,size)){
+            int thisPoint = Graph[0].getMinNumber(Graph,size);
             if(thisPoint > size) return;
             Graph[thisPoint].Visit(Graph, thisPoint);
         }

@@ -9,6 +9,6 @@
 
 #include "../MatrLib.h"
 
-#define PRECISION 0.000001
+#define PRECISION 0.00001
 
 bool MatrixCompare(Matrix A, Matrix B);
