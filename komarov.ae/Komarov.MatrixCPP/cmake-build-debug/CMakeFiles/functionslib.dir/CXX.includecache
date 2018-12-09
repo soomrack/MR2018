@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/Matrix CPP/functions.cpp
+functions.h
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/Matrix CPP/functions.h
+iostream
+-
+stdlib.h
+-
+ctime
+-
+
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/Matrix CPP/functions.h
+

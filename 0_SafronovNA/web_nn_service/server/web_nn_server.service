@@ -1,0 +1,13 @@
+[Unit]
+Description=web_nn_server
+
+[Service]
+Type=forking
+
+ExecStart=
+ExecStop=
+ExecReload=
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target
