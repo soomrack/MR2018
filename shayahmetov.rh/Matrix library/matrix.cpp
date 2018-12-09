@@ -301,3 +301,22 @@ void Matrix::invert()
                         data[i]*=(1/result);
         }
 };
+Matrix element(const Mx::Matrix A, unsigned int position)
+{
+        Mx::Matrix A1(1, 1);
+        A1=A;
+        double det=0;
+        det=A1.determinant();
+        det=1/det;
+        A1.power(position);
+        A1.mult_scalar(det);
+        return A1;
+};
+Matrix mexp(const Mx::Matrix A)
+{
+        Mx::Matrix A1(1, 1);
+        A1=A;
+        for(unsigned int i=1; i<5; i++)
+              A1.sum(element(A1, i));
+        return A1;
+};
