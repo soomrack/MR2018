@@ -37,8 +37,6 @@ node *tree::createuppernode()
     curnode->children[0]=root;
     curnode->keyscount=0;
     curnode->leaf=false;
-    //curnode->keys[0]=root->keys[t-1];
-    //curnode->keyscount++;
     root=curnode;
     curnode->parent=0;
     for(int i=1;i<2*t;i++)
@@ -136,21 +134,10 @@ void tree::addtonode(double var, node *curnode) {
 
         if (!curnode->parent) createuppernode();
         addtonode(curnode->keys[t-1],curnode->parent);
-
-
         double key=curnode->keys[t-1];
         node *par = curnode->parent;
         par->children[par->keyscount] = create(par);
         node *child2 = par->children[par->keyscount];
-
-        /*int medianposition;
-        for(int i=0;i<par->keyscount;i++)
-        {
-            if(par->keys[i]==curnode->keys[t-1]) medianposition=i;
-        }
-*/
-
-
         int z = 0;
         for (int i = t; i < 2 * t - 1; i++) {
             child2->keys[z] = curnode->keys[i];
@@ -162,8 +149,6 @@ void tree::addtonode(double var, node *curnode) {
                 child2->children[z] = curnode->children[i];
                 curnode->children[i]->parent=child2;
                 curnode->children[i] = 0;
-
-
             }
             z++;
         }
@@ -188,7 +173,7 @@ void tree::addtonode(double var, node *curnode) {
         }
         sort(par);
         sortchildren(par);
-        if((child2->children[0]!=0)&&(child2->children[child2->keyscount]==0)) std::cout<<"children count is incorrect"<<child2->keys[0]<<std::endl;
+       // if((child2->children[0]!=0)&&(child2->children[child2->keyscount]==0)) std::cout<<"children count is incorrect"<<child2->keys[0]<<std::endl;
 
 
 
@@ -196,25 +181,6 @@ void tree::addtonode(double var, node *curnode) {
     }
 }
 
-
-void tree::print()
-{
-    using namespace std;
-    node *curnode=root;
-    while(!curnode->leaf)
-    {
-        std::cout<<"(\t";
-        for(int i=0;i<curnode->keyscount;i++)
-            std::cout<<curnode->keys[i]<<"\t";
-        cout<<")"<<endl;
-     curnode=curnode->children[0];
-
-    }
-    std::cout<<"(\t";
-    for(int i=0;i<curnode->keyscount;i++)
-        std::cout<<curnode->keys[i]<<"\t";
-    cout<<")"<<endl;
-}
 
 double *tree::search(double var)
 {
