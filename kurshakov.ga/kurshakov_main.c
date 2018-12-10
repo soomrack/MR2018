@@ -1,13 +1,12 @@
-//
-// Created by admin on 17.09.2018.
-//
-#define CREDIT 500000000
-#define RATE 0.17
-#define TIME 120
-
 #include <stdio.h>
-#include "kurshakov_lib.h"
+#include <stdlib.h>
+#include <time.h>
+#include "matrixkga.h"
+#define SIZE 3
 
 int main () {
-    printf("%ld\n", payment(CREDIT, RATE, TIME));
+    srand(time(NULL));
+    Matrix A = matrix_rand(SIZE,SIZE);
+    matrix_print(A);
+    matrix_print(matrix_exp(A));
 }

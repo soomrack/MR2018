@@ -25,8 +25,8 @@ class tree{
 public:
     node *root;
     void add(double var);
-    void sort(node *curnode);
-    void print();
+
+
     double *search(double var);
     void deletekey(double var);
     tree()
@@ -35,7 +35,6 @@ public:
         root->leaf=true;
         root->keyscount=0;
         root->childrencount=0;
-        //root->childorder=NULL;
         root->parent=0;
         for(int i=0;i<2*t;i++)
         {
@@ -52,7 +51,7 @@ private:
     void deleteinnode(double var, node *curnode);
     void sortchildren(node * curnode);
     node *createuppernode();
-
+    void sort(node *curnode);
 
 };
 
