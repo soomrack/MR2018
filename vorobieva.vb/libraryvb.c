@@ -157,8 +157,8 @@ Table method(const Table input, const Table shift1, const Table shift2) {
 
     //создаем таблицу смещений для следующего захода рекурсии
     static Table nextshift[2];
-    nextshift[0].size = output.size - 1;
-    nextshift[1].size = output.size - 1;
+    nextshift[0].size = output.size;
+    nextshift[1].size = output.size;
     nextshift[1].data = malloc(nextshift[1].size * nextshift[1].size * sizeof(int));
 
     if (input.size == TOWNS) {
@@ -187,7 +187,10 @@ Table method(const Table input, const Table shift1, const Table shift2) {
     }
 
     table_print(nextshift[0]);
+    table_print(shift1);
     table_print(nextshift[1]);
+    table_print(shift2);
+
 
     printf("%d -> %d \n", str + 1 + shift1.data[shift1.size * str + col], col + 1 + shift2.data[shift2.size * str + col]);
 
@@ -239,7 +242,7 @@ double matrix_trace(const Matrix A){
         printf("Матрица не квадратная");
     }
     else {
-        for (int i = 0; i < A.cols; i++){
+        for (unsigned int i = 0; i < A.cols; i++){
             for (int j = 0; j < A.rows; j++) {
                 if (i == j) {
                     trace += A.data[A.cols * i + j];
