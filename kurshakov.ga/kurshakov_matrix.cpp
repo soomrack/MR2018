@@ -10,7 +10,7 @@ Matrix::Matrix(unsigned int size) {
 }
 
 //Конструктор прямоугольной матрицы
-Matrix::Matrix(unsigned int cols_arg, unsigned int rows_arg) {
+Matrix::Matrix(unsigned int rows_arg, unsigned int cols_arg) {
     cols = cols_arg;
     rows = rows_arg;
     data = new double[cols * rows];
@@ -22,7 +22,7 @@ Matrix::~Matrix() {
 }
 
 //Возвращает значение элемента матрицы. Параметры: строка, столбец
-double Matrix::getElement(unsigned int row, unsigned int col) {
+double Matrix::getElement(unsigned int row, unsigned int col) const {
     return data[cols * row + col];
 }
 
@@ -39,6 +39,7 @@ void Matrix::matrix_print() {
         }
         std::cout << std::endl;
     }
+    std::cout << std::endl;
 }
 
 // Единичная матрица
@@ -61,7 +62,7 @@ extern Matrix matrix_one(const unsigned int rows, const unsigned int cols) {
 
 // Нулевая матрица
 extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols) {
-    Matrix A = Matrix(cols, rows);
+    Matrix A = Matrix(rows, cols);
     for (unsigned row = 0; row < A.rows ; row++) {
         for (unsigned col = 0; col < A.cols; col++) {
                 A.setElement(row, col, 0.0);
@@ -73,7 +74,7 @@ extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols) {
 // Матрица составленная из случайных чисел из диапазона [-1, +1]
 extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols) {
     srand(time(0));
-    Matrix A = Matrix(cols, rows);
+    Matrix A = Matrix(rows, cols);
     for (unsigned row = 0; row < A.rows ; row++) {
         for (unsigned col = 0; col < A.cols; col++) {
             A.setElement(row, col, (((double)(rand()%101)) - 50)/50);
@@ -83,28 +84,63 @@ extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols) {
 }
 
 // Сумма матриц
-Matrix Matrix::matrix_sum(const Matrix B) {
-    if ((rows != B.rows) || (cols != B.cols)) {
+extern Matrix matrix_sum(const Matrix A, const Matrix B) {
+    if ((A.rows != B.rows) || (A.cols != B.cols)) {
         std::cerr << "Different matrix sizes." << std::endl;
         exit (1);
     }
-    Matrix C = Matrix(cols, rows);
-    for (unsigned int row = 0; row < rows; row++) {
-        for (unsigned int col = 0; col < cols; col++) {
-            setElement(row, col, getElement(row, col) + B.getElement(row, col));
+    Matrix C = Matrix(A.rows, A.cols);
+    for (unsigned int row = 0; row < A.rows; row++) {
+        for (unsigned int col = 0; col < A.cols; col++) {
+            C.setElement(row, col, (A.getElement(row, col) + B.getElement(row, col)));
         }
     }
     return C;
 }
 
 // Умножение матриц
-Matrix matrix_mult(const Matrix A, const Matrix B);
+extern Matrix matrix_mult(const Matrix A, const Matrix B) {
+    if (A.cols != B.rows) {
+        std::cout << "Unable to multiply!" << std::endl;
+        exit (1);
+    }
+    Matrix C = Matrix(A.rows, B.cols);
+    for (unsigned int row = 0; row < C.rows; row++) {
+        for (unsigned int col = 0; col < C.cols; col++) {
+            //вычисление row,col-того элемента матрицы-произведения
+            double a[A.cols];
+            double sum = 0;
+            for (unsigned int numInARow = 0; numInARow < A.cols; numInARow++) {
+                a[numInARow] = A.getElement(row, numInARow) * B.getElement(numInARow, col);
+                sum += a[numInARow];
+            }
+            C.setElement(row, col, sum);
+        }
+    }
+    return C;
+}
 
 // Умножение матрицы на скаляр
-Matrix matrix_mult__scalar(const double scalar, const Matrix A);
+Matrix Matrix::matrix_mult_scalar(const double scalar) {
+    Matrix C = Matrix(rows, cols);
+    for (unsigned int row = 0; row < rows; row++) {
+        for (unsigned int col = 0; col < cols; col++) {
+            C.setElement(row, col, scalar * getElement(row, col));
+        }
+    }
+    return C;
+}
 
 // Транспонирование матрицы
-Matrix matrix_trans(const Matrix A);
+Matrix Matrix::matrix_trans() {
+    Matrix C = Matrix(cols, rows);
+    for (unsigned int row = 0; row < C.rows; row++) {
+        for (unsigned int col = 0; col < C.cols; col++) {
+            C.setElement(row, col, getElement(col, row));
+        }
+    }
+    return C;
+}
 
 // Обращение матрицы
 Matrix matrix_invert(const Matrix A);

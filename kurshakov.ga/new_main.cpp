@@ -9,5 +9,7 @@
 int main() {
     Matrix A = matrix_rand(2, 3);
     A.matrix_print();
+    Matrix B = A.matrix_trans();
+    B.matrix_print();
     return 0;
 }
