@@ -1,6 +1,7 @@
 #include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "matrix.h"
 
@@ -195,4 +196,92 @@ extern Matrix matrix_invert(const Matrix A)
     free(one.data);
 
     return(result);
+}
+
+extern double matrix_eigen_values(const Matrix A)
+{
+    unsigned size = A.rows;
+    double vector0[size];
+    double vector0norm[size];
+    double vector[size];
+    static double sum = 0;
+    static double d0 = 0;
+    static double d = 0;
+    double e = 0;
+    for (unsigned i = 0; i < size; i++) {
+        vector0[i] = 0;
+    }
+        vector0[0] = 1;
+        do {
+            for (unsigned j = 0; j < size; j++) {
+               sum = sum + vector0[j] * vector0[j];
+            }
+            d0 = sqrt(sum);
+            for (unsigned k = 0; k < size; k++) {
+                vector0norm[k] = vector0[k] / d0;
+            }
+            for (unsigned i1 = 0; i1 < size; i1++) {
+                vector[i1] = 0;
+                for (unsigned j1 = 0; j1 < size; j1++) {
+                    vector[i1] = vector[i1] + A.data[i1*A.rows + j1] * vector0norm[j1];
+                }
+            }
+            sum = 0;
+            for (unsigned k1 = 0; k1 < size; k1++) {
+                sum = sum + vector[k1] * vector[k1];
+            }
+            d = sqrt(sum);
+            e = fabs(d-d0);
+            for (unsigned i2 = 0; i2 < size; i2++) {
+                vector0[i2] = vector[i2];
+            }
+            sum = 0;
+        }
+        while (e > 0.001);
+        return d;
+}
+
+extern void matrix_eigen_vectors(const Matrix A)
+{
+    unsigned size = A.rows;
+    double vector0[size];
+    double vector0norm[size];
+    double vector[size];
+    static double sum = 0;
+    static double d0 = 0;
+    static double d = 0;
+    double e = 0;
+    for (unsigned i = 0; i < size; i++) {
+        vector0[i] = -1;
+    }
+    vector0[0] = 1;
+    do {
+        for (unsigned j = 0; j < size; j++) {
+            sum = sum + vector0[j] * vector0[j];
+        }
+        d0 = sqrt(sum);
+        for (unsigned k = 0; k < size; k++) {
+            vector0norm[k] = vector0[k] / d0;
+        }
+        for (unsigned i1 = 0; i1 < size; i1++) {
+            vector[i1] = 0;
+            for (unsigned j1 = 0; j1 < size; j1++) {
+                vector[i1] = vector[i1] + A.data[i1*A.rows + j1] * vector0norm[j1];
+            }
+        }
+        sum = 0;
+        for (unsigned k1 = 0; k1 < size; k1++) {
+            sum = sum + vector[k1] * vector[k1];
+        }
+        d = sqrt(sum);
+        e = fabs(d-d0);
+        for (unsigned i2 = 0; i2 < size; i2++) {
+            vector0[i2] = vector[i2];
+        }
+        sum = 0;
+    }
+    while (e > 0.001);
+    for (unsigned i = 0; i < size; i++) {
+        printf("%lf\n", vector0norm[i]);
+    }
 }

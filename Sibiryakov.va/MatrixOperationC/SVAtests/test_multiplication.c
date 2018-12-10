@@ -1,11 +1,12 @@
-#include <stdio.h>
-#include <math.h>
 #include "../matrix.h"
+#include <stdio.h>
 #include <malloc.h>
+#include <math.h>
+
 
 #define MATRIX_EQUAL( matrix, expected_matrix )                                \
 {                                                                           \
-    printf("Testing matrix_mult__scalar... \n ");                                   \
+    printf("Testing matrix_multiplication... \n ");                                   \
     int no_error = 0;                                                      \
     for (int i = 0; i < matrix.rows; i++) {                                \
         for (int j = 0; j < matrix.cols; j++) {                            \
@@ -24,52 +25,45 @@
     if (no_error == matrix.rows * matrix.cols) {                                  \
         printf("Test is completed successfully!\n");                                 \
     }                                                                               \
-}                                                                                    \
+}
 
-int main () {
-/*    double test_1[2][3] = {{1.0, 2.0, 3.0},
-                             {4.0, 5.0, 6.0}};
 
-    double result_1[3][2] = {{1.0, 4.0},
-                             {2.0, 5.0},
-                             {3.0, 6.0}};
+int main() {
+    double test_1_1[2][2] = {{-3.85, 0.97},
+                           {50.0, -156.75}};
+    Matrix test_one_1 = {2,2,*test_1_1};
 
-    Matrix test_one = {2,3,*test_1};
-    Matrix res_trans1 = matrix_trans(test_one);
+    double test_1_2[2][2] = {{-23.67, 105.88},
+                             {0, -30.99}};
+    Matrix test_one_2 = {2,2,*test_1_2};
 
-    MATRIX_EQUAL(res_trans1, result_1);
-    free(res_trans1.data);*/
+    double result_1[2][2] = {{91.1295, -437.6938},
+                             {-1183.5, 10151.6825}};
 
-    double test_2[1][5] = {{5.0, -6.0, 3.0, -2.0, 1.27}};
+    Matrix result_one = matrix_mult(test_one_1, test_one_2);
+    MATRIX_EQUAL(result_one, result_1);
+    free(result_one.data);
 
-    double result_2[5][1] = {{5.0},
-                             {-6.0},
-                             {3.0},
-                             {-2.0},
-                             {1.27}};
+    double test_2_1[3][4] = {{-58.0, 33.87, 12.99, -0.38},
+                             {0.0, -33.85, 420.98, -32.88},
+                             {-13.88, 53.9, -23.57, 0.43}};
+    Matrix test_two_1 = {3,4,*test_2_1};
 
-    Matrix test_two = {1,5,*test_2};
-    Matrix res_trans2 = matrix_trans(test_two);
+    double test_2_2[4][3] = {{-22.83, 0.88, 143.82},
+                             {88.37, -5.06, 3.48},
+                             {-33.90, 0.23, -20.36},
+                             {0.0, 12.34, -88.756}};
+    Matrix test_two_2 = {4,3,*test_2_2};
 
-    MATRIX_EQUAL(res_trans2, result_2);
-    free(res_trans2.data);
+    double result_2[3][3] = {{3876.8709, -224.1237, -8454.44152},
+                             {-17262.5465, -137.6328, -5770.65352},
+                             {5879.0464, -285.0633, -1366.92948}};
 
-    double test_3[3][6] = {{1.0, 2.0, 3.0, 4.0, 5.0, 6.0},
-                           {7.0, 8.0, 9.0, 10.0, 11.0, 12.0},
-                           {13.0, 14.0, 15.0, 16.0, 17.0, 18.0}};
+    Matrix result_two = matrix_mult(test_two_1, test_two_2);
 
-    double result_3[6][3] = {{1.0, 7.0, 13.0},
-                             {2.0, 8.0, 14.0},
-                             {3.0, 9.0, 15.0},
-                             {4.0, 10.0, 16.0},
-                             {5.0, 11.0, 17.0},
-                             {6.0, 12.0, 18.0}};
+    MATRIX_EQUAL(result_two, result_2);
+    free(result_two.data);
 
-    Matrix test_three = {1,5,*test_3};
-    Matrix res_trans3 = matrix_trans(test_three);
-
-    MATRIX_EQUAL(res_trans3, result_3);
-    free(res_trans3.data);
 
     return 0;
 }
