@@ -37,7 +37,11 @@ int main() {
         a2.print();
         std::cout<<a2.determinant()<<std::endl;
         Mx::Matrix M(3, 3);
-        M = mexp(a);
-        //M.print();
+        Mx::Matrix r(3,3);
+        r.rand();
+        r.print();
+        M = mexp(r);
+        M.print();
+
         return 0;
 }

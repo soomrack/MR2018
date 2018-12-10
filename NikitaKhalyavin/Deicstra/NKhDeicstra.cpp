@@ -10,55 +10,72 @@ using namespace std;
 
 int main() {
 
-    int n = 1000;
-    int mn = 400;
+    Matrix times(9,9,0);
 
-    Matrix MConnection(n, n, -50);
-    for(int i = 0; i < n; i++){
-        for(int j = i + 1; j < i + mn; j++){
+    for(int mn = 100; mn < 500; mn += 50)
+        times.data[((mn - 100) / 50 + 1)*9] = mn;
 
-            MConnection.data[i * n + (j % n)] = 10;
-        }
-    }
-    MConnection.data[n-1] = 10;
+    for(int n = 1000; n < 5000; n += 500) {
 
+        times.data[(n - 1000) / 500 + 1] = n;
 
-    MConnection = MConnection.Trans();
-    MConnection.beSymmetric();
-    MConnection = MConnection.Trans();
-
-    point Graph2[n];
+        for(int mn = 100; mn < 500; mn += 50) {
 
 
-    for(int i = 0; i < n; i ++){
-        List temp(2 * mn);
-        int k = 0;
-        for(int j = 0; j < n; j++){
-            if(MConnection.data[i * n + j] > 5){
-                temp.dataNames[k] = j;
-                temp.dataLength[k] = (int)MConnection.data[i * n + j];
-                k++;
-                //if(k==mn)break;
+            Matrix MConnection(n, n, -50);
+            for (int i = 0; i < n; i++) {
+                for (int j = i + 1; j <= i + mn / 2; j++) {
+                    if (j < n)
+                        MConnection.data[i * n + j] = 10;
+                    else
+                        MConnection.data[(j - n) * n + i] = 10;
+                }
             }
+            //MConnection.data[n-1] = 10;
+
+
+            MConnection = MConnection.Trans();
+            MConnection.beSymmetric();
+            MConnection = MConnection.Trans();
+
+            point Graph2[n];
+
+
+            for (int i = 0; i < n; i++) {
+                List temp(2 * mn);
+                int k = 0;
+                for (int j = 0; j < n; j++) {
+                    if (MConnection.data[i * n + j] > 5) {
+                        temp.dataNames[k] = j;
+                        temp.dataLength[k] = (int) MConnection.data[i * n + j];
+                        k++;
+                        //if(k==mn)break;
+                    }
+                }
+                List temp2(k);
+                memcpy(temp2.dataNames, temp.dataNames, k * sizeof(int));
+                memcpy(temp2.dataLength, temp.dataLength, k * sizeof(int));
+                point tempP(temp2);
+                Graph2[i] = tempP;
+            }
+
+            int start;
+            start = clock();
+            int stop;
+
+            Graph2[0].DeicstraAlg(Graph2, n, 0);
+
+            stop = clock();
+            //Graph2[0].printResults(Graph2, n);
+            //Graph2[0].printWayTo(Graph2, n / 2 , 0);
+
+            printf("time for Deicstra: %d\n", stop - start);
+
+            times.data[((mn - 100) / 50 + 1)*9 + (n - 1000) / 500 + 1] = stop - start;
         }
-        List temp2(k);
-        memcpy(temp2.dataNames,temp.dataNames,k*sizeof(int));
-        memcpy(temp2.dataLength,temp.dataLength,k*sizeof(int));
-        point tempP(temp2);
-        Graph2[i] = tempP;
     }
 
-    int start;
-    start = clock();
-    int stop;
-
-    Graph2[0].DeicstraAlg(Graph2, n, 0);
-
-    stop = clock();
-    //Graph2[0].printResults(Graph2, n);
-    //Graph2[0].printWayTo(Graph2, n / 2 , 0);
-
-    printf("time for Deicstra: %d", stop - start);
+    times.Print();
 /*
     point Graph[6];               //граф объявляется как массив неинициализированных вершин
 
