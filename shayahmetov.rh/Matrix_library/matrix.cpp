@@ -89,7 +89,10 @@ void Matrix::one()
         for (int i = 0; i < cols*rows; i++)
                 data[i]=0;
         if(rows!=cols)
+        {
                 std::cout<<"Error: Unitary array must be square\n";
+                exit(1);
+        }
         else
                 for(int i=0; i<cols; i++)
                         data[i*cols+i]=1;
@@ -98,7 +101,10 @@ void Matrix::one()
 void Matrix::sum(const Matrix &B)
 {
         if((rows!=B.rows)||(cols!=B.cols))
+        {
                 std::cout<<"Error: Try to sum incompatible operands\n";
+                exit(1);
+        }
         else
                 for (int i = 0; i < cols*B.rows; i++)
                         data[i]+=B.data[i];
@@ -112,7 +118,10 @@ void Matrix::mult(const Matrix &B)
         memset(temp2, 0, rows*cols*sizeof(double));
         data2 = (double *)temp2;
         if(cols!=B.rows)
+        {
                 std::cout<<"Error: Try to multiply incompatible operands\n";
+                exit(1);
+        }
         else
                 for (int i = 0; i < rows; i++)
                         for(int j=0; j<B.cols; j++){
@@ -134,37 +143,16 @@ void Matrix::mult_scalar(const double scalar)
 void Matrix::power(const unsigned int power)
 {
         if(power==0)
-        {
-                for (int i = 0; i < cols*rows; i++)
-                        data[i]=0;
-                if(rows!=cols)
-                        std::cout<<"Error: Unitary array must be square\n";
-                else
-                        for(int i=0; i<cols; i++)
-                                data[i*cols+i]=1;
-        }
+                this->one();
         else
-                for(int h=1; h<power; h++)
+        {
+                Matrix A(rows, cols);
+                A.set(data);
+                for (int h = 1; h < power; h++)
                 {
-                        double sum=0;
-                        double *data2;
-                        void *temp2 = malloc(rows * cols * sizeof(double));
-                        memset(temp2, 0, rows*cols*sizeof(double));
-                        data2 = (double *)temp2;
-                        if(cols!=rows)
-                                std::cout<<"Error: Try to multiply incompatible operands\n";
-                        else
-                                for (int i = 0; i < rows; i++)
-                                        for(int j=0; j<cols; j++){
-                                                for(int k=0;k<cols; k++)
-                                                        sum += data[k+i*cols] * data[(cols * k)+j];
-                                                data2[i*cols+j]=sum;
-                                                sum=0;
-                                        }
-                        free(data);
-                        data=data2;
-                        cols=cols;
+                        this->mult(A);
                 }
+        }
 };
 //The fuction return transposition matrix A
 void Matrix::trans()
@@ -188,71 +176,28 @@ long int factorial(long int n)
         if (n == 0 || n == 1) return 1;
         return n * factorial(n - 1);
 };
-//The function return one of possible implementation
-int possible_implementation(int size, int nom)
-{
-        int temp[size];
-        _Bool decline=false;
-        int global_count=0;
-        int start=0;
-        for(int k=1; k<size; k++)
-                start+=k*(int)pow(10,size-k-1);
-        for(int i=start; i<pow(10, size); i++)
-        {
-                int num = i;
-                int count=0;
-                while (num != 0)
-                {
-                        if((num%10==0)&&i<pow(10,size-1))
-                                decline=true;
-                        if(num%10>size-1)
-                                decline=true;
-                        if(count==0)
-                        {
-                                temp[count]=num%10;
-                                count++;
-                        }
-                        else
-                        {
-                                for(int j=0; j<count; j++)
-                                        if(temp[j]==num%10)
-                                                decline=1;
-                                temp[count]=num%10;
-                                count++;
-                        }
-                        num=num/10;
-                }
-                if(!decline)
-                        global_count++;
-                if(global_count==nom)
-                        return i;
-                decline=false;
-        }
-};
 //The function return determinant of matrix
 double Matrix::determinant()
 {
-        unsigned int size=rows;
-        double result=0;
-        if(rows!=cols)
-                std::cout<<"Error: determinant does not exist for non-square matrix\n";
-        else
+        double det=0;
+        if(cols==1)
         {
-                for(int i=1; i<factorial(size)+1; i++)
+                det=data[0];
+        }
+        if(cols==2)
+        {
+                det=data[0]*data[3]-data[2]*data[1];
+        }
+        else{
+                int k=1;
+                int rows=0;
+                for(int cols=0;cols<rows;cols++)
                 {
-                        double mul_result=1;
-                        if(i%4<2)
-                                mul_result=-1;
-                        int sequence = possible_implementation(size, i);
-                        for (int j = 0; j < size; j++)
-                        {
-                                mul_result*=data[(j*size)+sequence%10];
-                                sequence=sequence/10;
-                        }
-                        result+=mul_result;
+                        det+=k*data[cols]*matrix_determinant(Minor(this,rows,cols));
+                        k*=(-1);
                 }
         }
-        return result;
+        return det;
 }
 //The function return inverse matrix of the original
 void Matrix::invert()
@@ -261,49 +206,25 @@ void Matrix::invert()
         {
                 unsigned int size=rows;
                 if(rows!=cols)
+                {
                         std::cout<<"Error: determinant does not exist for non-square matrix\n";
+                        exit(1);
+                }
                 else
                 {
-                        for(int i=1; i<factorial(size)+1; i++)
-                        {
-                                double mul_result=1;
-                                if(i%4<2)
-                                        mul_result=-1;
-                                int sequence = possible_implementation(size, i);
-                                for (int j = 0; j < size; j++)
-                                {
-                                        mul_result*=data[(j*size)+sequence%10];
-                                        sequence=sequence/10;
-                                }
-                                result+=mul_result;
-                        }
+                        double deter=this->determinant();
+                        this->trans();
+                        this->mult_scalar(1/deter);
                 }
         }
-        if(result==0)
-                std::cout<<"Error: inverse of matrix imposable for those matrix whose determinant is zero\n";
-        else
-        {
-                {
-                        double *data2;
-                        void *temp2 = malloc(rows * cols * sizeof(double));
-                        memset(temp2, 0, rows*cols*sizeof(double));
-                        data2 = (double *)temp2;
-                        for(int i=0; i<cols; i++)
-                                for(int j=0; j<rows; j++)
-                                        data2[j+i*rows]=data[i+j*cols];
-                        free(data);
-                        data=data2;
-                        unsigned char temp = rows;
-                        rows = cols;
-                        cols = temp;
-                }
-                for(int i=0; i<cols*rows; i++)
-                        data[i]*=(1/result);
-        }
+};
+Matrix Matrix::Minor(rows, cols);
+{
+        
 };
 Matrix element(const Mx::Matrix A, unsigned int position)
 {
-        Mx::Matrix A1(1, 1);
+        Mx::Matrix A1(10, 10);
         A1=A;
         double det=0;
         det=A1.determinant();
@@ -314,9 +235,45 @@ Matrix element(const Mx::Matrix A, unsigned int position)
 };
 Matrix mexp(const Mx::Matrix A)
 {
-        Mx::Matrix A1(1, 1);
+        Mx::Matrix A1(10, 10);
         A1=A;
         for(unsigned int i=1; i<5; i++)
               A1.sum(element(A1, i));
         return A1;
+};
+Matrix operator+(Matrix &left, Matrix &right)
+{
+        Matrix result(1, 1);
+        result=left;
+        result.sum(right);
+        return result;
+};
+Matrix operator-(Matrix &left, Matrix &right)
+{
+        Matrix result(1, 1);
+        result=right;
+        result.mult_scalar(-1);
+        result.sum(left);
+        return result;
+};
+Matrix operator*(Matrix &left, Matrix &right)
+{
+        Matrix result(1, 1);
+        result=left;
+        result.mult(right);
+        return result;
+};
+Matrix operator*(Matrix &left, double &right)
+{
+        Matrix result(1, 1);
+        result=left;
+        result.mult_scalar(right);
+        return result;
+};
+Matrix operator^ (Matrix &left, unsigned power)
+{
+        Matrix result(1, 1);
+        result=left;
+        result.power(power);
+        return result;
 };

@@ -30,8 +30,16 @@ namespace Mx
                 void trans();
                 double determinant();
                 void invert();
+                Matrix Minor(unsigned rows_input, unsigned cols_input);
         };
 
 };
 Mx::Matrix mexp(const Mx::Matrix A);
+Mx::Matrix operator+(Mx::Matrix &left, Mx::Matrix &right);
+Mx::Matrix operator-(Mx::Matrix &left, Mx::Matrix &right);
+Mx::Matrix operator*(Mx::Matrix &left, Mx::Matrix &right);
+Mx::Matrix operator*(Mx::Matrix &left, double &right);
+Mx::Matrix operator^ (Mx::Matrix &left, unsigned power);
+
+
 #endif //MATRIX_LIBRARY_MATRIX_H

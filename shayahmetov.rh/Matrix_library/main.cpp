@@ -8,7 +8,13 @@ int main() {
                 a.set(arr);
         }
         a.print();
-        std::cout<<a.trace()<<std::endl;
+        Mx::Matrix b(3,3);
+        b=a;
+        Mx::Matrix result(3,3);
+        result.print();
+        result=a-b;
+        result.print();
+        /*std::cout<<a.trace()<<std::endl;
         Mx::Matrix b(3, 3);
         b.rand();
         b.print();
@@ -41,7 +47,7 @@ int main() {
         r.rand();
         r.print();
         M = mexp(r);
-        M.print();
+        M.print();*/
 
         return 0;
 }
