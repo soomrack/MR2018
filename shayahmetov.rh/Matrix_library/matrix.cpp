@@ -220,7 +220,7 @@ void Matrix::invert()
 };
 Matrix Matrix::Minor(rows, cols);
 {
-        
+
 };
 Matrix element(const Mx::Matrix A, unsigned int position)
 {
