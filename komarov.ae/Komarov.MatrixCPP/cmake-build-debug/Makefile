@@ -47,24 +47,13 @@ RM = "C:\Program Files\JetBrains\CLion 2018.2.4\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\Komarov.MatrixCPP"
+CMAKE_SOURCE_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\Komarov.MatrixCPP\cmake-build-debug"
+CMAKE_BINARY_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya\cmake-build-debug"
 
 #=============================================================================
 # Targets provided globally by CMake.
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	"C:\Program Files\JetBrains\CLion 2018.2.4\bin\cmake\win\bin\cmake.exe" -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
 
 # Special rule for the target edit_cache
 edit_cache:
@@ -77,11 +66,22 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	"C:\Program Files\JetBrains\CLion 2018.2.4\bin\cmake\win\bin\cmake.exe" -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\Komarov.MatrixCPP\cmake-build-debug\CMakeFiles" "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\Komarov.MatrixCPP\cmake-build-debug\CMakeFiles\progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya\cmake-build-debug\CMakeFiles" "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya\cmake-build-debug\CMakeFiles\progress.marks"
 	$(MAKE) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\Komarov.MatrixCPP\cmake-build-debug\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya\cmake-build-debug\CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -110,57 +110,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named matrix
+# Target rules for targets named Kursovaya
 
 # Build rule for target.
-matrix: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 matrix
-.PHONY : matrix
+Kursovaya: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 Kursovaya
+.PHONY : Kursovaya
 
 # fast build rule for target.
-matrix/fast:
-	$(MAKE) -f CMakeFiles\matrix.dir\build.make CMakeFiles/matrix.dir/build
-.PHONY : matrix/fast
-
-#=============================================================================
-# Target rules for targets named functionslib
-
-# Build rule for target.
-functionslib: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 functionslib
-.PHONY : functionslib
-
-# fast build rule for target.
-functionslib/fast:
-	$(MAKE) -f CMakeFiles\functionslib.dir\build.make CMakeFiles/functionslib.dir/build
-.PHONY : functionslib/fast
-
-functions.obj: functions.cpp.obj
-
-.PHONY : functions.obj
-
-# target to build an object file
-functions.cpp.obj:
-	$(MAKE) -f CMakeFiles\functionslib.dir\build.make CMakeFiles/functionslib.dir/functions.cpp.obj
-.PHONY : functions.cpp.obj
-
-functions.i: functions.cpp.i
-
-.PHONY : functions.i
-
-# target to preprocess a source file
-functions.cpp.i:
-	$(MAKE) -f CMakeFiles\functionslib.dir\build.make CMakeFiles/functionslib.dir/functions.cpp.i
-.PHONY : functions.cpp.i
-
-functions.s: functions.cpp.s
-
-.PHONY : functions.s
-
-# target to generate assembly for a file
-functions.cpp.s:
-	$(MAKE) -f CMakeFiles\functionslib.dir\build.make CMakeFiles/functionslib.dir/functions.cpp.s
-.PHONY : functions.cpp.s
+Kursovaya/fast:
+	$(MAKE) -f CMakeFiles\Kursovaya.dir\build.make CMakeFiles/Kursovaya.dir/build
+.PHONY : Kursovaya/fast
 
 main.obj: main.cpp.obj
 
@@ -168,7 +128,7 @@ main.obj: main.cpp.obj
 
 # target to build an object file
 main.cpp.obj:
-	$(MAKE) -f CMakeFiles\matrix.dir\build.make CMakeFiles/matrix.dir/main.cpp.obj
+	$(MAKE) -f CMakeFiles\Kursovaya.dir\build.make CMakeFiles/Kursovaya.dir/main.cpp.obj
 .PHONY : main.cpp.obj
 
 main.i: main.cpp.i
@@ -177,7 +137,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles\matrix.dir\build.make CMakeFiles/matrix.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles\Kursovaya.dir\build.make CMakeFiles/Kursovaya.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -186,7 +146,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles\matrix.dir\build.make CMakeFiles/matrix.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles\Kursovaya.dir\build.make CMakeFiles/Kursovaya.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -195,13 +155,9 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
-	@echo ... matrix
-	@echo ... rebuild_cache
-	@echo ... functionslib
+	@echo ... Kursovaya
 	@echo ... edit_cache
-	@echo ... functions.obj
-	@echo ... functions.i
-	@echo ... functions.s
+	@echo ... rebuild_cache
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

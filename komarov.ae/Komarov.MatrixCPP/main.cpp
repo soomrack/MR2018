@@ -1,24 +1,54 @@
 #include <iostream>
-#include <conio.h>
-#include <stdio.h>
-#include "functions.h"
-#include <cstdlib>
+#include <time.h>
+#include <vector>
+#include <iterator>
+using namespace std;
 
+typedef vector <int> Mass;
 
+int main()
+{
+    unsigned int a = 0, b = 0;
+    int Amount = 0;
 
-int main() {
-    double test1[3][3] = {{3876.0, -224.0, -8454.0},
-                          {-17262.0, -137.0, -5770.0},
-                          {5879.0, -285.0, -1366.0}};
-    Matrix A(3);
-    A.data = *test1;
+    Mass::iterator LagA;                //создаем все итераторы
+    Mass::iterator LagB;
+    Mass::iterator Lag;
 
-    A.matrix_print();
-    A.matrix_trace();
-    std::cout<<A.matrix_determinant()<<std::endl;
-    A.matrix_trans();
-    Matrix B(20);
-    B.matrix_one(4,5);
-   // B.matrix_zero(4,5);
-   // B.matrix_print();
+    std::cout<<" Lag a = ";             //запрос параметров
+    std::cin>>a;
+    std::cout<<" Lag b = ";
+    std::cin>>b;
+    std::cout<<" Amount of numbers ";
+    std::cin>>Amount;
+
+    Mass massive(1);                    //создаем массив
+    massive.resize(max(a,b)+Amount+1);
+
+    LagA=massive.begin();               //инициализируем лаги и сдвигаем на значения а и б
+    advance(LagA,a);
+    LagB=massive.begin();
+    advance(LagB,b);
+
+    if(LagA>LagB) Lag=LagA;             //доп. итератор для корректной работы цикла
+    else Lag=LagB;
+
+    Mass::iterator index;               //основной итератор движения по массиву
+    index=massive.begin();
+
+    srand(time(NULL));                  //заполняем первую часть массива случайными значениями
+    while(index<=Lag){
+        *index = rand();
+        cout<<"number="<<*index<<endl;
+        index++;
+    }
+
+    for (; index != massive.end(); index++,LagA++,LagB++)
+    {
+        if (*LagA >= *LagB)             //получаем последовательность методом Фиблначчи с запаздываем
+        {
+            *index = *LagA - *LagB;
+        } else *index = *LagB -*LagA;
+        std::cout<<*index<< std::endl;
+    }
 }
