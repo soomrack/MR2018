@@ -7,17 +7,18 @@
 
 
 int main() {
-    Matrix A; Matrix B; Matrix C;
-    A.rows=3; B.rows=3;
-    A.cols=3; B.cols=3;
-    A.data=(double*)malloc(A.cols*A.rows*sizeof(double));
-    B.data=new double[B.cols*B.rows*sizeof(double)];
-    double A1[]={1.0,2.0,7.0,5.0,1.0,9.0,0.0,2.0,1.0};
-    double B1[]={1.0,2.0,3.0,1.0,1.0,4.0,5.0,8.0,1.0,1.0,7.0,8.0,9.0,1.0,1.0};
-    A.data=A1;
-    B.data=B1;
-    matrix_print(A);
-    matrix_print(B);
-    matrix_print(matrix_exp(A));
-    return 0;
+    double test1[3][3] = {{3876.0, -224.0, -8454.0},
+                          {-17262.0, -137.0, -5770.0},
+                          {5879.0, -285.0, -1366.0}};
+    Matrix A(3);
+    A.data = *test1;
+
+    A.matrix_print();
+    A.matrix_trace();
+    std::cout<<A.matrix_determinant()<<std::endl;
+    A.matrix_trans();
+    Matrix B(20);
+    B.matrix_one(4,5);
+   // B.matrix_zero(4,5);
+   // B.matrix_print();
 }
