@@ -18,6 +18,8 @@
 
 using namespace Mx;
 
+double determinant(const Matrix A);
+
 Matrix::Matrix(unsigned char rows_in, unsigned char cols_in)
 {
         cols=cols_in;
@@ -176,29 +178,6 @@ long int factorial(long int n)
         if (n == 0 || n == 1) return 1;
         return n * factorial(n - 1);
 };
-//The function return determinant of matrix
-double Matrix::determinant()
-{
-        double det=0;
-        if(cols==1)
-        {
-                det=data[0];
-        }
-        if(cols==2)
-        {
-                det=data[0]*data[3]-data[2]*data[1];
-        }
-        else{
-                int k=1;
-                int rows=0;
-                for(int cols=0;cols<rows;cols++)
-                {
-                        det+=k*data[cols]*matrix_determinant(Minor(this,rows,cols));
-                        k*=(-1);
-                }
-        }
-        return det;
-}
 //The function return inverse matrix of the original
 void Matrix::invert()
 {
@@ -218,10 +197,6 @@ void Matrix::invert()
                 }
         }
 };
-Matrix Matrix::Minor(rows, cols);
-{
-
-};
 Matrix element(const Mx::Matrix A, unsigned int position)
 {
         Mx::Matrix A1(10, 10);
@@ -240,6 +215,44 @@ Matrix mexp(const Mx::Matrix A)
         for(unsigned int i=1; i<5; i++)
               A1.sum(element(A1, i));
         return A1;
+};
+Matrix Matrix::Minor(int row,int col)
+{
+        Matrix B(rows-1, cols-1);
+        for(int i=0;i<B.rows;i++)
+        {
+                for(int j=0;j<B.cols;j++)
+                {
+                        int r=0;
+                        int c=0;
+                        if(j>=col) c=1;
+                        if(i>=row) r=1;
+                        B.data[j + i * B.cols] = data[j+c+(i+r)*cols];
+                }
+        }
+        return B;
+};
+double Matrix::determinant()
+{
+        double det=0;
+        if(cols==1)
+        {
+                det=data[0];
+        }
+        if(cols==2)
+        {
+                det=data[0]*data[3]-data[2]*data[1];
+        }
+        else{
+                int k=1;
+                //int rows=0;
+                for(int i=0;i<rows;i++)
+                {
+                        det+=k*data[i]*Minor(0,i).determinant();
+                        k*=(-1);
+                }
+        }
+        return det;
 };
 Matrix operator+(Matrix &left, Matrix &right)
 {
