@@ -5,7 +5,7 @@ int main() {
     using namespace std;
     tree A;
     int time0=clock();
-    for(int i=0;i<10000;i++) {
+    for(int i=1;i<10000;i++) {
         A.add(i);
     }
     int time1=clock();
@@ -13,8 +13,19 @@ int main() {
     int elapsedtime=time1-time0;
 
     cout<<"adding 10000 "<<" keys has spent "<<elapsedtime<<" msec"<<endl;
+     time0=clock();
 
-    tree B;
+    for(int i=1;i<9999;i++) {
+        A.deletekey(i);
+    }
+     time1=clock();
+
+     elapsedtime=time1-time0;
+
+    cout<<"deleting 10000 "<<" keys has spent "<<elapsedtime<<" msec"<<endl;
+
+    A.deletekey(43);
+  /*  tree B;
      time0=clock();
     for(int i=0;i<100000;i++) {
         B.add(i);
@@ -47,5 +58,15 @@ int main() {
 
     cout<<"adding 10000000 "<<" keys has spent "<<elapsedtime<<" msec"<<endl;
 
+
+    /*time0=clock();
+    for(int i=0;i<10000000;i++) {
+        E.deletekey(i);
+    }
+    time1=clock();
+
+    elapsedtime=time1-time0;
+
+    cout<<"deleting 10000000 "<<" keys has spent "<<elapsedtime<<" msec"<<endl;*/
     return 0;
 }
