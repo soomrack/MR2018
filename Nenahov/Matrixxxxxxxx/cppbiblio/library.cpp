@@ -1,9 +1,10 @@
 #include"library.h"
 
 
-template <double> class Matrix ;
 
-void Matrix::matrix_rand(const int Mrows, const int Mcols)
+
+template <class T>
+void Matrix<T>::matrix_rand(const int Mrows, const int Mcols)
 {
     srand((unsigned int)time(nullptr));
     rows=Mrows;
@@ -13,12 +14,12 @@ void Matrix::matrix_rand(const int Mrows, const int Mcols)
     {
         for(int i=0;i<cols;i++)
         {
-            data[t+i*cols]=(double)(-100+rand()%200)/100;
+            data[t+i*cols]=(T)(-100+rand()%200)/100;
         }
     }
 }
 
-void Matrix::matrix_print()
+/*void Matrix<T>::matrix_print()
 {
     std::cout << std::endl;
     for(int t=0;t<rows;t++)
@@ -33,7 +34,7 @@ void Matrix::matrix_print()
     std::cout << std::endl;
 }
 
-    Matrix Matrix::matrix_trans()
+/*    Matrix Matrix::matrix_trans()
 {
     Matrix B;
     B.rows=cols;
@@ -66,7 +67,7 @@ Matrix Matrix::matrix_mult__scalar(const double scalar)
 
 }
 
-double Matrix::matrix_trace()
+T Matrix::matrix_trace()
 {
     double trace=0;
     for(int i=0;i<rows;i++)
@@ -279,4 +280,4 @@ extern Matrix Matrix::matrix_eigen_values()
     while(e>0.001);
    return B;
 
-}
+}*/

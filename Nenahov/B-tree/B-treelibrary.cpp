@@ -228,9 +228,12 @@ void tree::deletekey(double var)
     deleteinnode(searchnode(root,var),var);
     if(root->keyscount==0)
     {
-        root=root->children[0];
-        delete root->parent;
-        root->parent=nullptr;
+        if(root->children[0]!=nullptr) {
+            root = root->children[0];
+            delete root->parent;
+            root->parent = nullptr;
+        }
+
     }
 
 }
@@ -331,11 +334,7 @@ void tree::deleteinleaf(node* curnode,double var)
             mergenodes(prechild,curnode);
             return;
         }
-
-
-
     }
-
 }
 
 void tree::mergenodes(node* curnode,node* postchild)
@@ -364,12 +363,6 @@ void tree::mergenodes(node* curnode,node* postchild)
         curnode->children[j]->parent=curnode;
     }
 
-  /*  if(postchild->children[0]!=nullptr) {
-        for (int i = 0;i < postchild->children[0]->keyscount; i++)   //merge the last child and the first child of the next node
-        {
-            addtonode(curnode->children[curnode->keyscount], postchild->children[0]->keys[i]);
-        }
-    }*/
 
 
     delete curnode->parent->children[order+1];

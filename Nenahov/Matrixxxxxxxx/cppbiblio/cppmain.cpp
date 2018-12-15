@@ -6,9 +6,9 @@ int main(){
     Matrix <double> A;
     //Matrix A;
     A.matrix_rand(3,3);
-    A.matrix_print();
-    Matrix B;
-    B=A.matrix_trans();
+ //   A.matrix_print();
+    //Matrix B;
+   /* B=A.matrix_trans();
     B.matrix_print();
     Matrix C=A.matrix_mult__scalar(5);
     //C.matrix_print();
@@ -18,6 +18,6 @@ int main(){
     D.matrix_print();
 
 
-
+*/
 return 0;
 }
