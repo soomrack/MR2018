@@ -1,3 +1,0 @@
-C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/KomarovKursovaya/cmake-build-debug/CMakeFiles/Kursovaya.dir
-C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/KomarovKursovaya/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/KomarovKursovaya/cmake-build-debug/CMakeFiles/rebuild_cache.dir
