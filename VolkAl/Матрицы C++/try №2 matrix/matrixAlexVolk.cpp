@@ -326,7 +326,7 @@ Matrix Matrix::matrix_exp()
     {
         p = (long long int) norm;
     }
-    Matrix A2 = (*this) * (1/pow(2.0, p));
+    Matrix vspomogat = (*this) * (1/pow(2.0, p));
 
     Matrix exp(this->rows);
     exp.matrix_one();
@@ -336,7 +336,7 @@ Matrix Matrix::matrix_exp()
     {
         k++;
         temp = temp * (1.0/k);
-        temp = temp * A2;
+        temp = temp * vspomogat;
         exp = exp + temp;
     }
     while ( (k < 10000) );
