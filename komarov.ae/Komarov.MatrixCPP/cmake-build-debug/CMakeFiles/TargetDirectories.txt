@@ -1,0 +1,4 @@
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/Komarov.MatrixCPP/cmake-build-debug/CMakeFiles/matrix.dir
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/Komarov.MatrixCPP/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/Komarov.MatrixCPP/cmake-build-debug/CMakeFiles/functionslib.dir
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/Komarov.MatrixCPP/cmake-build-debug/CMakeFiles/edit_cache.dir
