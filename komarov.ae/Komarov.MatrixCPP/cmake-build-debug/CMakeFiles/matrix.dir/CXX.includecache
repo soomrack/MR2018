@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/Komarov.MatrixCPP/functions.h
+iostream
+-
+stdlib.h
+-
+ctime
+-
+
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/Komarov.MatrixCPP/main.cpp
+iostream
+-
+conio.h
+-
+stdio.h
+-
+functions.h
+C:/Users/al.kom/YandexDisk/Monday C.Cpp/komarov.ae/Komarov.MatrixCPP/functions.h
+cstdlib
+-
+
