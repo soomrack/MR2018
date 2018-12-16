@@ -10,14 +10,12 @@ using namespace std;
 
 double Matrix::matrix_trace()
 {
-    double trace = 0;
-    if (cols == rows) {
-        for (int rowss = 0; rowss < rows; rowss++) {
-            for (int colss = 0; colss < rows; colss++) {
-                trace = data[rowss * rows + colss] + trace;
-            }
-            std::cout << trace << std::endl;
-        }
+    Matrix A (rows,cols);
+    int rows = A.rows;
+    double *data = A.data;
+    double trace=0;
+    for( int i=0;i<rows;i++){
+        trace+=data[i + i * rows];
     }
     return trace;
 }
@@ -25,7 +23,6 @@ double Matrix::matrix_trace()
 Matrix Matrix::matrix_rand(const unsigned int rows, const unsigned int cols)
 {
     Matrix newMatrix = {rows, cols};
-    //newMatrix.data = (double *) malloc(newMatrix.rows * newMatrix.cols * sizeof(double));
     for (int i = 0; i < newMatrix.rows; i++)
     {
         for (int j = 0; j < newMatrix.cols; j++)
@@ -39,9 +36,6 @@ Matrix Matrix::matrix_rand(const unsigned int rows, const unsigned int cols)
 
 Matrix Matrix::matrix_one(){
     Matrix A (rows, cols);
-    A.cols = cols;
-    A.rows = rows;
-    //A.data = new double[A.cols * A.rows * sizeof(double)];
     for(int i = 0; i < A.rows; i++){
         for(int j = 0; j < A.cols; j++){
             if(i == j){
@@ -58,12 +52,9 @@ Matrix Matrix::matrix_one(){
 Matrix Matrix::matrix_minor(int row, int col)
 {
     Matrix A (rows, cols);
-    A.rows=rows-1;
-    A.cols=cols-1;
-    //A.data=(double*)malloc(A.cols*A.rows*sizeof(double));
-    for(int rows=0;rows<A.rows;rows++)
+    for(row=0;rows<A.rows;rows++)
     {
-        for(int cols=0;cols<A.cols;cols++)
+        for(col=0;cols<A.cols;cols++)
         {
             int r=0;
             int c=0;
@@ -84,38 +75,38 @@ void Matrix::matrix_print(const Matrix A){
     }
 }
 
-/*Matrix Matrix::matrix_invert(const Matrix A)
+Matrix Matrix::matrix_invert()
 {
     double Determinant=0;
-    Matrix C;
-    C.cols = A.rows;
-    C.rows = A.cols;
-    C.data = new double[C.cols * C.rows * sizeof(double)];
-    Matrix D;
-    D.cols = A.rows;
-    D.rows = A.cols;
-    D.data = new double[D.cols * D.rows * sizeof(double)];
-    Determinant = matrix_determinant(A);
-    D = matrix_trans(A);
+    Matrix Result = (this->cols, this->rows);
+    Matrix Result1 = (this->cols, this->rows);
+
+    Determinant = this->matrix_determinant(Result1);
+    Result1 = this->matrix_trans(Result1);
     int sign=1;
-    for(int i = 0; i < A.rows; i++){
-        for(int j = 0; j < A.cols; j++){
-            C.data[C.cols * i + j] = sign * matrix_determinant( matrix_minor(D, i, j));
+    for(int i = 0; i < this->rows; i++){
+        for(int j = 0; j < this->cols; j++){
+            Result.data[Result.cols * i + j] = sign * (Result1.matrix_minor(i,j)).matrix_determinant(Result1);
             sign = -sign;
         }
     }
-    C=matrix_mult__scalar( ( 1 / Determinant), C );
-    return C;
+
+    Result=matrix_mult__scalar( ( 1 / Determinant), Result );
+    return Result;
 }
-*/
 
-/*Matrix Matrix::matrix_zero(const unsigned int row, const unsigned int col)
+
+Matrix Matrix::matrix_zero()
 {
-    double * array; //= new double[rows*cols]{0};
-    Matrix B = {row,col,array};
-
-    return B;
-}*/
+    Matrix Result(rows,cols);
+    for(int i = 0; i < Result.rows; i++){
+        for(int j = 0; j < Result.cols; j++){
+            Result.data[Result.cols * i + j] = 0;
+        }
+    }
+    Result.matrix_print(Result);
+    return Result;
+}
 
 Matrix Matrix::matrix_mult(const Matrix A, const Matrix B)
 {
@@ -123,7 +114,6 @@ Matrix Matrix::matrix_mult(const Matrix A, const Matrix B)
         Matrix MULT (rows, cols);
         MULT.rows = A.rows;
         MULT.cols = B.cols;
-        //MULT.data = new double[MULT.cols * MULT.rows * sizeof(double)];
         for(int i = 0 ; i < MULT.rows ; i++) {
             for(int j = 0 ; j < MULT.cols ; j++) {
                 MULT.data[MULT.cols * i + j] = 0.0;
@@ -134,11 +124,11 @@ Matrix Matrix::matrix_mult(const Matrix A, const Matrix B)
         }
         return MULT;
     }
-    /*else
+    else
         {
         std::cout << "Multiplication can`t be done" << std::endl;
 
-    }*/
+    }
 }
 
 
@@ -182,7 +172,6 @@ Matrix Matrix::operator + (const Matrix &C) {
 Matrix Matrix::matrix_dop(const Matrix A)
 {
     Matrix dop = {A.rows, A.cols};
-    //dop.data = (double *) malloc(dop.rows * dop.cols * sizeof(double));
     for (int i = 0; i < A.rows; i++)
     {
         for (int j = 0; j < A.cols; j++)
@@ -205,7 +194,6 @@ Matrix Matrix::matrix_mult__scalar(const double scalar, const Matrix A) {
 Matrix Matrix::matrix_trans(const Matrix B)
 {
     Matrix A = {B.cols, B.rows};
-   // A.data = (double *)malloc(A.rows * A.cols * sizeof(double));
     for(int i = 0; i < B.rows; ++i)
     {
         for(int j = i; j < B.cols; ++j)
@@ -252,13 +240,26 @@ Matrix Matrix::matrix_eigen_values()
     return A;
 }
 
+double Matrix::matrix_enorm()
+{
+    double result = 0;
+    for (int row = 0; row < this->rows; row++)
+    {
+        for (int col = 0; col < this->cols; col++)
+        {
+            result += (this->data[row * this->cols + col] * this->data[row * this->cols + col]);
+        }
+    }
+    return sqrt(result);
+}
+
+
 Matrix Matrix::matrix_power(const unsigned int power)
 {
     Matrix A (rows, cols);
     Matrix C (rows, cols);
     C.cols = A.rows;
     C.rows = A.cols;
-   // C.data = new double[C.cols * C.rows * sizeof(double)];
     C.data = A.data;
     if(A.rows == A.cols){
         if(power == 0){
@@ -278,4 +279,72 @@ Matrix Matrix::matrix_power(const unsigned int power)
     else{
         std::cout << "Matrix must be square" << std::endl;
     }
+}
+
+Matrix Matrix::operator * (double scalar)
+{
+    Matrix result(this->rows, this->cols);
+
+    for (int row = 0; row < result.rows; row++)
+    {
+        for (int col = 0; col < result.cols; col++)
+        {
+            result.data[row * result.cols + col] = scalar * this->data[row * this->cols + col];
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::operator * (Matrix &B)
+{
+    Matrix result(this->rows, B.cols);
+    Matrix transB = B.matrix_trans(transB);
+    for (int row = 0; row < result.rows; row++)
+    {
+        for (int col = 0; col < result.cols; col++)
+        {
+            result.data[row * result.cols + col] = 0;
+            for (int i = 0; i < this->cols; i++)
+            {
+                result.data[row * result.cols + col] += this->data[row * this->cols + i] * transB.data[col * transB.cols  + i];
+            }
+        }
+    }
+    return result;
+}
+
+Matrix Matrix::matrix_exp()
+{
+    //чтобы не копить слишком большую ошибку, создам матрицу А2 в 2^p раз меньше А
+    double norm = this->matrix_enorm();
+    long long int p;
+    if (norm < 4)
+    {
+        p = 1;
+    }
+    else
+    {
+        p = (long long int) norm;
+    }
+    Matrix A2 = (*this) * (1/pow(2.0, p));
+
+    Matrix exp(this->rows);
+    exp.matrix_one();
+    Matrix temp = exp;
+    int k = 0;
+    do
+    {
+        k++;
+        temp = temp * (1.0/k);
+        temp = temp * A2;
+        exp = exp + temp;
+    }
+    while ( (k < 10000) );
+
+    for (int i = 0; i < p; i++)
+    {
+        exp = exp * exp;
+    }
+
+    return exp;
 }
