@@ -38,9 +38,8 @@ public:
         {
             root->children[i]=nullptr;
         }
+    }
 
-
-    };
 private:
     void addtonode(node *curnode,double var);
     node *create(node *parent);

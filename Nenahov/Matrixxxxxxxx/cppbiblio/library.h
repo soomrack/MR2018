@@ -22,19 +22,21 @@ public:
     };
     ~Matrix()
     {
-        for(int t=0;t<rows;t++)
-        {
-            for(int i=0;i<cols;i++)
-            {
-                 free(&data[t*cols+i]);
-            }
-        }
+        free(data);
+     
     }
     void copy(Matrix A) {
         rows = A.rows;
         cols = A.cols;
         data=(double *)malloc(cols*rows*sizeof(double));
         *data = *A.data;
+        for(int t=0;t<rows;t++)
+        {
+            for(int i=0;i<cols;i++)
+            {
+                data[t*cols+i]=A.data[t*cols+i];
+            }
+        }
     }
 
     void matrix_rand(const int Mrows, const int Mcols);

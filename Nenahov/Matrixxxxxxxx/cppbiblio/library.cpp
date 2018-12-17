@@ -84,7 +84,7 @@ Matrix Matrix::matrix_sum(const Matrix B)
     C.data=(double *)malloc(C.cols*C.rows*sizeof(double));
     for(int t=0;t<rows;t++)
     {
-        for(int i=0;i<rows;i++)
+        for(int i=0;i<cols;i++)
         {
             C.data[i+t*cols]=data[i+t*cols]+B.data[i+t*cols];
         }
@@ -170,10 +170,10 @@ double Matrix::matrix_determinant()
 
 Matrix Matrix::matrix_invert()
 {
-    Matrix invA;
-    invA.rows=cols;
+    //Matrix invA;
+   /* invA.rows=cols;
     invA.cols=rows;
-    invA.data=(double*)malloc(invA.cols*invA.rows*sizeof(double));
+    invA.data=(double*)malloc(invA.cols*invA.rows*sizeof(double));*/
     Matrix AlgDop;
     AlgDop.rows=cols;
     AlgDop.cols=rows;
@@ -183,13 +183,13 @@ Matrix Matrix::matrix_invert()
     {
         for(int cols=0;cols<AlgDop.cols;cols++)
         {
-            AlgDop.data[cols+rows*AlgDop.cols]=k*Minor(cols,rows).matrix_determinant();
+            AlgDop.data[cols+rows*AlgDop.cols]=k*Minor(cols,rows).matrix_determinant()/matrix_determinant();
             k*=(-1);
         }
     }
 
-    invA=AlgDop.matrix_mult__scalar(1/matrix_determinant());
-    return invA;
+    //invA=AlgDop.matrix_mult__scalar(1/matrix_determinant());
+    return AlgDop;
 }
 
 void Matrix::matrix_one(const int Mrows, const int Mcols)
