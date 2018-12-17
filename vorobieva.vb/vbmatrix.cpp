@@ -162,16 +162,110 @@ double matrix_trace(const Matrix A){
                 }
             }
         };
-        printf("\n");
+        std::cout << '\n';
     }
     return trace;
 };
 
+//определитель
+double matrix_determinant(const Matrix A){
+    double det = 0;
+    if (A.cols != A.rows){
+        std::cout << "Identity matrix must be square!" << std::endl;
+        exit(1);
+    }
+    else{
+        if (A.cols == 1) {
+            return A.getElement(0, 0);
+        }
+        else{
+            Matrix B = Matrix(A.cols, A.rows);
+            int row = 0;
+            int sign;
+            for(unsigned int col = 0; col < A.cols; col++){
+                for(unsigned int i = 0; i < B.rows; i++){
+                    for(unsigned int j = 0; j < B.cols; j++){
+                        if((i < row) && (j < col))  B.setElement(i, j, A.getElement(i, j));
+                        if((i < row) && (j >= col))  B.setElement(i, j, A.getElement(i, j + 1));
+                        if((i >= row) && (j < col))  B.setElement(i, j, A.getElement(i + 1, j));
+                        if((i >= row) && (j >= col))  B.setElement(i, j, A.getElement(i + 1, j + 1));
+                    }
+                }
+                if(col % 2) sign = -1;
+                else sign = 1;
+                det += matrix_determinant(B)*A.getElement(col, 0)*sign;
+            }
+            return det;
+        }
+    }
+};
+
+int factorial(int a){
+    int f = 1;
+    for (int i = 0; i < a; i++){
+        f *= a;
+        a = a-1;
+    }
+    return f;
+};
+
 // Обращение матрицы
-Matrix matrix_invert(const Matrix A);
+Matrix matrix_invert(const Matrix A){
+    if(A.cols != A.rows){
+        std::cout << "Матрица не квадратная";
+        exit(1);
+    };
+    if(A.cols < 1) exit(1);
+    Matrix B = Matrix (A.cols - 1, A.rows -1);
+    Matrix C = Matrix (A.cols, A.rows);
+    double det = 0;
+    int sign;
+    for(int col = 0; col < A.cols; col++) {
+        for (unsigned int row = 0; row < A.rows; row++) {
+            for (unsigned int i = 0; i < B.rows; i++) {
+                for (unsigned int j = 0; j < B.cols; j++) {
+                    if ((i < row) && (j < col)) B.setElement(i * B.cols, j, A.getElement(j, i * A.cols));
+                    if ((i < row) && (j >= col)) B.setElement(i * B.cols, j, A.getElement(j + 1, i * A.cols));
+                    if ((i >= row) && (j < col)) B.setElement(i * B.cols, j, A.getElement(j, (i + 1) * A.cols));
+                    if ((i >= row) && (j >= col)) B.setElement(i * B.cols, j, A.getElement(j + 1, (i + 1) * A.cols));
+                }
+            }
+            if ((col + row) % 2) sign = -1;
+            else sign = 1;
+            C.setElement(col, row * C.cols, matrix_determinant(B) * sign);
+        }
+    }
+    Matrix D = Matrix (C.rows, C.cols);
+    D = C.matrix_trans();
+    Matrix Out = D.matrix_mult_scalar( 1/matrix_determinant(A));
+    return Out;
+};
 
 // Матричная экспонента
-Matrix matrix_exp(const Matrix A);
+Matrix matrix_exp(const Matrix A){
+    Matrix exp = Matrix(A.cols, A.rows);
+    exp = matrix_zero(exp.rows, exp.cols);
+    for(unsigned int k = 0; k < 100; k++){
+        Matrix B = Matrix (A.cols, A.rows);
+        B = matrix_power(A, k);
+        Matrix C = Matrix (A.cols, A.rows);
+        C = B.matrix_mult_scalar(1.0/factorial(k));
+        matrix_sum(exp, C);
+    }
+    return exp;
+};
 
 // Возведение матрицы в степень (натуральное число или 0)
-Matrix matrix_power(const Matrix A, const unsigned int power);
+Matrix matrix_power(const Matrix A, const unsigned int power){
+    Matrix B = A;
+    if (B.cols != B.rows) {
+        std::cout << "Матрица не квадратная";
+        exit(1);
+    }
+    else{
+        for (int i = 1; i < power; i++){
+            B = matrix_mult(B, A);
+        }
+        return B;
+    }
+};
