@@ -50,7 +50,7 @@ void Matrix::matrix_print() {
 // Единичная матрица
 extern Matrix matrix_one(const unsigned int rows, const unsigned int cols) {
     if (rows != cols){
-        std::cerr << "Identity matrix must be square!" << std::endl;
+        std::cerr << "Матрицы не квадратная" << std::endl;
         exit(1);
     }
     Matrix A = Matrix(rows);
@@ -91,7 +91,7 @@ extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols) {
 // Сумма матриц
 extern Matrix matrix_sum(const Matrix A, const Matrix B) {
     if ((A.rows != B.rows) || (A.cols != B.cols)) {
-        std::cerr << "Different matrix sizes." << std::endl;
+        std::cerr << "Матрицы разных размеров" << std::endl;
         exit (1);
     }
     Matrix C = Matrix(A.rows, A.cols);
@@ -106,7 +106,7 @@ extern Matrix matrix_sum(const Matrix A, const Matrix B) {
 // Умножение матриц
 extern Matrix matrix_mult(const Matrix A, const Matrix B) {
     if (A.cols != B.rows) {
-        std::cout << "Unable to multiply!" << std::endl;
+        std::cout << "Матрицы нельзя перемножить" << std::endl;
         exit (1);
     }
     Matrix C = Matrix(A.rows, B.cols);
@@ -151,7 +151,7 @@ Matrix Matrix::matrix_trans() {
 double matrix_trace(const Matrix A){
     double trace = 0.0;
     if (A.cols != A.rows) {
-        std::cout << "Identity matrix must be square!" << std::endl;
+        std::cout << "Матрица не квадратная" << std::endl;
         exit (1);
     }
     else {
@@ -171,7 +171,7 @@ double matrix_trace(const Matrix A){
 double matrix_determinant(const Matrix A){
     double det = 0;
     if (A.cols != A.rows){
-        std::cout << "Identity matrix must be square!" << std::endl;
+        std::cout << "Матрицы не квадратная" << std::endl;
         exit(1);
     }
     else{
@@ -212,7 +212,7 @@ int factorial(int a){
 // Обращение матрицы
 Matrix matrix_invert(const Matrix A){
     if(A.cols != A.rows){
-        std::cout << "Матрица не квадратная";
+        std::cout << "Матрица не квадратная"<< std::endl;
         exit(1);
     };
     if(A.cols < 1) exit(1);
@@ -220,7 +220,7 @@ Matrix matrix_invert(const Matrix A){
     Matrix C = Matrix (A.cols, A.rows);
     double det = 0;
     int sign;
-    for(int col = 0; col < A.cols; col++) {
+    for(unsigned int col = 0; col < A.cols; col++) {
         for (unsigned int row = 0; row < A.rows; row++) {
             for (unsigned int i = 0; i < B.rows; i++) {
                 for (unsigned int j = 0; j < B.cols; j++) {
@@ -259,7 +259,7 @@ Matrix matrix_exp(const Matrix A){
 Matrix matrix_power(const Matrix A, const unsigned int power){
     Matrix B = A;
     if (B.cols != B.rows) {
-        std::cout << "Матрица не квадратная";
+        std::cout << "Матрица не квадратная"<< std::endl;
         exit(1);
     }
     else{
