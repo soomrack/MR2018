@@ -3,23 +3,22 @@
 
 
 
-template <class T>
-void Matrix<T>::matrix_rand(const int Mrows, const int Mcols)
+void Matrix::matrix_rand(const int Mrows, const int Mcols)
 {
     srand((unsigned int)time(nullptr));
     rows=Mrows;
     cols=Mcols;
-    data=(T *) malloc(rows * cols * sizeof(T));
+    data=(double *) malloc(rows * cols * sizeof(double));
     for(int t=0;t<rows;t++)
     {
         for(int i=0;i<cols;i++)
         {
-            data[t+i*cols]=(T)(-100+rand()%200)/100;
+            data[t+i*cols]=(-100+rand()%200)/100;
         }
     }
 }
 
-/*void Matrix<T>::matrix_print()
+void Matrix::matrix_print()
 {
     std::cout << std::endl;
     for(int t=0;t<rows;t++)
@@ -34,7 +33,7 @@ void Matrix<T>::matrix_rand(const int Mrows, const int Mcols)
     std::cout << std::endl;
 }
 
-/*    Matrix Matrix::matrix_trans()
+    Matrix Matrix::matrix_trans()
 {
     Matrix B;
     B.rows=cols;
@@ -67,7 +66,7 @@ Matrix Matrix::matrix_mult__scalar(const double scalar)
 
 }
 
-T Matrix::matrix_trace()
+double Matrix::matrix_trace()
 {
     double trace=0;
     for(int i=0;i<rows;i++)
@@ -133,18 +132,19 @@ Matrix Matrix::Minor(int row,int col)
     B.cols=cols-1;
     B.data=(double*)malloc(B.cols*B.rows*sizeof(double));
     for(int rows=0;rows<B.rows;rows++)
+    for(int i=0;i<B.rows;i++)
     {
-        for(int cols=0;cols<B.cols;cols++)
+        for(int j=0;j<B.cols;j++)
         {
             int r=0;
             int c=0;
-            if(cols>=col) c=1;
-            if(rows>=row) r=1;
-            B.data[cols + rows * B.cols] = data[cols+c+(rows+r)*cols];
+            if(j>=col) c=1;
+            if(i>=row) r=1;
+            B.data[j + i * B.cols] = data[j+c+(i+r)*cols];
         }
     }
     return B;
-}
+};
 double Matrix::matrix_determinant()
 {
     double det=0;
@@ -158,15 +158,15 @@ double Matrix::matrix_determinant()
     }
     else{
         int k=1;
-        int rows=0;
-        for(int cols=0;cols<rows;cols++)
+
+        for(int i=0;i<rows;i++)
         {
-            det+=k*data[cols]*Minor(rows,cols).matrix_determinant();
+            det+=k*data[i]*Minor(0,i).matrix_determinant();
             k*=(-1);
         }
     }
     return det;
-}
+};
 
 Matrix Matrix::matrix_invert()
 {
@@ -244,40 +244,3 @@ Matrix Matrix::matrix_exp()
     return B;
 
 }
-
-extern Matrix Matrix::matrix_eigen_values()
-{
-    Matrix B;
-    B.rows=rows;
-    B.cols=1;
-    double w0[100],w[100],summ=0,w0norm[100],e,d,d0;
-    int i,j,k;
-    for (i=0;i<rows;i++)
-        w0[i]=0;
-    w0[0]=1;
-    do
-    {
-        for (i=0;i<rows;i++)
-            summ=summ+w0[i]*w0[i];
-        d0=sqrt(summ);
-        for (i=0;i<rows;i++)
-            B.data[i]=w0[i]/d0;
-        for (i=0;i<rows;i++)
-        {
-            w[i]=0;
-            for (j=0;j<rows;j++)
-                w[i]=w[i]+data[i+j*cols]*B.data[j];
-        }
-        summ=0;
-        for (i=0;i<rows;i++)
-            summ=summ+w[i]*w[i];
-        d=sqrt(summ);
-        e=fabs(d-d0);
-        for (i=0;i<rows;i++)
-            w0[i]=w[i];
-        summ=0;
-    }
-    while(e>0.001);
-   return B;
-
-}*/
