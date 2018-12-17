@@ -3,11 +3,10 @@
 //
 
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include <cstdlib>
 #include "Elib2.h"
+#include <iostream>
 
 
 // След матрицы
@@ -87,7 +86,7 @@ extern Matrix Matrix::matrix_sum(const Matrix A, const Matrix B)
 {
     if ((A.rows != B.rows) || (A.cols != B.cols))
     {
-        printf("Sum error - different size\n");
+        std::cout << "Sum error - different size\n";
         return A;
     }
     else
@@ -113,7 +112,7 @@ extern Matrix Matrix::matrix_mult(const Matrix A, const Matrix B)
 {
     if (A.cols != B.rows)
     {
-        printf ("Multiplication error \n");
+        std::cout << "Multiplication error \n";
         return A;
     }
     else
@@ -137,7 +136,7 @@ extern Matrix Matrix::matrix_mult(const Matrix A, const Matrix B)
 
 
 // Умножение матрицы на скаляр
-extern Matrix Matrix::matrix_mult__scalar(const double scalar, const Matrix A)
+extern Matrix Matrix::matrix_mult_scalar(const double scalar, const Matrix A)
 {
     Matrix result = {A.rows, A.cols};
     result.data = (double *) malloc(result.rows * result.cols * sizeof(double));
@@ -174,43 +173,55 @@ extern Matrix Matrix::matrix_invert(const Matrix A)
     double det = matrix_determinant(A);
     if (det == 0)
     {
-        printf ("No invert matrix \n");
+        std::cout << "No invert matrix \n";
         return A;
     }
     else
     {
         Matrix result;
-        result = matrix_mult__scalar(1/det, matrix_trans(matrix_dop(A)));
+        result = matrix_mult_scalar(1/det, matrix_trans(matrix_dop(A)));
         return result;
     }
+}
+
+extern Matrix matrix_one_full(const unsigned int rows, const unsigned int cols)
+{
+    Matrix result = {rows, cols};
+    result.data = (double *) malloc(result.rows * result.cols * sizeof(double));
+    for (int i = 0; i < result.rows; i++)
+    {
+        for (int j = 0; j < result.cols; j++)
+        {
+            result.data[i * result.cols + j] = 1;
+        }
+    }
+
+    return result;
 }
 
 // Возведение матрицы в степень (натуральное число или 0)
 extern Matrix Matrix::matrix_power(const Matrix A, const unsigned int power)
 {
-    if (power < 2)
+    if (power == 0)
     {
-        printf("wrong power \n");
+        return matrix_one_full(A.rows, A.cols);
+    }
+    if (power == 1)
+    {
         return A;
     }
-    else
+    if (A.rows != A.cols)
     {
-        if (A.rows != A.cols)
-        {
-            printf("only square matrix \n");
-            return A;
-        }
-        else
-        {
-            Matrix result = A;
-            for (int i = 0; i < (power-1); i++)
-            {
-                result = matrix_mult(result, A);
-            }
-
-            return result;
-        }
+        std::cout << "only square matrix \n";
+        return A;
     }
+    Matrix result = A;
+    for (int i = 0; i < (power-1); i++)
+    {
+        result = matrix_mult(result, A);
+    }
+
+    return result;
 }
 
 // Единичная матрица
@@ -272,7 +283,7 @@ extern Matrix Matrix::matrix_rand(const unsigned int rows, const unsigned int co
 // Вывести матрицу на экран
 extern void Matrix::matrix_print(const Matrix A)
 {
-    printf("matrix \n");
+    std::cout << "matrix \n";
     for (int i = 0; i < (A.cols * A.rows); i++)
     {
         printf ("%5.2lf     ", A.data[i]);
@@ -281,4 +292,55 @@ extern void Matrix::matrix_print(const Matrix A)
             printf("\n");
         }
     }
+}
+
+double norm (const Matrix A)
+{
+    double max_sum = 0;
+    for (int i = 0; i < A.rows; i++)
+    {
+        double sum = 0;
+        for (int j = 0; j < A.cols; j++)
+        {
+            sum += A.data[i * A.cols + j];
+        }
+        if (i == 0)
+        {
+            max_sum = sum;
+        }
+        if (sum > max_sum)
+        {
+            max_sum = sum;
+        }
+    }
+    return max_sum;
+}
+
+double factorial (int n)
+{
+    if (n == 0)
+    {
+        return 1;
+    }
+    double result = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        result = result * i;
+    }
+    return result;
+}
+
+extern Matrix Matrix::matrix_exp(const Matrix A)
+{
+    Matrix result = matrix_one_full(A.rows, A.cols);
+    Matrix element = matrix_one_full(A.rows, A.cols);
+    double eps = 0.001;
+    int k = 1;
+    while (norm(element) > eps)
+    {
+        element = matrix_mult_scalar(1/factorial(k), matrix_power(A, k));
+        result = matrix_sum(result, element);
+        k = k + 1;
+    }
+    return result;
 }

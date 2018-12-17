@@ -50,10 +50,11 @@ int main() {
      matrix_print(C);
 
 
-*/
 
-for(int N=10000;N<100001;N=N+10000)
-{
+
+for(int N=10000;N<100001;N=N+10000)*/
+
+int N=66060;
 srand(time(NULL)-clock());
 int *Array=(int*)malloc(N*sizeof(int));
 for(int i=0;i<N;i++)
@@ -74,7 +75,7 @@ double End1=clock();
 
 printf("N = %d    Time = %lf   Clock = %lf\n",N, (End-Begin),(End1-Begin1)/CLOCKS_PER_SEC);
 free(Array);
-}
+
 
 
 /*

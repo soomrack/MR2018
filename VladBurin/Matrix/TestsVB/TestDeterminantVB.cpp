@@ -1,18 +1,18 @@
 //
 // Created by vladburin on 30.11.18.
 //
-#include <stdio.h>
+
 #include <math.h>
 #include "../matrix.h"
 #include <iostream>
-#include <stdlib.h>
+
 
 #define STRINGIFY( x ) #x
 
 #define TEST_EQUAL( matrix, expected )   \
 {                                                                           \
     cout << endl << "Matrix Determinant "  STRINGIFY(matrix) "         ";               \
-    double value = matrix_determinant(matrix);                               \
+    double value = matrix.determinant();                               \
     if(     (fabs(1.005 * value) >= fabs(expected))                          \
          && (fabs(0.995 * value) <= fabs(expected))                          \
          && ((expected * value) >= 0))                                       \
@@ -22,17 +22,18 @@
     else                                                                     \
     {                                                                        \
         cout<<"FAIL!" << endl << "Expected: "<< expected << ", got: "<< value << endl;                  \
-        Passed=1;                                                \
+        return 1;                                                \
     }                                                                             \
    cout << endl;                                                            \
 }
 
 
 int main() {
-    int Passed=0;
+
     vector<double> Test1data = {6.8};
     Matrix Test1(1, 1, Test1data);
     TEST_EQUAL(Test1, 6.8);
+
 
 
     vector<double> Test2data = {1.8,5.6,
@@ -65,11 +66,6 @@ int main() {
     Matrix Test5 (5, 5, Test5data);
     TEST_EQUAL(Test5, 3045);
 
-if(Passed==1)
-{
-    return 1;
-}
-else {
     return 0;
-}
+
 }

@@ -28,10 +28,18 @@ namespace Mx
                 void mult_scalar(const double scalar);
                 void power(const unsigned int power);
                 void trans();
-                double determinant();
                 void invert();
+                Matrix Minor(int row,int col);
+                double determinant();
         };
-
 };
+double determinant(const Mx::Matrix A);
 Mx::Matrix mexp(const Mx::Matrix A);
+Mx::Matrix operator+(Mx::Matrix &left, Mx::Matrix &right);
+Mx::Matrix operator-(Mx::Matrix &left, Mx::Matrix &right);
+Mx::Matrix operator*(Mx::Matrix &left, Mx::Matrix &right);
+Mx::Matrix operator*(Mx::Matrix &left, double &right);
+Mx::Matrix operator^ (Mx::Matrix &left, unsigned power);
+
+
 #endif //MATRIX_LIBRARY_MATRIX_H
