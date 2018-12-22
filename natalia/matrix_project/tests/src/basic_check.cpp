@@ -129,6 +129,36 @@ TEST(test_sum, Simple_3) {
     }
 }
 
+TEST(test_sum, operator_1)
+{
+    double B2[2][2] = {{1.0, 0},
+                       {0,   1.0}};
+    ClassMatrix C2 = {2, 2, *B2};
+
+    double M2[2][2] = {{3.0, 3.0},
+                       {3.0, 3.0}};
+    ClassMatrix D2 = {2, 2, *M2};
+    double* K2_data = new double [ 2 * 2 * sizeof(double)];
+    ClassMatrix K2 = {2,2,K2_data};
+    K2 = C2.operator+(D2);
+
+    double N2[2][2] = {{4.0, 3.0},
+                       {3.0, 4.0}};
+    ClassMatrix S2 = {2,2,*N2};
+
+    for (int i = 0; i<2; i++){
+        for (int j=0; j<2; j++){
+            double exp = S2.data[i*2+j];
+            double eq = K2.data[i*2+j];
+            EXPECT_EQ(eq,exp);
+        }
+    }
+    delete(K2_data);
+
+}
+
+
+
 TEST(test_scalar, Simple_2) {
     double B2[2][2] = {{2.0, 5.0},
                        {10.0,   1.0}};
@@ -145,4 +175,81 @@ TEST(test_scalar, Simple_2) {
             EXPECT_EQ(eq, exp);
         }
     }
+}
+
+TEST(test_print,Simple)
+{
+    double A2[2][2] ={{1.0, 0},
+                      {0, 1.0}};
+    ClassMatrix C2 = {2, 2, *A2};
+    C2.matrix_print(C2);
+}
+
+TEST(test_one, Simple)
+{
+    ClassMatrix A2(2,2);
+
+    double N2[2][2] = {{1, 0},
+                       {0, 1}};
+    ClassMatrix S2 = {3, 3, *N2};
+    for (int i = 0; i<2; i++){
+        for (int j=0; j<2; j++){
+            double exp = S2.data[i*2+j];
+            double eq = A2.matrix_one(2,2).data[i*2+j];
+            EXPECT_EQ(eq,exp);
+        }
+    }
+}
+
+TEST(test_trans, Simple) {
+    double B2[2][2] = {{2.0, 5.0},
+                       {10.0,   1.0}};
+    ClassMatrix C2 = {2, 2, *B2};
+    double K2[2][2] = {{2.0, 10.0},
+                       {5.0,   1.0}};
+    ClassMatrix S2 = {2, 2, *K2};
+    S2=S2.matrix_trans();
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            double exp = S2.data[i * 2 + j];
+            double eq = S2.data[i * 2 + j];
+            EXPECT_EQ(eq, exp);
+        }
+    }
+}
+
+
+TEST(test_mult, operator_1) // Перемножаются в обратном порядке!
+{
+    double B2[3][2] = {{1.0, -1},
+                       {2,   0.0},
+                       {2, 0.0}};
+    ClassMatrix C2 = {2, 2, *B2};
+
+    double M2[2][2] = {{1.0, 1.0},
+                       {2.0, 0.0}};
+    ClassMatrix D2 = {2, 2, *M2};
+    double* K2_data = new double [ 2 * 2 * sizeof(double)];
+    ClassMatrix K2 = {2,2,K2_data};
+    K2 = D2.operator*(C2);                                  // Порядок!!!
+
+    double N2[3][2] = {{-1.0, 1.0},
+                       {2.0, 2.0},
+                       {3.0, 3.0}};
+    ClassMatrix S2 = {2,2,*N2};
+
+    for (int i = 0; i<2; i++){
+        for (int j=0; j<2; j++){
+            double exp = S2.data[i*2+j];
+            double eq = K2.data[i*2+j];
+            EXPECT_EQ(eq,exp);
+        }
+    }
+    delete(K2_data);
+
+}
+
+TEST(random, Simple) {
+    ClassMatrix C2 = {4, 4};
+    C2.matrix_rand(4,4);
 }
