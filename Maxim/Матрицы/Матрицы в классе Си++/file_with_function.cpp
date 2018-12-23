@@ -1,14 +1,17 @@
-
+#include<time.h>
+#include<windows.h>
+#include <iomanip>
+#include <ctime>
+#include <iostream>
 #include "matrixcpplib.h"
 #include <cstdlib>
-#include <ctime>
 MyMatrix MyMatrix::matrix_rand(const unsigned int rows, const unsigned int cols)
 {
     MyMatrix ext2;
-    srand(time(NULL));
+    srand(static_cast<unsigned int>(time(nullptr)));
     ext2.rows=rows;
     ext2.cols=cols;
-    ext2.data=(double*)malloc(ext2.cols*ext2.rows*sizeof(double));
+    ext2.data=(double*)malloc(ext2.cols*ext2.rows*sizeof(double));;
     for(unsigned int i=0;i<ext2.rows;i++)
     {
         for(unsigned int j=0;j<ext2.cols;j++)
@@ -81,9 +84,9 @@ void MyMatrix::matrix_print() {
 }
 
 
-void MyMatrix::matrix_one(const unsigned int Matrows, const unsigned int Matcols){
-    rows=Matrows;
-    cols=Matcols;
+void MyMatrix::matrix_one(const unsigned int Mrows, const unsigned int Mcols){
+    rows=Mrows;
+    cols=Mcols;
     data=(double *)malloc(cols*rows*sizeof(double));
     for(unsigned int i=0;i<rows;i++) {
         for(unsigned int j=0;j<cols;j++) {
@@ -100,7 +103,6 @@ void MyMatrix::matrix_one(const unsigned int Matrows, const unsigned int Matcols
 
 void MyMatrix::matrix_zero(const unsigned int Mrows, const unsigned int Mcols)
 {
-
     rows=Mrows;
     cols=Mcols;
     data=(double *)malloc(cols*rows*sizeof(double));
@@ -113,7 +115,7 @@ void MyMatrix::matrix_zero(const unsigned int Mrows, const unsigned int Mcols)
     }
 }
 
- MyMatrix MyMatrix::matrix_trans()
+MyMatrix MyMatrix::matrix_trans()
 {
     MyMatrix ext1;
     ext1.rows=cols;
@@ -143,11 +145,10 @@ MyMatrix MyMatrix::matrix_mult__scalar(const double scalar)
         }
     }
     return ext5;
-
 }
 
 
-MyMatrix MyMatrix::matrix_sum(const MyMatrix A)
+MyMatrix MyMatrix::matrix_sum(const MyMatrix A, const MyMatrix B)
 {
     MyMatrix ext6;
     ext6.rows=rows;
@@ -157,26 +158,151 @@ MyMatrix MyMatrix::matrix_sum(const MyMatrix A)
     {
         for(int i=0;i<rows;i++)
         {
-            ext6.data[i+t*cols]=data[i+t*cols]+A.data[i+t*cols];
+            ext6.data[i+t*cols]=B.data[i+t*cols]+A.data[i+t*cols];
         }
     }
     return ext6;
 }
 
-MyMatrix MyMatrix::matrix_mult( const MyMatrix A)
+MyMatrix MyMatrix::matrix_mult( const MyMatrix A,const MyMatrix B)
 {
     MyMatrix ext7;
-    ext7.matrix_zero(rows,A.cols);
+    ext7.rows=rows;
+    ext7.cols=cols;
     ext7.data=(double*)malloc(ext7.cols*ext7.rows*sizeof(double));
     for(int i=0;i<rows;i++)
     {
-        for(int t=0;t<A.cols;t++)
+        for(int t=0;t<B.cols;t++)
         {
-            for(int n=0;n<cols;n++)
+            for(int n=0;n<A.cols;n++)
             {
-                ext7.data[i+t*rows]+=data[i+n*rows]*A.data[n+t*rows];
+                ext7.data[i+t*rows]+=B.data[i+n*rows]*A.data[n+t*rows];
             }
         }
     }
     return ext7;
+}
+
+MyMatrix MyMatrix::matrix_power(MyMatrix A, const int power){
+
+    A.rows=rows;
+    A.cols=cols;
+    A.data= (double*)malloc(cols*rows*sizeof(double));
+    if(power!=0)
+
+    {
+        for (unsigned int i = 0; i < power; i++) {
+            A.matrix_mult(A,A);
+        }
+    }
+    return A;
+}
+
+MyMatrix MyMatrix::matrix_exp(MyMatrix A)
+{
+    A.rows=rows;
+    A.cols=cols;
+    A.data=(double*)malloc(cols*rows*sizeof(double));
+    double F=1;
+    for(int i=1;i<10;i++)
+    {
+        for (int j=2;j<=i;j++){
+            F=F*j;
+        }
+        MyMatrix pow = matrix_power(A,i);
+        MyMatrix powdiv = pow.matrix_mult__scalar(1/F);
+        A= powdiv.matrix_sum(A,powdiv);
+    }
+    return A;
+}
+
+void inversionMatrix(double **A, int N)
+{
+    double temp;
+    double **B = new double *[N];
+
+    for (int i = 0; i < N; i++){
+        B[i] = new double [N];}
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+        {
+            B[i][j] = 0.0;
+
+            if (i == j)
+                B[i][j] = 1.0;
+        }
+
+    for (int k = 0; k < N; k++)
+    {
+        temp = A[k][k];
+
+        for (int j = 0; j < N; j++)
+        {
+            A[k][j] /= temp;
+            B[k][j] /= temp;
+        }
+
+        for (int i = k + 1; i < N; i++)
+        {
+            temp = A[i][k];
+
+            for (int j = 0; j < N; j++)
+            {
+                A[i][j] -= A[k][j] * temp;
+                B[i][j] -= B[k][j] * temp;
+            }
+        }
+    }
+
+    for (int k = N - 1; k > 0; k--)
+    {
+        for (int i = k - 1; i >= 0; i--)
+        {
+            temp = A[i][k];
+
+            for (int j = 0; j < N; j++)
+            {
+                A[i][j] -= A[k][j] * temp;
+                B[i][j] -= B[k][j] * temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            A[i][j] = B[i][j];
+
+}
+
+MyMatrix MyMatrix::matrix_invert(const MyMatrix A)
+{
+    MyMatrix ext6;
+    ext6.rows=rows;
+    ext6.cols=cols;
+    ext6.data=(double*)malloc(ext6.cols*ext6.rows*sizeof(double));;
+    int N=rows;
+    double **matrix =  new double *[N];
+    for (int i = 0; i < N; i++)
+        matrix[i] = new double[N];
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            matrix[i][j] = A.data[j+N*i];
+    std::cout << " initial matrix "<<"\n\n";
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            std::cout <<std::setw(8) << std::setprecision(3) << setiosflags (std::ios::fixed | std::ios::showpoint)<< matrix[i][j];
+        std::cout << "\n";
+    }
+    inversionMatrix(matrix, N);
+    std::cout << "\n\n";
+    std::cout << " inverted matrix "<<"\n\n";
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            std::cout <<std::setw(8) << std::setprecision(3) << setiosflags (std::ios::fixed | std::ios::showpoint)<< matrix[i][j];
+        std::cout << "\n";
+    }
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+            ext6.data[j+N*i] = matrix[i][j];
+    return ext6;
 }
