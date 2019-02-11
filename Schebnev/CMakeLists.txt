@@ -1,9 +1,8 @@
-cmake_minimum_required(VERSION 3.9)
-project(Credit C)
+cmake_minimum_required(VERSION 3.12)
+project(untitled42)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
-add_library(Schebnevlib STATIC lybrary1.c)
-
-add_executable(Credit main.c)
-target_link_libraries(Credit Schebnevlib)
+add_executable( main.cpp )
+add_library(function_matrix.cpp matrixlib.h)
+target_link_libraries(Schebnevmain Schebnevlib)

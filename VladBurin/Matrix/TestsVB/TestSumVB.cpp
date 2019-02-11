@@ -9,7 +9,7 @@ using namespace std;
 #include <iostream>
 using namespace std;
 
-#define STRINGIFY( x ) #x
+/*#define STRINGIFY( x ) #x
 
 #define TEST_EQUAL( matrix, expected )   \
 {                                                                           \
@@ -25,13 +25,14 @@ using namespace std;
             else {                                                          \
                 cout << endl << "Something wrong with "<<"Element["<<i<<"]"<<"["<<j<<"]"<< endl<<                     \
                 "Expected: "<<expected.data[i*expected.cols+j]<<endl<<"But got: "<<matrix.data[i*matrix.cols + j] <<endl;                        \
+                return 1;                                                \
                  }                                                                   \
         }                                                                       \
     }                                                                           \
     if (counter == matrix.rows * matrix.cols) {                                  \
          cout <<"Everything is fine! Thank you!\n"<<endl;                        \
     }                                                                          \
-}
+}*/
 
 
 
@@ -47,10 +48,12 @@ int main () {
     vector<double> ResultData1={-5};
     Matrix Result1(1,1,ResultData1);
 
-    Matrix Test1=matrix_sum(Test11,Test12);
+    if(!((Test11+Test12)==Result1))
+    {
+        return 1;
+    };
 
-    TEST_EQUAL( Test1, Result1 );
-    ////
+
     vector<double> Data21={4.3,	    33,
                            1.9,	    1,
                            2,	    87.4,
@@ -69,9 +72,10 @@ int main () {
                                 10,	    100.3};
     Matrix Result2(4,2,ResultData2);
 
-    Matrix Test2=matrix_sum(Test21,Test22);
-
-    TEST_EQUAL( Test2, Result2);
+    if(!((Test21+Test22)==Result2))
+    {
+        return 1;
+    };
     ////
     vector<double> Data31={2,1,2,
                           5,4,5,
@@ -88,9 +92,10 @@ int main () {
                           12.1, 16.9, 4};
     Matrix Result3(3,3,ResultData3);
 
-    Matrix Test3=matrix_sum(Test31,Test32);
-
-    TEST_EQUAL( Test3, Result3 );
+    if(!((Test31+Test32)==Result3))
+    {
+        return 1;
+    };
     ////
     vector<double> Data41={1.24,	-2,	    3,	    -4,
                            4,	    6,	    8,	    5.12,
@@ -113,9 +118,10 @@ int main () {
                                 237,	322,	    36,	        11.35};
     Matrix Result4(5,4,ResultData4);
 
-    Matrix Test4=matrix_sum(Test41,Test42);
+    if(!((Test41+Test42)==Result4))
+    {
+        return 1;
+    };
 
-    TEST_EQUAL( Test4, Result4 );
-
-
+return 0;
 }

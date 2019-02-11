@@ -17,7 +17,7 @@ using namespace std;
 #define TEST_EQUAL( matrix, expected )   \
 {                                                                           \
    cout << endl << "Matrix Trace "  STRINGIFY(matrix) "         ";                      \
-    double value = matrix_trace(matrix);                               \
+    double value = matrix.trace();                               \
     if(     (fabs(1.005 * value) >= fabs(expected))                          \
          && (fabs(0.995 * value) <= fabs(expected))                          \
          && ((expected * value) >= 0))                                       \
@@ -27,6 +27,7 @@ using namespace std;
     else                                                                     \
     {                                                                        \
         cout<<"FAIL!" << endl << "Expected: "<< expected << ", got: "<< value << endl;                  \
+        return 1;                                                \
                                                         \
     }                                                                             \
    cout << endl;                                                            \
