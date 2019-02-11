@@ -543,10 +543,11 @@ public:
         tempP = this->Pr();
         Matrix tempM(1,maxPower - 2,0);
         tempM = tempP.Solve();
-        tempM.dataSort();
+        //tempM.dataSort();
         double t1 = Calc(tempM.data[0]);
         double t2 = Calc(tempM.data[1]);
         double temp = t1 * t2;
+        //if(temp > 0) {this->Print(); tempM.Print(); exit(1);}
         double x1 = halfDivideSq(tempM.data[0], tempM.data[1]);
         Polinom Sq(2);
         Sq.data[1] = 1;
