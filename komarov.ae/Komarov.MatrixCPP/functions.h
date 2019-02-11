@@ -1,78 +1,58 @@
 #ifndef C_LIBRARY_H
 #define C_LIBRARY_H
-typedef class {
-public:
+#include <iostream>
+#include <stdlib.h>
+#include <ctime>
+
+using namespace std;
+
+class Matrix{
+private:
     unsigned int cols;
     unsigned int rows;
+public:
     double *data;
-}Matrix;
+    Matrix(const unsigned rowss, const unsigned colss) {
+        rows = rowss;
+        cols = colss;
+        data = new double[rows * cols];
+    }
+    Matrix(const unsigned size) {
+        rows = size;
+        cols = size;
+        data = new double[size * size];
+    }
+    Matrix(const Matrix &M) {
+        rows = M.rows;
+        cols = M.cols;
+        data = new double[rows * cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                data[i * cols + j] = M.data[i * M.cols + j];
+            }
+        }
+    }
+    ~Matrix() {
+        delete [] data;
+        cout << "destructor" << endl;
+    }
 
-// След матрицы
-extern Matrix matrix_trace(const Matrix A);                                 //
-
-// Определитель матрицы
-extern double matrix_determinant(const Matrix A);                           //
-
-// Собственные числа матрицы
-extern Matrix matrix_eigen_values(const Matrix A);
-
-// Матрица собственных векторов
-extern Matrix matrix_eigen_vectors(const Matrix A);
-
-
-// Сумма матриц
-extern Matrix matrix_sum(const Matrix A, const Matrix B);                   //
-
-// Умножение матриц
-extern Matrix matrix_mult(const Matrix A, const Matrix B);                  //
-
-// Умножение матрицы на скаляр
-extern Matrix matrix_mult__scalar(const double scalar, const Matrix A);     //
-
-// Транспонирование матрицы
-extern Matrix matrix_trans(const Matrix A);                                 //
-
-// Обращение матрицы
-extern Matrix matrix_invert(const Matrix A);                                //
-
-// Матричная экспонента
-extern Matrix matrix_exp(const Matrix A);
-
-// Возведение матрицы в степень (натуральное число или 0)
-extern Matrix matrix_power(const Matrix A, const unsigned int power);       //
-
-
-// Единичная матрица
-extern Matrix matrix_one(const unsigned int rows, const unsigned int cols); //
-
-// Нулевая матрица
-extern Matrix matrix_zero(const unsigned int rows, const unsigned int cols);//
-
-// Матрица составленная из случайных чисел из диапазона [-1, +1]
-extern Matrix matrix_rand(const unsigned int rows, const unsigned int cols);//
-
-
-// Вывести матрицу на экран
-extern void matrix_print(const Matrix A);                                   //
-
-
-// ТАУ
-
-// Решение уравнения Ляпунова X * A + A^T * X = -C
-extern Matrix matrix_lyapunov_equation(const Matrix A, const Matrix C);
-
-
-
-
-//ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ
-
-//Минор матрицы
-extern Matrix Minor(const Matrix A, int row, int col);
-
-//Факториал
-extern int Factorial(unsigned int k);
-
-//Рандом от -1 до 1
-extern double Random_Number();
+    double matrix_trace();   // След матрицы
+    double matrix_determinant(); // Определитель матрицы
+    Matrix operator + (const Matrix &B);// Сумма матриц
+    Matrix operator * (Matrix &B);// Умножение матриц
+    Matrix operator * (double scalar);// Умножение матрицы на скаляр
+    Matrix matrix_trans();// Транспонирование матрицы
+    Matrix matrix_invert();// Обращение матрицы
+    Matrix matrix_exp();// Матричная экспонента
+    Matrix matrix_power(unsigned int power);// Возведение матрицы в степень (натуральное число или 0)
+    Matrix matrix_one(unsigned int rows, unsigned int cols);// Единичная матрица
+    Matrix matrix_zero(unsigned int rows, unsigned int cols);// Нулевая матрица
+    Matrix matrix_rand(unsigned int rows, unsigned int cols);// Матрица составленная из случайных чисел из диапазона [-1, +1]
+    void matrix_print();// Вывести матрицу на экран
+    Matrix Minor(unsigned int row, unsigned int col);//Минор матрицы
+    int Factorial(unsigned int k);//Факториал
+    double Random_Number();//Рандом от -1 до 1
+};
 
 #endif //C_LIBRARY_H

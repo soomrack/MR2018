@@ -22,7 +22,7 @@ int main()
         
     Matrix B(3,4,Data2);
 
-    Matrix C= matrix_invert(A);
+    Matrix C= matrix_rand(3,3);
     matrix_print(C);
 
 

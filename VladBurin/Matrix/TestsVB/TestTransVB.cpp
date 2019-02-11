@@ -10,29 +10,6 @@ using namespace std;
 #include <iostream>
 
 
-#define STRINGIFY( x ) #x
-
-#define TEST_EQUAL( matrix, expected )   \
-{                                                                           \
-    cout << endl << "Matrix Trans "  STRINGIFY(matrix) "         ";                      \
-    unsigned int counter= 0;                                                      \
-    for (int i = 0; i < matrix.rows; i++) {                                \
-        for (int j = 0; j < matrix.cols; j++) {                            \
-            if (    (fabs(0.99*matrix.data[i*matrix.cols + j]) <= fabs(expected.data[i*expected.cols+j]))  \
-                && (fabs(1.01*matrix.data[i*matrix.cols + j]) >= fabs(expected.data[i*expected.cols+j]))        \
-                 && (expected.data[i*expected.cols+j] * matrix.data[i*matrix.cols + j] >= 0)) {     \
-                counter ++;                                                \
-            }                                                                \
-            else {                                                          \
-                cout << endl << "Something wrong with "<<"Element["<<i<<"]"<<"["<<j<<"]"<< endl<<                     \
-                "Expected: "<<expected.data[i*expected.cols+j]<<endl<<"But got: "<<matrix.data[i*matrix.cols + j] <<endl;                        \
-                 }                                                                   \
-        }                                                                       \
-    }                                                                           \
-    if (counter == matrix.rows * matrix.cols) {                                  \
-         cout <<"Everything is fine! Thank you!\n"<<endl;                        \
-    }                                                                          \
-}
 
 
 
@@ -44,9 +21,10 @@ int main () {
     vector<double> ResultData1={-2};
     Matrix Result1(1,1,ResultData1);
 
-    Matrix Test1=matrix_trans(Test11);
-
-    TEST_EQUAL( Test1, Result1 );
+    if(!((Test11.trans())==Result1))
+    {
+        return 1;
+    };
     ////
     vector<double> Data22 = {1.8,       5.6,
                              112.5,     909.86};
@@ -56,8 +34,10 @@ int main () {
                                   5.6,    909.86};
     Matrix Result2(2, 2, ResultData2);
 
-    Matrix Test2=matrix_trans(Test22);
-    TEST_EQUAL(Test2, Result2);
+    if(!((Test22.trans())==Result2))
+    {
+        return 1;
+    };
     ////
     vector<double> Data33 = {4,	    -22.33,	    3.5,	    -7.6,
                              45.6,	-8.7,	    35.5,	    12,
@@ -70,7 +50,9 @@ int main () {
                                   -7.6,     12,     -9.1};
     Matrix Result3(4, 3, ResultData3);
 
-    Matrix Test3=matrix_trans(Test33);
-    TEST_EQUAL(Test3, Result3);
-
+    if(!((Test33.trans())==Result3))
+    {
+        return 1;
+    };
+return 0;
 }

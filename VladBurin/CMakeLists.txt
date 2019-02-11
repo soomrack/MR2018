@@ -31,6 +31,8 @@ add_executable(TestPowerVB Matrix/TestsVB/TestPowerVB.cpp)
 add_executable(TestInvertVB Matrix/TestsVB/TestInvertVB.cpp)
 add_executable(TestOneVB Matrix/TestsVB/TestOneVB.cpp)
 add_executable(TestZeroVB Matrix/TestsVB/TestZeroVB.cpp)
+add_executable(TestRandVB Matrix/TestsVB/TestRandVB.cpp)
+add_executable(TestExponentVB Matrix/TestsVB/TestExponentVB.cpp)
 
 
 add_test(NAME BurinTestDeterminant COMMAND TestDeterminantVB)
@@ -43,6 +45,9 @@ add_test(NAME BurinTestPower COMMAND TestPowerVB)
 add_test(NAME BurinTestInvert COMMAND TestInvertVB)
 add_test(NAME BurinTestOne COMMAND TestOneVB)
 add_test(NAME BurinTestZero COMMAND TestZeroVB)
+add_test(NAME BurinTestRand COMMAND TestRandVB)
+add_test(NAME BurinTestExp COMMAND TestExponentVB)
+
 
 
 target_link_libraries(TestDeterminantVB MatrixVB)
@@ -55,4 +60,7 @@ target_link_libraries(TestPowerVB MatrixVB)
 target_link_libraries(TestInvertVB MatrixVB)
 target_link_libraries(TestOneVB MatrixVB)
 target_link_libraries(TestZeroVB MatrixVB)
+target_link_libraries(TestRandVB MatrixVB)
+target_link_libraries(TestExponentVB MatrixVB)
+
 endif()

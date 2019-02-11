@@ -13,29 +13,7 @@ using namespace std;
 #include <iostream>
 
 
-#define STRINGIFY( x ) #x
 
-#define TEST_EQUAL( matrix, expected )   \
-{                                                                           \
-    cout << endl << "Matrix Power "  STRINGIFY(matrix) "         ";                      \
-    unsigned int counter= 0;                                                      \
-    for (int i = 0; i < matrix.rows; i++) {                                \
-        for (int j = 0; j < matrix.cols; j++) {                            \
-            if (    (fabs(0.99*matrix.data[i*matrix.cols + j]) <= fabs(expected.data[i*expected.cols+j]))  \
-                && (fabs(1.01*matrix.data[i*matrix.cols + j]) >= fabs(expected.data[i*expected.cols+j]))        \
-                 && (expected.data[i*expected.cols+j] * matrix.data[i*matrix.cols + j] >= 0)) {     \
-                counter ++;                                                \
-            }                                                                \
-            else {                                                          \
-                cout << endl << "Something wrong with "<<"Element["<<i<<"]"<<"["<<j<<"]"<< endl<<                     \
-                "Expected: "<<expected.data[i*expected.cols+j]<<endl<<"But got: "<<matrix.data[i*matrix.cols + j] <<endl;                        \
-                 }                                                                   \
-        }                                                                       \
-    }                                                                           \
-    if (counter == matrix.rows * matrix.cols) {                                  \
-         cout <<"Everything is fine! Thank you!\n"<<endl;                        \
-    }                                                                          \
-}
 
 
 
@@ -50,17 +28,20 @@ int main () {
                                 0,1};
     Matrix Result1(2,2,ResultData1);
 
-    Matrix Test1=matrix_power(Test11,0);
 
-    TEST_EQUAL( Test1, Result1 );
+    if(!((Test11.power(0))==Result1))
+    {
+        return 1;
+    };
     ////
     vector<double> Data22={1.8,     5.6,
                            112.5,   909.86};
     Matrix Test22(2,2,Data22);
 
-    Matrix Test2=matrix_power(Test22,1);
-
-    TEST_EQUAL( Test2, Test22 );
+    if(!((Test22.power(1))==Test22))
+    {
+        return 1;
+    };
     ////
     vector<double> Data33={1,	6,
                            2,	5};
@@ -70,9 +51,10 @@ int main () {
                                 12,	37};
     Matrix Result3(2,2,ResultData3);
 
-    Matrix Test3=matrix_power(Test33,2);
-
-    TEST_EQUAL( Test3, Result3 );
+    if(!((Test33.power(2))==Result3))
+    {
+        return 1;
+    };
     ////
     vector<double> Data44={4.22,	-5.56,	    8.8,	    -5.13,
                            8.2,	    4.35,       -8.266, 	5.4,
@@ -86,8 +68,11 @@ int main () {
                                 8104.682646254,	    11140.96908219136,	-26631.10890319432,	18234.3213725444};
     Matrix Result4(4,4,ResultData4);
 
-    Matrix Test4=matrix_power(Test44,4);
+    if(!((Test44.power(4))==Result4))
+    {
+        return 1;
+    };
 
-    TEST_EQUAL( Test4, Result4 );
-
+    
+    return 0;
 }

@@ -10,33 +10,8 @@ using namespace std;
 #include <iostream>
 
 
-#define STRINGIFY( x ) #x
-
-#define TEST_EQUAL( matrix, expected )   \
-{                                                                           \
-    cout << endl << "Matrix Invert "  STRINGIFY(matrix) "         ";                      \
-    unsigned int counter= 0;                                                      \
-    for (int i = 0; i < matrix.rows; i++) {                                \
-        for (int j = 0; j < matrix.cols; j++) {                            \
-            if (    (fabs(0.99*matrix.data[i*matrix.cols + j]) <= fabs(expected.data[i*expected.cols+j]))  \
-                && (fabs(1.01*matrix.data[i*matrix.cols + j]) >= fabs(expected.data[i*expected.cols+j]))        \
-                 && (expected.data[i*expected.cols+j] * matrix.data[i*matrix.cols + j] >= 0)) {     \
-                counter ++;                                                \
-            }                                                                \
-            else {                                                          \
-                cout << endl << "Something wrong with "<<"Element["<<i<<"]"<<"["<<j<<"]"<< endl<<                     \
-                "Expected: "<<expected.data[i*expected.cols+j]<<endl<<"But got: "<<matrix.data[i*matrix.cols + j] <<endl;                        \
-                 }                                                                   \
-        }                                                                       \
-    }                                                                           \
-    if (counter == matrix.rows * matrix.cols) {                                  \
-         cout <<"Everything is fine! Thank you!\n"<<endl;                        \
-    }                                                                          \
-}
-
-
-
 int main () {
+
 
     vector<double> Data11={-1.8,       5.6,
                            112.5,     909.86};
@@ -46,9 +21,10 @@ int main () {
                                 0.0496,	0.000794};
     Matrix Result1(2,2,ResultData1);
 
-    Matrix Test1=matrix_invert(Test11);
-
-    TEST_EQUAL( Test1, Result1 );
+    if(!((Test11.invert())==Result1))
+    {
+        return 1;
+    };
     ////
     vector<double> Data22 = {-8.2,	4.1,	5.57,
                              6.5,	-2.22,	-5.3,
@@ -60,9 +36,10 @@ int main () {
                                   -0.673,	-0.867,    0.0155};
     Matrix Result2(3, 3, ResultData2);
 
-    Matrix Test2=matrix_invert(Test22);
-    ////
-    TEST_EQUAL(Test2, Result2);
+    if(!((Test22.invert())==Result2))
+    {
+        return 1;
+    };
 
 
     vector<double> Data33 = {4.22,      -5.56,	    8.8,	    -5.13,
@@ -78,7 +55,9 @@ int main () {
                                   -0.287,	-0.316,	    0.244,	    0.256};
     Matrix Result3(4, 4, ResultData3);
 
-    Matrix Test3=matrix_invert(Test33);
-    TEST_EQUAL(Test3, Result3);
-
+    if(!((Test22.invert())==Result2))
+    {
+        return 1;
+    };
+return 0;
 }

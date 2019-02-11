@@ -37,19 +37,9 @@ public:
 
     // Транспонирование матрицы
     Matrix matrix_trans();
-
-    // Обращение матрицы
-    Matrix matrix_invert(Matrix A);
-
-    // Матричная экспонента
-    Matrix matrix_exp(Matrix A);
-
-    // Возведение матрицы в степень (натуральное число или 0)
-    Matrix matrix_power(Matrix A, unsigned int power);
-
-    //след матрицы
-    double matrix_trace (Matrix A);
 };
+
+extern int factorial(int a);
 
 // Единичная матрица
 extern Matrix matrix_one(unsigned int rows, unsigned int cols);
@@ -65,5 +55,20 @@ extern Matrix matrix_sum(Matrix A, Matrix B);
 
 // Умножение матриц
 extern Matrix matrix_mult(Matrix A, Matrix B);
+
+// Обращение матрицы
+extern Matrix matrix_invert(Matrix A);
+
+// Матричная экспонента
+extern Matrix matrix_exp(Matrix A);
+
+// Возведение матрицы в степень (натуральное число или 0)
+extern Matrix matrix_power(Matrix A, unsigned int power);
+
+//след матрицы
+extern double matrix_trace (Matrix A);
+
+//определитель
+extern double matrix_determinant(Matrix A);
 
 #endif //MR2018_VBMATRIX_H

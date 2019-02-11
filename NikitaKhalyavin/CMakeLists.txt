@@ -10,5 +10,6 @@ add_subdirectory(CMakeTest)
 add_subdirectory(NewProg)
 add_subdirectory(CPPtest)
 add_subdirectory(Deicstra)
+add_subdirectory(find)
 
 

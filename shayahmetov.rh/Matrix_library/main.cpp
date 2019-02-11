@@ -4,11 +4,14 @@
 int main() {
         Mx::Matrix a(3, 3);
         {
-                double arr[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+                double arr[9] = {5, 7, 5, 6, 8, 11, 55, 4, 35};
                 a.set(arr);
         }
         a.print();
-        std::cout<<a.trace()<<std::endl;
+        a.Minor(0, 0).print();
+        //a.print();
+        std::cout<<a.determinant()<<std::endl;
+        /*std::cout<<a.trace()<<std::endl;
         Mx::Matrix b(3, 3);
         b.rand();
         b.print();
@@ -41,7 +44,7 @@ int main() {
         r.rand();
         r.print();
         M = mexp(r);
-        M.print();
+        M.print();*/
 
         return 0;
 }

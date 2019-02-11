@@ -58,10 +58,10 @@ RM = "C:\Program Files\JetBrains\CLion 2018.2.4\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\Kursovaya"
+CMAKE_SOURCE_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\Kursovaya\cmake-build-debug"
+CMAKE_BINARY_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya\cmake-build-debug"
 
 #=============================================================================
 # Target rules for target CMakeFiles/Kursovaya.dir
@@ -70,7 +70,7 @@ CMAKE_BINARY_DIR = "C:\Users\al.kom\YandexDisk\Monday C.Cpp\Kursovaya\cmake-buil
 CMakeFiles/Kursovaya.dir/all:
 	$(MAKE) -f CMakeFiles\Kursovaya.dir\build.make CMakeFiles/Kursovaya.dir/depend
 	$(MAKE) -f CMakeFiles\Kursovaya.dir\build.make CMakeFiles/Kursovaya.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="C:\Users\al.kom\YandexDisk\Monday C.Cpp\Kursovaya\cmake-build-debug\CMakeFiles" --progress-num=1,2 "Built target Kursovaya"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya\cmake-build-debug\CMakeFiles" --progress-num=1,2 "Built target Kursovaya"
 .PHONY : CMakeFiles/Kursovaya.dir/all
 
 # Include target in all.
@@ -80,9 +80,9 @@ all: CMakeFiles/Kursovaya.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Kursovaya.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\al.kom\YandexDisk\Monday C.Cpp\Kursovaya\cmake-build-debug\CMakeFiles" 2
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya\cmake-build-debug\CMakeFiles" 2
 	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/Kursovaya.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\al.kom\YandexDisk\Monday C.Cpp\Kursovaya\cmake-build-debug\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\al.kom\YandexDisk\Monday C.Cpp\komarov.ae\KomarovKursovaya\cmake-build-debug\CMakeFiles" 0
 .PHONY : CMakeFiles/Kursovaya.dir/rule
 
 # Convenience name for target.
