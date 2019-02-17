@@ -7,8 +7,8 @@ void swap(int *arr, int first_index, int second_index) {
     arr[second_index] = temp;
 }
 
-void bubbleSort(int *arr, int m){
-    for(int i = m - 1; i >= 1; i--)
+void bubbleSort(int *arr, int n){
+    for(int i = n - 1; i >= 1; i--)
         for(int j = 0; j < i; j++)
         {
             if(arr[j] > arr[j+1])
