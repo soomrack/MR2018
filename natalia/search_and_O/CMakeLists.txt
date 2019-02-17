@@ -3,4 +3,4 @@ project(search_and_O)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(search_and_O main.cpp)
+add_executable(search_and_O main.cpp search_and_O.h search_and_O.cpp)
