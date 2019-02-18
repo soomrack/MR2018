@@ -41,7 +41,7 @@ int binary_search (int element, int* array, int size)
     while (true)
     {
         int mid = (int)((left + right) * 0.5);
-        if (array[mid] = element)
+        if (array[mid] == element)
             return mid;
         if (mid > element)
         {
