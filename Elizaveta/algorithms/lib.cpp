@@ -41,18 +41,16 @@ int binary_search (int element, int* array, int size)
     while (true)
     {
         int mid = (int)((left + right) * 0.5);
-        if (array[mid] = element)
-            return mid;
-        if (mid > element)
-        {
-            right = mid - 1;
+        if (array[mid] == element) return mid;
+        else {
+            if (mid > element) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+            if (left > right)
+                std::cout << "not found" << std::endl;
         }
-        else
-        {
-            left = mid + 1;
-        }
-        if (left > right)
-            std::cout<<"not found"<<std::endl;
     }
 }
 
