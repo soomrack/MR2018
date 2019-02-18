@@ -8,6 +8,8 @@
 #include <time.h>
 #include <cstring>
 
+#define swap(a,b) { a ^= b; b ^= a; a ^= b;}
+
 void BubbleSort(int * array, int size) {
     for(int i = 0; i < size - 1; i++) {
         for(int j = 0; j < size - 1 - i; j++) {
@@ -18,6 +20,27 @@ void BubbleSort(int * array, int size) {
             }
         }
     }
+}
+
+void HeapSort(int * array, int size) {
+
+}
+
+void InsertSort(int * array, int size) {
+
+    int place;
+
+    for(int item = 1; item < size; item++ ) {
+        place = item - 1;
+        while(place >= 0) {
+            if(array[place] > array[place+1]) {
+                swap(array[place], array[place+1]);
+            }
+            else break;
+            place--;
+        }
+    }
+
 }
 
 void MergeSort(int * array, int size) {
