@@ -31,4 +31,6 @@ if (ENABLETESTS)
     target_link_libraries(LizaTestTrace lizalib)
     target_link_libraries(LizaTestMatrix lizalib2)
 
+    add_executable(algorithms algorithms/main.cpp algorithms/lib.cpp algorithms/lib.h)
+
 endif()

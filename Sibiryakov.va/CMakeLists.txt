@@ -10,6 +10,8 @@ add_subdirectory(MatrixOperationCpp)
 
 add_subdirectory(MatrixOperationC)
 
+add_subdirectory(Algorythms)
+
 link_libraries(ws2_32 wsock32)
 
 
