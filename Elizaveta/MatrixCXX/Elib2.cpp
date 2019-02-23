@@ -10,7 +10,7 @@
 
 
 // След матрицы
-extern double Matrix::matrix_trace(const Matrix A)
+double Matrix::matrix_trace(const Matrix A)
 {
     double s = 0;
     for (int i = 0; i < A.rows; i++)
@@ -22,20 +22,20 @@ extern double Matrix::matrix_trace(const Matrix A)
 
 
 // Миноры
-extern Matrix Matrix::matrix_minor(int row, int col, const Matrix A)
+Matrix Matrix::matrix_minor(int row, int col)
 {
-    Matrix result = {A.rows-1, A.cols-1};
+    Matrix result = {rows-1, cols-1};
     result.data = (double *) malloc(result.rows * result.cols * sizeof(double));
     int k = 0;
-    for (int i = 0; i < A.rows; i++)
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < A.cols; j++)
+        for (int j = 0; j < cols; j++)
         {
             if ((i == row) || (j == col))
             {
                 continue;
             }
-            result.data[k] = A.data[i * A.cols + j];
+            result.data[k] = data[i * cols + j];
             k++;
         }
     }
@@ -44,21 +44,21 @@ extern Matrix Matrix::matrix_minor(int row, int col, const Matrix A)
 
 
 // Определитель матрицы
-extern double Matrix::matrix_determinant(const Matrix A)
+double Matrix::matrix_determinant()
 {
     double D = 0;
-    switch (A.rows)
+    switch (rows)
     {
         case 1:
-            return A.data[0];
+            return data[0];
         case 2:
-            return (A.data[0] * A.data[3] - A.data[1] * A.data[2]);
+            return (data[0] * data[3] - data[1] * data[2]);
         default:
         {
-            Matrix dop = matrix_dop(A);
-            for (int j = 0; j < A.cols; j++)
+            Matrix dop = matrix_dop();
+            for (int j = 0; j < cols; j++)
             {
-                D += A.data[j] * dop.data[j];
+                D += data[j] * dop.data[j];
             }
             return D;
         }
@@ -66,15 +66,17 @@ extern double Matrix::matrix_determinant(const Matrix A)
 }
 
 // Алгебраические дополнения
-extern Matrix Matrix::matrix_dop(const Matrix A)
+Matrix Matrix::matrix_dop()
 {
-    Matrix result = {A.rows, A.cols};
+    Matrix result = {rows, cols};
     result.data = (double *) malloc(result.rows * result.cols * sizeof(double));
-    for (int i = 0; i < A.rows; i++)
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < A.cols; j++)
+        Matrix minor = {rows-1, cols-1};
+        for (int j = 0; j < cols; j++)
         {
-            result.data[i*A.cols + j] = pow((-1), i + j) * matrix_determinant(matrix_minor(i, j, A));
+            minor = matrix_minor(i, j);
+            result.data[i*cols + j] = pow((-1), i + j) * minor.matrix_determinant();
         }
     }
     return result;
@@ -82,12 +84,12 @@ extern Matrix Matrix::matrix_dop(const Matrix A)
 
 
 // Сумма матриц
-extern Matrix Matrix::matrix_sum(const Matrix A, const Matrix B)
+Matrix Matrix::matrix_sum(const Matrix &A)
 {
-    if ((A.rows != B.rows) || (A.cols != B.cols))
+    if ((A.rows != rows) || (A.cols != cols))
     {
         std::cout << "Sum error - different size\n";
-        return A;
+        exit(1);
     }
     else
     {
@@ -97,7 +99,7 @@ extern Matrix Matrix::matrix_sum(const Matrix A, const Matrix B)
         {
             for (int j = 0; j < A.cols; j++)
             {
-                result.data[i*A.cols+j] = A.data[i*A.cols+j] + B.data[i*A.cols+j];
+                result.data[i*A.cols+j] = A.data[i*A.cols+j] + data[i*A.cols+j];
             }
 
         }
@@ -108,24 +110,24 @@ extern Matrix Matrix::matrix_sum(const Matrix A, const Matrix B)
 
 
 // Умножение матриц
-extern Matrix Matrix::matrix_mult(const Matrix A, const Matrix B)
+Matrix Matrix::matrix_mult(const Matrix A)
 {
-    if (A.cols != B.rows)
+    if (A.cols != rows)
     {
         std::cout << "Multiplication error \n";
-        return A;
+        exit(1);
     }
     else
     {
-        Matrix result = {A.rows, B.cols};
+        Matrix result = {A.rows, cols};
         result.data = (double *) malloc(result.rows * result.cols * sizeof(double));
         for (int i = 0; i < A.rows; i++)
         {
-            for (int j = 0; j < B.cols; j++)
+            for (int j = 0; j < cols; j++)
             {
-                result.data[i * B.cols + j] = 0;
+                result.data[i * cols + j] = 0;
                 for (int k = 0; k < A.cols; k++) {
-                    result.data[i * B.cols + j] += A.data[i * A.cols + k] * B.data[k * B.cols + j];
+                    result.data[i * cols + j] += A.data[i * A.cols + k] * data[k * cols + j];
                 }
             }
         }
@@ -136,15 +138,15 @@ extern Matrix Matrix::matrix_mult(const Matrix A, const Matrix B)
 
 
 // Умножение матрицы на скаляр
-extern Matrix Matrix::matrix_mult_scalar(const double scalar, const Matrix A)
+extern Matrix Matrix::matrix_mult_scalar(const double scalar)
 {
-    Matrix result = {A.rows, A.cols};
+    Matrix result = {rows, cols};
     result.data = (double *) malloc(result.rows * result.cols * sizeof(double));
-    for (int i = 0; i < A.rows; i++)
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < A.cols; j++)
+        for (int j = 0; j < cols; j++)
         {
-            result.data[i * A.cols + j] = scalar * A.data[i * A.cols + j];
+            result.data[i * cols + j] = scalar * data[i * cols + j];
         }
     }
 
@@ -152,15 +154,15 @@ extern Matrix Matrix::matrix_mult_scalar(const double scalar, const Matrix A)
 }
 
 // Транспонирование матрицы
-extern Matrix Matrix::matrix_trans(const Matrix A)
+Matrix Matrix::matrix_trans()
 {
-    Matrix result = {A.cols, A.rows};
+    Matrix result = {cols, rows};
     result.data = (double *) malloc(result.rows * result.cols * sizeof(double));
-    for (int i = 0; i < A.rows; i++)
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < A.cols; j++)
+        for (int j = 0; j < cols; j++)
         {
-            result.data[j * A.rows + i] = A.data[i * A.cols + j];
+            result.data[j * rows + i] = data[i * cols + j];
         }
     }
 
@@ -168,18 +170,20 @@ extern Matrix Matrix::matrix_trans(const Matrix A)
 }
 
 // Обращение матрицы
-extern Matrix Matrix::matrix_invert(const Matrix A)
+Matrix Matrix::matrix_invert()
 {
-    double det = matrix_determinant(A);
+    double det = matrix_determinant();
     if (det == 0)
     {
         std::cout << "No invert matrix \n";
-        return A;
+        exit(1);
     }
     else
     {
-        Matrix result;
-        result = matrix_mult_scalar(1/det, matrix_trans(matrix_dop(A)));
+        Matrix result(rows, cols);
+        result = matrix_dop();
+        result =result.matrix_trans();
+        result = matrix_mult_scalar(1/det);
         return result;
     }
 }
@@ -200,32 +204,34 @@ extern Matrix matrix_one_full(const unsigned int rows, const unsigned int cols)
 }
 
 // Возведение матрицы в степень (натуральное число или 0)
-extern Matrix Matrix::matrix_power(const Matrix A, const unsigned int power)
+Matrix Matrix::matrix_power(const unsigned int power)
 {
+    Matrix B(rows, cols);
+    B = *this;
+
     if (power == 0)
     {
-        return matrix_one_full(A.rows, A.cols);
+        return matrix_one_full(rows, cols);
     }
     if (power == 1)
     {
-        return A;
+        return B;
     }
-    if (A.rows != A.cols)
+    if (rows != cols)
     {
         std::cout << "only square matrix \n";
-        return A;
+        return B;
     }
-    Matrix result = A;
     for (int i = 0; i < (power-1); i++)
     {
-        result = matrix_mult(result, A);
+        B = matrix_mult(B);
     }
 
-    return result;
+    return B;
 }
 
 // Единичная матрица
-extern Matrix Matrix::matrix_one(const unsigned int size)
+Matrix Matrix::matrix_one(const unsigned int size)
 {
     Matrix result = {size, size};
     result.data = (double *) malloc(result.rows * result.cols * sizeof(double));
@@ -281,13 +287,13 @@ extern Matrix Matrix::matrix_rand(const unsigned int rows, const unsigned int co
 }
 
 // Вывести матрицу на экран
-extern void Matrix::matrix_print(const Matrix A)
+void Matrix::matrix_print()
 {
     std::cout << "matrix \n";
-    for (int i = 0; i < (A.cols * A.rows); i++)
+    for (int i = 0; i < (cols * rows); i++)
     {
-        printf ("%5.2lf     ", A.data[i]);
-        if ((i+1)%A.cols == 0)
+        printf ("%9.2lf     ", data[i]);
+        if ((i+1)%cols == 0)
         {
             printf("\n");
         }
@@ -330,16 +336,19 @@ double factorial (int n)
     return result;
 }
 
-extern Matrix Matrix::matrix_exp(const Matrix A)
+extern Matrix Matrix::matrix_exp()
 {
-    Matrix result = matrix_one_full(A.rows, A.cols);
-    Matrix element = matrix_one_full(A.rows, A.cols);
+    Matrix B(rows, cols);
+    B = *this;
+    Matrix result = matrix_one_full(rows, cols);
+    Matrix element = matrix_one_full(rows, cols);
     double eps = 0.001;
     int k = 1;
     while (norm(element) > eps)
     {
-        element = matrix_mult_scalar(1/factorial(k), matrix_power(A, k));
-        result = matrix_sum(result, element);
+        element = B.matrix_power(k);
+        element = element.matrix_mult_scalar(1/factorial(k));
+        result = result.matrix_sum(element);
         k = k + 1;
     }
     return result;

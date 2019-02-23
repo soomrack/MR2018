@@ -11,3 +11,5 @@ int findForSorted(int * array, int x, int size, int start, int stop);
 
 int findForNotSorted(int * array, int x, int size);
 
+void change(int * array, int index, int newValue, int size);
+

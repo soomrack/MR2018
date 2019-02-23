@@ -26,21 +26,24 @@ int main ()
                          {3, 4, 8, 7},
                          {8, 9, 10, 15}};
 
-    Matrix C = {Q, Q, *arqC};
-    Matrix A = {N, N, *arqA};
-    Matrix B = {N, N, *arqB};
-    Matrix Sum;
-    Matrix Mult;
-    Matrix MultScal;
-    Matrix Transp;
-    Matrix Minor;
-    Matrix Dop;
-    Matrix Invert;
-    Matrix power;
-    Matrix Zero;
-    Matrix One;
-    Matrix Rand;
-    Matrix Exp;
+    Matrix C (Q, Q);
+    C.data = *arqC;
+    Matrix A (N, N);
+    A.data = *arqA;
+    Matrix B (N, N);
+    B.data = *arqB;
+    Matrix Sum (0,0);
+    Matrix Mult(0,0);
+    Matrix MultScal(0,0);
+    Matrix Transp(0,0);
+    Matrix Minor(0,0);
+    Matrix Dop(0,0);
+    Matrix Invert(0,0);
+    Matrix power(0,0);
+    Matrix Zero(0,0);
+    Matrix One(0,0);
+    Matrix Rand(0,0);
+    Matrix Exp(0,0);
 
     double trace, det;
 
@@ -48,55 +51,55 @@ int main ()
     std::cout << "trace \n" << trace << "\n";
 
     std::cout << "minor \n";
-    Minor = B.matrix_minor(1, 1, B);
-    Minor.matrix_print(Minor);
+    Minor = B.matrix_minor(1, 1);
+    Minor.matrix_print();
 
-    Dop = B.matrix_dop(B);
-    Dop.matrix_print(Dop);
+    Dop = B.matrix_dop();
+    Dop.matrix_print();
 
 
-    det = B.matrix_determinant(C);
+    det = B.matrix_determinant();
     std::cout << "determinant \n" << det << "\n";
 
     std::cout << "sum \n";
-    Sum = A.matrix_sum(A, B);
-    Sum.matrix_print(Sum);
+    Sum = A.matrix_sum(B);
+    Sum.matrix_print();
 
     std::cout << "transpose \n";
-    Transp = A.matrix_trans(A);
-    Transp.matrix_print(Transp);
+    Transp = A.matrix_trans();
+    Transp.matrix_print();
 
     std::cout << "multiplication - scalar \n";
-    MultScal = A.matrix_mult_scalar(5, A);
-    MultScal.matrix_print(MultScal);
+    MultScal = A.matrix_mult_scalar(5);
+    MultScal.matrix_print();
 
     std::cout << "multiplication - matrix \n";
-    Mult = B.matrix_mult(A, B);
-    Mult.matrix_print(Mult);
+    Mult = B.matrix_mult(A);
+    Mult.matrix_print();
 
     std::cout << "invert matrix \n";
-    Invert = B.matrix_invert(B);
-    Invert.matrix_print(Invert);
+    Invert = B.matrix_invert();
+    Invert.matrix_print();
 
     std::cout << "unit matrix \n";
     One = One.matrix_one(4);
-    One.matrix_print(One);
+    One.matrix_print();
 
     std::cout << "zero matrix \n";
     Zero = Zero.matrix_zero(4, 3);
-    Zero.matrix_print(Zero);
+    Zero.matrix_print();
 
     std::cout << "random 1 -1 matrix \n";
     Rand = Rand.matrix_rand(3, 4);
-    Rand.matrix_print(Rand);
+    Rand.matrix_print();
 
     std::cout << "matrix power \n";
-    power = B.matrix_power(B, 7);
-    power.matrix_print(power);
+    power = B.matrix_power(7);
+    power.matrix_print();
 
     std::cout << "matrix exponent \n";
-    Exp = B.matrix_exp(B);
-    Exp.matrix_print(Exp);
+    Exp = B.matrix_exp();
+    Exp.matrix_print();
     
     return 0;
 }
