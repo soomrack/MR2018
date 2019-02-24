@@ -15,6 +15,8 @@ void InsertSort(int * array, int size);
 
 void HeapSort(int * array, int size);
 
+void TimSort ( int * array, int size);
+
 void  ArrayPrint(int * array, int size);
 
 int * CreateRandArray(int size, int min, int max);

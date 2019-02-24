@@ -18,5 +18,6 @@ target_link_libraries(NKhTestSorts NKhsortArray)
 
 enable_testing()
 
+
+add_test(testSort NKhTestSorts)
 add_test(testChange NKhTestChange)
-add_test(testSort NKhTestSort)

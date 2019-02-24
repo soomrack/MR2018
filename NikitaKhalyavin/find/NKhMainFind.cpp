@@ -9,6 +9,6 @@
 int main() {
     int * a = CreateRandArray(50, -100, 100);
     ArrayPrint(a, 50);
-    HeapSort(a, 50);
+    TimSort(a, 50);
     ArrayPrint(a, 50);
 }
