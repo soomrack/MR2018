@@ -22,8 +22,43 @@ void BubbleSort(int * array, int size) {
     }
 }
 
-void HeapSort(int * array, int size) {
 
+static void downHeap(int * array, int size, int newIndex) {
+
+    int child;
+    int newElement = array[newIndex];
+
+    while(newIndex < size / 2) {
+
+        child = newIndex * 2 + 1;
+        if( (child + 1 < size) && (array[child + 1] > array[child]) ) {
+            child++;
+        }
+        if(array[child] <= newElement) {
+            break;
+        }
+        array[newIndex] = array[child];
+        newIndex = child;
+    }
+    array[newIndex] = newElement;
+}
+
+static void makeHeap(int * array, int size) {
+    for(int i = size / 2; i >= 0; i--) downHeap(array, size, i);
+}
+
+void HeapSort(int * array, int size) {
+    
+    makeHeap(array, size);
+    
+    for(int i = size - 1; i > 0; i--) {
+        
+        int temp = array[0];
+        array[0] = array[i];
+        array[i] = temp;
+        
+        downHeap(array, i, 0);
+    }
 }
 
 void InsertSort(int * array, int size) {
