@@ -73,13 +73,33 @@ int CalcRun (int size) { // выбираем run, равный степени 2
 
 
 
+
+void Add(int start, int size, List *&Subarray) {
+    List *temp = new List;                              //Выделяем память для нового элемента
+    temp->start_index = start;                          //Записываем в поля стека принимаемые элементы
+    temp->sub_size = size;
+    temp->next = Subarray->head;                        //Указываем, что следующий элемент это предыдущий
+    Subarray->head = temp;                              //Сдвигаем голову на позицию вперед
+}
+
+
 void TimSort(int* arr, int size) {
     int* start = arr;
+    int start_index = 0;
     int run = 8; //CalcRun(size);
     int end = run;
     bool sorted = false;
+    //стек пар <индекс начала подмассива><размер подмассива>
+    List *Subarray = new List;
+    Subarray->head = NULL;
+
     do {
         Insert(start, run);
+
+        //Заносим подмассив в стек
+        Add(start_index, run, Subarray);
+
+
         if (end==size) sorted = true;
         start += run;
         end+=run;
@@ -87,13 +107,25 @@ void TimSort(int* arr, int size) {
             end = size;
             run = end%run;
         }
+        start_index+=run;
+
     }
     while (!sorted);
-
+    Show(Subarray); //Выводим стек на экран
 
 }
 
-
+void Show(List *MyList)
+{
+    List *temp = MyList->head;                          //Объявляем указатель и Указываем ему, что его позиция в голове стека
+    //с помощью цикла проходим по всему стеку
+    while (temp != NULL)                                //выходим при встрече с пустым полем
+    {
+        std::cout << "Subarray"<< temp->start_index << " " << temp->sub_size << " ";                         //Выводим на экран элемент стека
+        temp = temp->next;                              //Переходим к следующему элементу
+    }
+    std::cout << std::endl;
+}
 
 
 
