@@ -62,6 +62,46 @@ void Insert(int* arr, int size) {
 }
 
 
+int CalcRun (int size) { // выбираем run, равный степени 2
+    bool flag = 0;         // будет равно 1, если среди сдвинутых битов есть хотя бы один ненулевой
+    while (size >= 48) {
+        flag |= size & 1;
+        size >>= 1;
+    }
+    return size + flag;
+}
+
+
+
+void TimSort(int* arr, int size) {
+    int* start = arr;
+    int run = 8; //CalcRun(size);
+    int end = run;
+    bool sorted = false;
+    do {
+        Insert(start, run);
+        if (end==size) sorted = true;
+        start += run;
+        end+=run;
+        if (end>size){
+            end = size;
+            run = end%run;
+        }
+    }
+    while (!sorted);
+
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -94,7 +134,7 @@ void Insert(int* arr, int size) {
 */
 
 
-
+/*
 void TimSort(int* arr, int size) {
     int index = 0;
     int begin = index;
