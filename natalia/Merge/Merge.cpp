@@ -83,12 +83,91 @@ void Add(int start, int size, List *&Subarray) {
 }
 
 
+void ClearList(List *MyList)
+{
+    while (MyList->head != NULL)                        //Пока по адресу не пусто
+    {
+        List *temp = MyList->head->next;                    //Временная переменная для хранения адреса следующего элемента
+        delete MyList->head;                                //Освобождаем адрес обозначающий начало
+        MyList->head = temp;                                //Меняем адрес на следующий
+    }
+}
+
+void ifMerge(int * arr, List *&Subarray, int* buf) {
+    List *X = Subarray -> head;
+    List *Y = X -> next;
+    List *Z = Y -> next;
+    do {
+        if ((X->sub_size > (Y->sub_size + Z->sub_size)) &&
+            (Y->sub_size > Z->sub_size)) {}
+        else {
+            List *MIN = new List;
+            MIN = (X->sub_size < Z->sub_size) ? X : Z;
+            Merge_sub(arr, Y, MIN, buf);
+        }
+
+        X = X->next;
+        Y = Y->next;
+        Z = Z ->next;
+    }
+    while (Z!= NULL);
+
+}
+
+
+
+void Merge_sub (int* arr, List *&Subarray1, List *&Subarray2, int* buf) {
+    List *MIN = new List;
+    List *MAX = new List;
+
+    if (Subarray1->sub_size < Subarray2->sub_size) {
+        List *MIN = Subarray1;
+        List *MAX = Subarray2;
+    } else {
+        MIN = Subarray2;
+        MAX = Subarray1;
+    }
+    int temp_size = MIN->sub_size;
+    int temp[temp_size];
+    for (int i = 0; i < temp_size; i++)
+        temp[i] = arr[(MIN->start_index) + i];
+    int index_max = (MAX->start_index);
+    int index_min = 0;
+    std::cout << "buf";
+    for (int i=0; i<=(temp_size+MAX->sub_size); i++) {
+        if (index_min<=temp_size) {
+            if (index_max <= (index_max+(MAX->sub_size))) {
+                if (arr[index_max] < temp[index_min]) {
+                    buf[i] = arr[index_max];
+                    index_max++;
+                } else {
+                    buf[i] = temp[index_min];
+                    index_min++;
+                }
+
+            } else {                            //здесь непонятно, когда закончился один из массивов и перекидываем остатки второго
+                buf[i] = temp[index_min];
+                index_min++;
+                std::cout << "end of index_max";
+            }
+        } else {
+            buf[i] = arr[index_max];
+            index_max++;
+            std::cout << "end of index_min";
+        }
+        std::cout << buf[i] << ' ';
+
+    }
+    std::cout << std::endl;
+}
+
 void TimSort(int* arr, int size) {
     int* start = arr;
     int start_index = 0;
     int run = 8; //CalcRun(size);
     int end = run;
     bool sorted = false;
+
     //стек пар <индекс начала подмассива><размер подмассива>
     List *Subarray = new List;
     Subarray->head = NULL;
@@ -111,7 +190,14 @@ void TimSort(int* arr, int size) {
 
     }
     while (!sorted);
-    Show(Subarray); //Выводим стек на экран
+
+    int *buf = new int[size+1];
+    for(int i = 0; i < 20; i++)
+        std::cout << arr[i] << ' ';
+    std::cout << std::endl;
+    ifMerge(arr, Subarray, buf);
+
+    //Show(Subarray); //Выводим стек на экран
 
 }
 
@@ -121,7 +207,7 @@ void Show(List *MyList)
     //с помощью цикла проходим по всему стеку
     while (temp != NULL)                                //выходим при встрече с пустым полем
     {
-        std::cout << "Subarray"<< temp->start_index << " " << temp->sub_size << " ";                         //Выводим на экран элемент стека
+        std::cout << "Subarray "<< temp->start_index << " " << temp->sub_size << " ";      //Выводим на экран элементы стека
         temp = temp->next;                              //Переходим к следующему элементу
     }
     std::cout << std::endl;
