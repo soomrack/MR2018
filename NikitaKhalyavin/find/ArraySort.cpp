@@ -68,14 +68,13 @@ void InsertSort(int * array, int size) {
     for(int item = 1; item < size; item++ ) {
         place = item - 1;
         while(place >= 0) {
-            if(array[place] > array[place+1]) {
-                swap(array[place], array[place+1]);
+            if(array[place] > array[place + 1]) {
+                swap(array[place], array[place + 1]);
             }
             else break;
             place--;
         }
     }
-
 }
 
 void MergeSort(int * array, int size) {
@@ -111,7 +110,6 @@ void MergeSort(int * array, int size) {
     }
 
     memcpy(array, temp, sizeof(int) * size);
-    return;
 }
 
 static int GetMinrun(int n)
