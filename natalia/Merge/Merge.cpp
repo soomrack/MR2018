@@ -93,72 +93,61 @@ void ClearList(List *MyList)
     }
 }
 
-void ifMerge(int * arr, List *&Subarray, int* buf) {
+void timMerge(int * arr, List *&Subarray, int* buf) {
     List *X = Subarray -> head;
-    List *Y = X -> next;
-    List *Z = Y -> next;
+    int start_el = 0;
     do {
-        if ((X->sub_size > (Y->sub_size + Z->sub_size)) &&
-            (Y->sub_size > Z->sub_size)) {}
-        else {
-            List *MIN = new List;
-            MIN = (X->sub_size < Z->sub_size) ? X : Z;
-            Merge_sub(arr, Y, MIN, buf);
-        }
-
+        Merge_sub(arr, X, buf, start_el);
+        start_el+=(X->sub_size);
         X = X->next;
-        Y = Y->next;
-        Z = Z ->next;
     }
-    while (Z!= NULL);
-
+    while (X != NULL);
 }
 
 
 
-void Merge_sub (int* arr, List *&Subarray1, List *&Subarray2, int* buf) {
-    List *MIN = new List;
-    List *MAX = new List;
-
-    if (Subarray1->sub_size < Subarray2->sub_size) {
-        List *MIN = Subarray1;
-        List *MAX = Subarray2;
-    } else {
-        MIN = Subarray2;
-        MAX = Subarray1;
+void Merge_sub (int* arr, List *&Subarray, int* buf, int start_el) {
+    //List * MIN = new List;
+    //List * MAX = new List;
+    if (start_el == 0) {
+        for (int i = 0; i < Subarray->sub_size; i++) {
+            buf[i] = arr[Subarray->start_index + i];
+        }
     }
-    int temp_size = MIN->sub_size;
-    int temp[temp_size];
-    for (int i = 0; i < temp_size; i++)
-        temp[i] = arr[(MIN->start_index) + i];
-    int index_max = (MAX->start_index);
-    int index_min = 0;
-    std::cout << "buf";
-    for (int i=0; i<=(temp_size+MAX->sub_size); i++) {
-        if (index_min<=temp_size) {
-            if (index_max <= (index_max+(MAX->sub_size))) {
-                if (arr[index_max] < temp[index_min]) {
-                    buf[i] = arr[index_max];
-                    index_max++;
+    else {
+        int temp[start_el];
+        for (int i = 0; i < start_el; i++) {
+            temp[i] = buf[i];
+        }
+
+        int index_temp = 0;
+        int index_sub = 0;
+        for (int i = 0; i < start_el + Subarray->sub_size; i++) {
+            if (index_temp <= start_el) {
+                if (index_sub <= Subarray->sub_size) {
+                    if (temp[index_temp] < arr[Subarray->start_index + index_sub]) {
+                        buf[i] = temp[index_temp];
+                        index_temp++;
+                    } else {
+                        buf[i] = arr[Subarray->start_index + index_sub];
+                        index_sub++;
+                    }
                 } else {
-                    buf[i] = temp[index_min];
-                    index_min++;
+                    //std::cout << "end of index_sub" << std::endl;
+                    buf[i] = temp[index_temp];
                 }
 
-            } else {                            //здесь непонятно, когда закончился один из массивов и перекидываем остатки второго
-                buf[i] = temp[index_min];
-                index_min++;
-                std::cout << "end of index_max";
+            } else {
+                if (index_sub <= Subarray->sub_size) {
+                    //std::cout << "end of index_temp" << std::endl;
+                    buf[i] = arr[Subarray->start_index + index_sub];
+                }
             }
-        } else {
-            buf[i] = arr[index_max];
-            index_max++;
-            std::cout << "end of index_min";
+            //std::cout << buf[i] << ' ';
         }
-        std::cout << buf[i] << ' ';
-
+        //std::cout << std::endl;
     }
-    std::cout << std::endl;
+
 }
 
 void TimSort(int* arr, int size) {
@@ -174,19 +163,20 @@ void TimSort(int* arr, int size) {
 
     do {
         Insert(start, run);
-
+       // Subarray = Subarray->next;
         //Заносим подмассив в стек
         Add(start_index, run, Subarray);
 
 
         if (end==size) sorted = true;
         start += run;
+        start_index+=run;
         end+=run;
         if (end>size){
             end = size;
             run = end%run;
         }
-        start_index+=run;
+
 
     }
     while (!sorted);
@@ -195,9 +185,14 @@ void TimSort(int* arr, int size) {
     for(int i = 0; i < 20; i++)
         std::cout << arr[i] << ' ';
     std::cout << std::endl;
-    ifMerge(arr, Subarray, buf);
-
-    //Show(Subarray); //Выводим стек на экран
+    timMerge(arr, Subarray, buf);
+    std::cout <<  " Merged ";
+    for(int i = 0; i < 20; i++)
+         arr[i] = buf[i] ;
+    std::cout << std::endl;
+    ClearList(Subarray); //Очищаем память.
+    delete Subarray->head;
+    delete Subarray;
 
 }
 
@@ -217,65 +212,12 @@ void Show(List *MyList)
 
 
 
-
-
-
-
-
-
-
-
-
-/*void TimSort(int* arr, int n) {
-    for (int i = 0; i < n; i+=48)
-        Insert(arr, i, __min((i+48),(n-1)));
-    for (int size = 48; size < n; size = 2*size)
-    {
-        // pick starting point of left sub array. We
-        // are going to merge arr[left..left+size-1]
-        // and arr[left+size, left+2*size-1]
-        // After every merge, we increase left by 2*size
-        for (int left = 0; left < n; left += 2*size)
-        {
-            // find ending point of left sub array
-            // mid+1 is starting point of right sub array
-            int mid = left + size - 1;
-            int right = __min((left + 2*size - 1), (n-1));
-            // merge sub array arr[left.....mid] &
-            // arr[mid+1....right]
-            MergeSort(arr, left, right);
-        }
-    }
-
-}
-
-*/
-
-
 /*
-void TimSort(int* arr, int size) {
-    int index = 0;
-    int begin = index;
-    while (index<size) {
-        int end = begin;
-        end ++;
-        if (arr[begin] > arr[end]) {
-            swap( arr, arr[begin], arr[end]);
-        }
-        bool sorted = true;
-        while(sorted) {
-            end++;
-            sorted = arr[end] > arr[end - 1] ? true : false;
-        }
-        if ((end-begin)<48) {
-            end = __min(begin+48, size);
-        }
-        Merge(arr, begin,end);
-        begin ++;
-    }
 
-}
-/*
+
+
+
+
 
 int Heap(int *arr, int size) { //O(n^2)
     int end = size-1;

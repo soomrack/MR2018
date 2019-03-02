@@ -20,6 +20,6 @@ void Insert(int* arr, int size);
 void TimSort(int* arr, int size);
 void Add(int start, int size, List *&Subarray);
 void Show(List *MyList);
-void ifMerge(int* arr, List *&Subarray, int* buf);
-void Merge_sub (int* arr, List *&Subarray1, List *&Subarray2,int* buf);
+void timMerge(int* arr, List *&Subarray, int* buf);
+void Merge_sub (int* arr, List *&Subarray, int* buf, int start_el);
 #endif //MERGE_MERGE_H
