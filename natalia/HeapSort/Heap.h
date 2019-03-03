@@ -18,7 +18,6 @@ public:
     void heapify(int);  // упорядочение кучи
 
 };
-
 void HeapSort(int* arr, int size);
 int getK(int* arr, int size, int k);
 

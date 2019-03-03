@@ -64,6 +64,7 @@ void Heap :: addelem(int n) {
     HeapSize++;
 }
 
+
 void Heap:: out() {
     for(int i=0; i< HeapSize; i++) {
         std::cout << h[i] << ' ';
