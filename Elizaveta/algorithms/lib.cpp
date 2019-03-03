@@ -377,6 +377,56 @@ void HeapSort (int * arr, int size)
     }
 }
 
+//ПОИСК k-ПОРЯДКОВОЙ СТАТИСТИКИ
+
+int getOrderStatistic( int * arr, int size, int j )
+{
+	int left = 0;
+	int right = size - 1;
+	int pivot;
+	int border;
+	int p, i;
+
+	while (1)
+	{
+		if (left == right)
+		{
+			return arr[left];
+		}
+		p =(left + right)/2;
+		pivot = arr[p];
+		swap_arr(&arr[p], &arr[right]);
+
+		border = left;
+
+		for (i = left; i < right; i++)
+		{
+			if (arr[i] <= pivot)
+			{
+				swap_arr(&arr[border], &arr[i]);
+				border++;
+			}
+		}
+
+		swap_arr(&arr[border], &arr[right]);
+
+		if (border == j)
+		{
+			return arr[border];
+		}
+
+		if (j < border)
+		{
+			right = border - 1;
+		}
+
+		else
+		{
+			left = border + 1;
+		}
+	}
+}
+
 //ДВОИЧНОЕ ДЕРЕВО ПОИСКА
 
 void show(node *&tree)
