@@ -107,8 +107,6 @@ void timMerge(int * arr, List *&Subarray, int* buf) {
 
 
 void Merge_sub (int* arr, List *&Subarray, int* buf, int start_el) {
-    //List * MIN = new List;
-    //List * MAX = new List;
     if (start_el == 0) {
         for (int i = 0; i < Subarray->sub_size; i++) {
             buf[i] = arr[Subarray->start_index + i];
@@ -212,7 +210,7 @@ void Show(List *MyList)
 
 
 
-/*
+
 
 
 
@@ -229,6 +227,10 @@ int Heap(int *arr, int size) { //O(n^2)
 }
 
 
+
+
+
+/*
 int Heap_2(int *arr, int size, int root = 0) {
     if (root>=size) return;
     if (2root >= size) return;

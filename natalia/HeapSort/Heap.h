@@ -16,10 +16,10 @@ public:
     void out();  // вывод элементов кучи в форме массива
     int getmax();  // удаление вершины (максимального элемента)
     void heapify(int);  // упорядочение кучи
-    void make_Heap(int *arr, int size);
-};
 
+};
 void HeapSort(int* arr, int size);
+int getK(int* arr, int size, int k);
 
 
 
