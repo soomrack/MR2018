@@ -21,5 +21,20 @@ void Timsort(int *arr, int size);
 void MergeSort(int *A, int begin, int end);
 void HeapSort (int * arr, int size);
 
+struct node
+{
+    int key;
+    int value;
+    node *left, *right;
+};
+
+void show(node *&tree);
+void clean(node *&tree);
+void insert(node *&tree, int key, int value);
+node search(node *&tree, int key);
+void delete_node(node *&tree, int key);
+
+
+
 #endif //UNTITLED22_SORT_H
 
