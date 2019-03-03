@@ -4,6 +4,9 @@
 #include "lib.h"
 #include <iostream>
 #include <cstdlib>
+#include <stack>
+
+//СОРТИРОВКА ПУЗЫРЬКОМ
 
 void bubble_sort (int* array, int size)
 {
@@ -21,6 +24,9 @@ void bubble_sort (int* array, int size)
     }
 }
 
+
+//ЛИНЕЙНЫЙ ПОИСК
+
 int linear_search (int element, int* array, int size)
 {
     for (int i = 0; i < size; i++)
@@ -30,6 +36,9 @@ int linear_search (int element, int* array, int size)
     }
     return 0;
 }
+
+
+//БИНАРНЫЙ ПОИСК
 
 int binary_search (int element, int* array, int size)
 {
@@ -41,29 +50,33 @@ int binary_search (int element, int* array, int size)
     while (true)
     {
         int mid = (int)((left + right) * 0.5);
-        if (array[mid] == element)
-            return mid;
-        if (mid > element)
-        {
-            right = mid - 1;
+        if (array[mid] == element) return mid;
+        else {
+            if (mid > element) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+            if (left > right)
+                std::cout << "not found" << std::endl;
         }
-        else
-        {
-            left = mid + 1;
-        }
-        if (left > right)
-            std::cout<<"not found"<<std::endl;
     }
 }
 
+
+//ВЫВОД МАССИВА
+
 void print_array (int *array, int size)
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < size; i++)
     {
         std::cout<<array[i];
     }
     std::cout<<std::endl;
 }
+
+
+//ЗАМЕНА ЭЛЕМЕНТА
 
 void element_replacement (int element, int* array, int size)
 {
@@ -74,3 +87,297 @@ void element_replacement (int element, int* array, int size)
     }
     array[i] = element;
 }
+
+
+//СЛИЯНИЕ
+
+void Merge(int *arr, int begin, int end)
+{
+    int *buf = new int[100];
+    int middle = (begin + end)/2;
+    int first = begin;
+    int second = middle + 1;
+    for(int i = begin; i <= end; i++)
+        if ((first <= middle) && ((second > end) || (arr[first] < arr[second])))
+        {
+            buf[i]=arr[first];
+            first++;
+        }
+        else
+        {
+            buf[i] = arr[second];
+            second++;
+        }
+
+    for (int i = begin; i <= end; i++)
+    {
+        arr[i] = buf[i];
+    }
+    delete[]buf;
+}
+
+
+//СОРТИРОВКА СЛИЯНИЕМ
+
+void MergeSort(int *arr, int begin, int end)
+{
+    if (begin < end)
+    {
+        MergeSort(arr, begin, (begin + end) / 2);
+        MergeSort(arr, (begin + end) / 2 + 1, end);
+        Merge(arr, begin, end);
+    }
+}
+
+
+void swap_arr (int * a, int * b)
+{
+    int t = * a;
+    * a = * b;
+    * b = t;
+}
+
+//СОРТИРОВКА ВСТАВКАМИ
+
+void InsertSort (int *arr, int begin, int end)
+{
+    unsigned int item = begin + 1;
+    int place = 0;
+    int temp;
+    for (; item <= end; item++)
+    {
+        place = item - 1;
+        while (place >= begin)
+        {
+            if (arr[place] >= arr[place+1])
+            {
+                swap_arr(&arr[place], &arr[place+1]);
+            }
+            else break;
+            place--;
+        }
+    }
+}
+
+int min (int a, int b)
+{
+    if (a <= b) return a;
+    else return b;
+}
+
+
+//ГИБРИДНАЯ СОРТИРОВКА
+
+int GetMinrun (int size)
+{
+    int r = 0;
+    while (size >= 64)
+    {
+        r |= size & 1;
+        size >>= 1;
+    }
+    return size + r;
+}
+
+void merge_modified(int *arr, int first, int size_1, int second,  int size_2)
+{
+    int buf[size_1];
+    for (int i = 0; i < size_1; i++)
+    {
+        buf[i] = arr[first + i];
+    }
+
+    int end = second + size_2 - 1;
+    int i = 0;
+
+    while (second <= end) {
+        if (buf[i] < arr[second])
+        {
+            arr[first] = buf[i];
+            i++;
+        }
+        else
+        {
+            arr[first] = arr[second];
+            second++;
+        }
+        first++;
+    }
+    while (first <= end)
+    {
+        arr[first] = buf[i];
+        first++;
+        i++;
+    }
+}
+
+void Timsort (int *arr, int arr_size) {
+    int minrun = GetMinrun(arr_size);
+    std::cout << minrun << std::endl;
+
+    //разбиение на подмассивы и их сортировка
+
+    std::stack<int> stack_begin;
+    std::stack<int> stack_size;
+
+    int begin = 0;
+    int end = begin;
+
+    while (end < arr_size - 1) {
+        if (arr[end] <= arr[end + 1]) {
+            end++;
+        } else {
+            int start = end;
+            if (begin != end) {
+                start++;
+            }
+
+            bool sorted = true;
+            while (sorted & (end < arr_size)) {
+                end++;
+                sorted = arr[end] >= arr[end + 1] ? true : false;
+            }
+
+            for (int i = 0; i <= ((end - start) / 2); i++) {
+                swap_arr(&arr[start + i], &arr[end - i]);
+            }
+        }
+        if ((end - begin + 1 == minrun) || (end == arr_size - 1)) {
+            InsertSort(arr, begin, end);
+            stack_begin.push(begin);
+            stack_size.push(end - begin + 1);
+            end++;
+            begin = end;
+        }
+    }
+
+    //слияние
+
+    while (!stack_size.empty()) {
+        int begin_x = stack_begin.top();
+        stack_begin.pop();
+        int begin_y = stack_begin.top();
+        stack_begin.pop();
+
+        int size_x = stack_size.top();
+        stack_size.pop();
+        int size_y = stack_size.top();
+        stack_size.pop();
+
+        if (!stack_size.empty()) {
+            int begin_z = stack_begin.top();
+            stack_begin.pop();
+            int size_z = stack_size.top();
+            stack_size.pop();
+
+            if (((size_x > (size_y + size_z)) && (size_y > size_x)) || (size_x <= size_z)) {
+                merge_modified(arr, begin_y, size_y, begin_x, size_x);
+                stack_begin.push(begin_z);
+                stack_size.push(size_z);
+                stack_begin.push(begin_y);
+                stack_size.push(size_x + size_y);
+            } else {
+                merge_modified(arr, begin_z, size_z, begin_y, size_y);
+                stack_begin.push(begin_z);
+                stack_size.push(size_z + size_y);
+                stack_begin.push(begin_x);
+                stack_size.push(size_x);
+            }
+        } else {
+            merge_modified(arr, begin_y, size_y, begin_x, size_x);
+        }
+    }
+}
+
+
+
+int iParent(int i)
+{
+    return ((i-1)/2);
+}
+
+int iLeftChild(int i)
+{
+    return 2*i+1;
+}
+
+void siftDown(int32_t * arr, uint32_t start, uint32_t end)
+{
+    int root = start;
+    int child;
+    int older;
+
+    while (iLeftChild(root) <= end)
+    {
+        child = iLeftChild(root);
+        older = root;
+
+        if (arr[older] < arr[child])
+        {
+            older = child;
+        }
+
+        if (((child + 1) <= end) && (arr[older] < arr[child+1]))
+        {
+            older = child + 1;
+        }
+
+        if (older == root)
+        {
+            break;
+        }
+
+        else
+        {
+            swap_arr(&arr[root], &arr[older]);
+            root = older;
+        }
+    }
+}
+
+void heapify (int * arr, int n)
+{
+    int start;
+    start = iParent(n-1);
+
+    while (1)
+    {
+        siftDown(arr, start, n-1);
+
+        if (start > 0)
+        {
+            start--;
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+
+void HeapSort (int * arr, int size)
+{
+    if (size < 2) return;
+
+    heapify(arr, size);
+
+    int end;
+    end = size-1;
+
+    while (end > 0)
+    {
+        swap_arr(&arr[end], &arr[0]);
+        end--;
+        siftDown(arr, 0, end);
+    }
+}
+
+
+
+/*way(*node)
+{
+    way(node -> left);
+    push(node);
+
+    way(node -> right);
+}*/
