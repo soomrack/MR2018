@@ -12,7 +12,6 @@ void HeapSort(int* arr, int size) {
         heap.addelem(arr[i]);
     }
     heap.out();
-    heap.heapify(0);
     for (int i = size-1; i>=0; i--) {
         rez[i] = heap.getmax();
 
@@ -20,6 +19,23 @@ void HeapSort(int* arr, int size) {
     for(int i=0; i< size; i++) {
         arr[i] = rez[i];
     }
+
+}
+
+
+int getK(int* arr, int size, int k) { //поиск К-й порядковой статистики
+    Heap heap;
+    int rez;
+    for(int i = 0; i < size; i++) {
+        heap.addelem(arr[i]);
+    }
+    int i = size-1;
+    while (i>=k) {
+        heap.getmax();
+        i--;
+    }
+    rez = heap.getmax();
+    return rez;
 
 }
 
@@ -55,11 +71,7 @@ void Heap:: out() {
     std::cout << std::endl;
 }
 
-void Heap:: make_Heap(int *arr, int size) { //O(n^2)
-    for(int i = 0; i < size - 1; i++) {
-       // heap.addelem(arr[i]);
-    }
-}
+
 
 void Heap:: heapify(int i) {
     int left, right;
@@ -81,19 +93,6 @@ void Heap:: heapify(int i) {
             h[right] = temp;
             heapify(right);
         }
-    }
-}
-
-void Heap:: outHeap(void) {
-    int i = 0;
-    int k = 1;
-    while(i < HeapSize) {
-        while((i < k) && (i < HeapSize)) {
-            std::cout << h[i] << " ";
-            i++;
-        }
-        std::cout << std::endl;
-        k = k * 2 + 1;
     }
 }
 
