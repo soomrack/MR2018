@@ -5,6 +5,7 @@
 #include <malloc.h>
 #include <cstring>
 #include <cstdio>
+#include "structs.h"
 
 #ifndef MR2018_TREES_H
 #define MR2018_TREES_H
@@ -232,6 +233,10 @@ public:
     }
 
     bool hasChild(unsigned int number) {
+        if(number >= size) {
+            printf("there aren't any child with this number");
+            exit(1);
+        }
         if(list[number] == (B_TreePoint *)0) return false;
         return  true;
     }
@@ -240,13 +245,17 @@ public:
         return size;
     }
 
-    B_TreePoint returnChild(unsigned int number) {
-        if(hasChild(number)) return *list[number];
-        B_TreePoint voidRet;
-        return voidRet;
+    B_TreePoint * returnChild(unsigned int number) {
+        if(hasChild(number)) return list[number];
+        printf("there aren't any child with this number");
+        exit(1);
     }
 
     void setChild(unsigned int number, B_TreePoint * child) {
+        if(number >= size) {
+            printf("there aren't any child with this number");
+            exit(1);
+        }
         list[number] = child;
     }
     void setValue(int value) {
@@ -272,149 +281,73 @@ public:
         list = temp;
     }
 
-    void addPointWithBalance( B_TreePoint arg );
-};
-
-class B_TreePointStack {
-private:
-    B_TreePoint * data;
-    unsigned int size;
-public:
-    B_TreePointStack() : size(0) {
-        data = (B_TreePoint * )0;
-    }
-
-    B_TreePointStack(B_TreePointStack &input) {
-        this->size = input.size;
-        this->data = (B_TreePoint * )malloc(size * sizeof(B_TreePoint));
-        memcpy(this->data, input.data, sizeof(B_TreePoint) * size);
-    }
-
-    void push(B_TreePoint input) {
-        B_TreePoint * temp = (B_TreePoint * )malloc((size + 1) * sizeof(B_TreePoint));
-        memcpy(temp, data, sizeof(B_TreePoint) * size);
-        temp[size] = input;
-        size++;
-        free(data);
-        data = temp;
-    }
-
-    B_TreePoint pop() {
-        if(size == 0) {
-            B_TreePoint voidOut;
-            return voidOut;
-        }
-        size--;
-        B_TreePoint * temp = (B_TreePoint * )malloc((size) * sizeof(B_TreePoint));
-        memcpy(temp, data, sizeof(B_TreePoint) * size);
-        B_TreePoint out = data[size];
-        free(data);
-        data = temp;
-        return out;
-    }
-
-    unsigned int getSize() {
-        return size;
-    }
-};
-
-class B_TreePointList {
-private:
-    B_TreePoint * data;
-    unsigned int size;
-public:
-    B_TreePointList() : size(0) {
-
-    }
-    B_TreePointList(B_TreePointList &input) {
-        this->size = input.size;
-        memcpy(this->data, input.data, this->size * sizeof(B_TreePoint *));
-    }
-    void Add(B_TreePoint input) {
-        B_TreePoint * temp = (B_TreePoint * )malloc((size + 1) * sizeof(B_TreePoint));
-        memcpy(temp, data, sizeof(B_TreePoint) * size);
-        temp[size] = input;
-        size++;
-        free(data);
-        data = temp;
-    }
-
     void Print() {
-        for(int i = 0; i < size; i++) {
-            printf("%d\t", data[i].value);
-        }
+        printf("%d\t", value);
     }
 
-    void search1(B_TreePoint head) {
+    void addPointWithBalance(B_TreePoint * arg) {
 
-        Add(head);
+        List<B_TreePoint *> List;
+        List.add(this);
+
         int i = 0;
+        int j = 0;
+        B_TreePoint * addTo = (B_TreePoint * )0;
+        while(i < List.getSize()) {
+            B_TreePoint * temp = List.getItem(i);
+            for(int j = 0; j < (*temp).size; j++) {
+                if( (*temp).hasChild(j)) {
+                    List.add((*temp).returnChild(j));
+                }
+                else {
+                    addTo = temp;
+                    break;
+                }
+            }
+            if(addTo != (B_TreePoint *)0) break;
+            i++;
+        }
+        if(addTo == (B_TreePoint * )0) {
+            printf("Error: there aren't any free place in the tree");
+            return;
+        }
+        (*addTo).setChild(j, arg);
 
-        while(i < size) {
-            B_TreePoint temp;
+    }
 
-            for(unsigned int j = 0; j < data[i].getSize(); j++) {
-                if ( data[i].hasChild(j) ) {
-                    temp = data[i].returnChild(j);
-                    Add(temp);
+    void search1() {
+        List<B_TreePoint*> List;
+        List.add(this);
+        (*this).Print();
+
+        int i = 0;
+        while(i < List.getSize()) {
+            B_TreePoint * temp = List.getItem(i);
+            for(int j = 0; j < (*temp).size; j++) {
+                if( (*temp).hasChild(j)) {
+                    List.add((*temp).returnChild(j));
+                    ( *(*temp).returnChild(j) ).Print();
                 }
             }
             i++;
         }
-        Print();
     }
 
-    B_TreePoint searchforUpperVoid(B_TreePoint head) {
+    void search2() {
+        Stack<B_TreePoint*> Stack;
+        Stack.push(this);
 
-        Add(head);
-        int i = 0;
-
-        while(i < size) {
-            B_TreePoint temp;
-
-            for(unsigned int j = 0; j < data[i].getSize(); j++) {
-                if ( data[i].hasChild(j) ) {
-                    temp = data[i].returnChild(j);
-                    Add(temp);
-                }
-                else return data[i];
-            }
-            i++;
-        }
-        return data[size - 1];
-    }
-
-    void search2(B_TreePoint head) {
-
-        int i = size;
-        B_TreePointStack stack;
-        stack.push(head);
-        while(1) {
-            B_TreePoint temp1;
-            temp1 = stack.pop();
-            Add(temp1);
-
-            B_TreePoint temp2;
-
-            for(int j = temp1.getSize() - 1; j >= 0; j--) {
-                if (temp1.hasChild(j)) {
-                    temp2 = temp1.returnChild(j);
-                    stack.push(temp2);
+        int i = Stack.getSize();
+        while(i > 0) {
+            B_TreePoint * temp = Stack.pop();
+            (*temp).Print();
+            for(int j = (*temp).size - 1; j >= 0; j--) {
+                if( (*temp).hasChild(j)) {
+                    Stack.push((*temp).returnChild(j));
                 }
             }
-            if(stack.getSize() == 0) break;
+            i = Stack.getSize();
         }
-        Print();
     }
 };
 
-void B_TreePoint::addPointWithBalance(B_TreePoint arg) {
-    B_TreePointList List;
-    B_TreePoint freeParent;
-    freeParent = List.searchforUpperVoid(*this);
-
-    for(int i = 0; i < freeParent.getSize(); i++) {
-        if(1);
-    }
-
-}

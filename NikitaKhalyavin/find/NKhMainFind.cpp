@@ -45,6 +45,8 @@ int main() {
     tree2[3].resize(2);
     tree2[6].resize(1);
 
+    tree2[1].resize(1);
+
     tree2[0].setChild(0, &tree2[4]);
     tree2[0].setChild(1, &tree2[2]);
     tree2[0].setChild(2, &tree2[3]);
@@ -55,9 +57,16 @@ int main() {
 
     tree2[6].setChild(0, &tree2[5]);
 
-    B_TreePointList list;
-    B_TreePointList list2;
+    B_TreePoint AddPoint;
 
-    list.search1(tree2[0]);
-    list2.search2(tree2[0]);
+    AddPoint.setValue(100);
+
+    tree2[0].addPointWithBalance(&AddPoint);
+    printf("\n");
+    tree2[0].search1();
+    printf("\n");
+    tree2[0].search2();
+
+
+
 }
