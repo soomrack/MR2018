@@ -74,9 +74,10 @@ public:
         T * temp = (T * )malloc((size + 1) * sizeof(T));
         memcpy(temp, data, sizeof(T) * size);
         temp[size] = input;
-        size++;
-        free(data);
+        if(size != 0)
+            free(data);
         data = temp;
+        size++;
     }
 
     T getItem(unsigned int index) {

@@ -7,6 +7,11 @@
 #include "trees.h"
 #include <stdio.h>
 
+
+void KeyPrint(B_TreePoint * object) {
+    printf("%u\t",(*object).getKey());
+}
+
 int main() {
     binaryTreePoint tree[5];
 
@@ -66,6 +71,10 @@ int main() {
     tree2[0].search1();
     printf("\n");
     tree2[0].search2();
+    printf("\n");
+
+
+    tree2[0].visiting1WithAction<void>(KeyPrint);
 
 
 
