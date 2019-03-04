@@ -31,6 +31,7 @@ struct node
 void infix_traverse(node *&tree);
 void prefix_traverse(node *&tree);
 void postfix_traverse(node *&tree);
+void level_traverse(node *&tree);
 void clean(node *&tree);
 void insert(node *&tree, int key, int value);
 node search(node *&tree, int key);

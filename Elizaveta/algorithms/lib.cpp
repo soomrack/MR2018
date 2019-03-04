@@ -7,7 +7,6 @@
 #include <stack>
 
 //СОРТИРОВКА ПУЗЫРЬКОМ
-
 void bubble_sort (int* array, int size)
 {
     for (int k = size - 1; k >= 1; k--)
@@ -24,9 +23,7 @@ void bubble_sort (int* array, int size)
     }
 }
 
-
 //ЛИНЕЙНЫЙ ПОИСК
-
 int linear_search (int element, int* array, int size)
 {
     for (int i = 0; i < size; i++)
@@ -37,9 +34,7 @@ int linear_search (int element, int* array, int size)
     return 0;
 }
 
-
 //БИНАРНЫЙ ПОИСК
-
 int binary_search (int element, int* array, int size)
 {
     bubble_sort(array, size);
@@ -63,9 +58,7 @@ int binary_search (int element, int* array, int size)
     }
 }
 
-
 //ВЫВОД МАССИВА
-
 void print_array (int *array, int size)
 {
     for (int i = 0; i < size; i++)
@@ -75,9 +68,7 @@ void print_array (int *array, int size)
     std::cout<<std::endl;
 }
 
-
 //ЗАМЕНА ЭЛЕМЕНТА
-
 void element_replacement (int element, int* array, int size)
 {
     int i = 0;
@@ -88,9 +79,7 @@ void element_replacement (int element, int* array, int size)
     array[i] = element;
 }
 
-
 //СЛИЯНИЕ
-
 void Merge(int *arr, int begin, int end)
 {
     int *buf = new int[100];
@@ -113,12 +102,10 @@ void Merge(int *arr, int begin, int end)
     {
         arr[i] = buf[i];
     }
-    delete buf[];
+    delete []buf;
 }
 
-
 //СОРТИРОВКА СЛИЯНИЕМ
-
 void MergeSort(int *arr, int begin, int end)
 {
     if (begin < end)
@@ -129,7 +116,7 @@ void MergeSort(int *arr, int begin, int end)
     }
 }
 
-
+//смена элементов массива
 void swap_arr (int * a, int * b)
 {
     int t = * a;
@@ -138,7 +125,6 @@ void swap_arr (int * a, int * b)
 }
 
 //СОРТИРОВКА ВСТАВКАМИ
-
 void InsertSort (int *arr, int begin, int end)
 {
     unsigned int item = begin + 1;
@@ -159,15 +145,14 @@ void InsertSort (int *arr, int begin, int end)
     }
 }
 
+//минимальное значение из пары
 int min (int a, int b)
 {
     if (a <= b) return a;
     else return b;
 }
 
-
 //ГИБРИДНАЯ СОРТИРОВКА
-
 int GetMinrun (int size)
 {
     int r = 0;
@@ -179,6 +164,7 @@ int GetMinrun (int size)
     return size + r;
 }
 
+//модифицированное слияние
 void merge_modified(int *arr, int first, int size_1, int second,  int size_2)
 {
     int buf[size_1];
@@ -211,6 +197,7 @@ void merge_modified(int *arr, int first, int size_1, int second,  int size_2)
     }
 }
 
+//ГИБРИДНАЯ СОРТИРОВКА
 void Timsort (int *arr, int arr_size) {
     int minrun = GetMinrun(arr_size);
     std::cout << minrun << std::endl;
@@ -290,7 +277,6 @@ void Timsort (int *arr, int arr_size) {
 }
 
 //ПИРАМИДАЛЬНАЯ СОРТИРОВКА
-
 //индекс родителя
 int iParent(int i)
 {
@@ -378,7 +364,6 @@ void HeapSort (int * arr, int size)
 }
 
 //ПОИСК k-ПОРЯДКОВОЙ СТАТИСТИКИ
-
 int getOrderStatistic( int * arr, int size, int j )
 {
 	int left = 0;
@@ -428,7 +413,6 @@ int getOrderStatistic( int * arr, int size, int j )
 }
 
 //ДВОИЧНОЕ ДЕРЕВО ПОИСКА
-
 //вертикальный обход дерева
 //обратный обход
 void infix_traverse(node *&tree)
@@ -459,6 +443,27 @@ void postfix_traverse(node *&tree)
     if (tree->right != NULL)
         postfix_traverse(tree->right);
     std::cout<< tree->key;
+}
+
+//горизонтальный обход дерева
+#include <queue>
+static void level_traverse(node *&tree)
+{
+    std::queue <node*> myqueue;
+    do
+    {
+        std::cout<< tree->key;
+        if (tree->left != NULL)
+            myqueue.push(tree->left);
+        if (tree->right != NULL)
+            myqueue.push(tree->right);
+        if (!myqueue.empty())
+        {
+            tree = myqueue.front();
+            myqueue.pop();
+        }
+    }
+    while (!myqueue.empty());
 }
 
 //удаление ветви
@@ -572,6 +577,7 @@ void delete_node(node *&tree, int key)
         }
     }
 }
+
 
 
 
