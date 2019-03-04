@@ -211,116 +211,88 @@ public:
 
 class B_TreePoint {
 private:
-    B_TreePoint ** list;
+
+    List<B_TreePoint *> list;
+    List<unsigned long int> keys;
+
     B_TreePoint * parent;
-    unsigned long int * keys;
     unsigned int size;
+    unsigned int keyMax;
+
 public:
     int value;
     unsigned long int getKey() {
-        return keys[0];
+        return keys.getItem(0);
     }
-    B_TreePoint() : size(0) {
-        keys = (unsigned long int *)malloc(sizeof(unsigned long int) * 1);
-        keys[0] = 0;
+    B_TreePoint() : size(0), keyMax(UINT_MAX) {
+        keys.add(0);
         parent = (B_TreePoint *)0;
     }
     B_TreePoint(unsigned int size) {
         this->size = size;
-        keys = (unsigned long int *)malloc(sizeof(unsigned long int * ) * size);
-        keys[0] = 0;
-        keysRestruct(UINT_MAX);
-        list = (B_TreePoint **)malloc(sizeof(B_TreePoint * ) * size);
-        for(int i = 0; i < size; i++) {
-            list[i] = (B_TreePoint *)0;
-        }
+        keys.add(0);
         parent = (B_TreePoint *)0;
     }
     B_TreePoint(B_TreePoint &input) {
         this->size = input.size;
 
-        this->keys = (unsigned long int *)malloc(sizeof(unsigned long int * ) * size);
-        this->list = (B_TreePoint **) malloc(sizeof(B_TreePoint * ) * this->size);
-
-        memcpy(this->list, input.list, sizeof(B_TreePoint * ) * this->size);
-        memcpy(this->keys, input.keys, sizeof(B_TreePoint * ) * (this->size - 1));
+        this->keys = input.keys;
+        this->list = input.list;
 
         this->value = input.value;
         this->parent = input.parent;
     }
 
-    void keysRestruct(unsigned long int keyMax) {
-        if(keyMax - keys[0] < size) {
-            printf("not enought key values");
-            exit(1);
-        }
-        if(size != 0) {
-            unsigned long int step = keyMax / size;
-            for (int i = 1; i < size; i++) {
-                keys[i] = keys[0] + step * i;
-                if(hasChild(i - 1))
-                    (*list[i - 1]).keysRestruct(keys[i]);
+    void keysRestruct(unsigned long int NewKey) {
+        List<unsigned long int> temp;
+        temp.add(NewKey);
+        if(list.getSize() != 0) {
+            unsigned long int keyStep = (keyMax - keys.getItem(0)) / size;
+            for (int i = 1; i < list.getSize(); i++) {
+                temp.add(temp.getItem(0) + keyStep * i);
+                (*list.getItem(i - 1)).keyMax = temp.getItem(i);
+                (*list.getItem(i - 1)).keysRestruct(temp.getItem(i - 1));
             }
-            if(hasChild(size - 1))
-                (*list[size - 1]).keysRestruct(keyMax);
+            if(list.getSize() > 0) {
+                (*list.getItem(list.getSize() - 1)).keyMax = keyMax;
+                (*list.getItem(list.getSize() - 1)).keysRestruct(temp.getItem(temp.getSize() - 1));
+            }
         }
-
+        keys = temp;
     }
 
-    bool hasChild(unsigned int number) {
-        if(number >= size) {
-            printf("there aren't any child with this number");
-            exit(1);
-        }
-        if(list[number] == (B_TreePoint *)0) return false;
-        return  true;
-    }
-
-    unsigned int getSize() {
-        return size;
+    unsigned int getChildNumber() {
+        return list.getSize();
     }
 
     B_TreePoint * returnChild(unsigned int number) {
-        if(hasChild(number)) return list[number];
+        if(number < list.getSize()) return list.getItem(number);
         printf("there aren't any child with this number");
         exit(1);
     }
 
     void addChild(B_TreePoint * child) {
-
-    }
-
-    void setChild(unsigned int number, B_TreePoint * child) {
-        if(number >= size) {
-            printf("there aren't any child with this number");
-            exit(1);
+        if(list.getSize() < size) {
+            list.add(child);
+            unsigned long int keyStep = ( keyMax - keys.getItem(0) ) / size;
+            keys.add(keys.getItem(keys.getSize() - 1) + keyStep);
+            keysRestruct(keys.getItem(0));
+            return;
         }
-        list[number] = child;
-        (*child).parent = this;
-        if(number > 0) (*child).keys[0] = keys[number] + 1;
-        if(number == size - 1)
-            (*child).keysRestruct(keys[UINT_MAX]);
-        else
-            (*child).keysRestruct(keys[number + 1]);
+        printf("Error: overflau of point");
+        exit(1);
     }
+
 
     void deleteChild(unsigned int number) {
         if(number >= size) {
             printf("there aren't any child with this number");
             exit(1);
         }
-        list[number] = (B_TreePoint *)0;
+        list.deleteItem(number);
+        keysRestruct(keys.getItem(0) + 1);
     }
 
-    void deleteHimself() {
-        for(int i = 0; i < (*parent).size; i++) {
-            if((*parent).list[i] == this) {
-                (*parent).list[i] = (B_TreePoint * )0;
-                parent = (B_TreePoint * )0;
-                return;
-            }
-        }
-    }
 
     void setValue(int value) {
         this->value = value;
@@ -328,74 +300,16 @@ public:
 
     void resize(unsigned int size) {
 
-        if(size == 0) {
-            if(this->size != 0) free(list);
-            this->size = size;
-            return;
-        }
-        B_TreePoint ** temp = (B_TreePoint **)malloc(sizeof(B_TreePoint * ) * size);
-        unsigned int twoHas = size;
-        if(this->size < twoHas) twoHas = this->size;
-        memcpy(temp, list, sizeof(B_TreePoint * ) * twoHas);
-        for(int i = twoHas; i < size; i++) {
-            temp[i] = (B_TreePoint *)0;
-        }
-        if(this->size != 0) free(list);
         this->size = size;
-        list = temp;
+        if(list.getSize() > size) {
+            printf("Error: Overflau of point");
+            exit(1);
+        }
+
     }
 
     void Print() {
         printf("%d\t", value);
-    }
-
-    void addPointWithBalance(B_TreePoint * arg) {
-
-        List<B_TreePoint *> List;
-        List.add(this);
-
-        int i = 0;
-        int j = 0;
-        B_TreePoint * addTo = (B_TreePoint * )0;
-        while(i < List.getSize()) {
-            B_TreePoint * temp = List.getItem(i);
-            for(int j = 0; j < (*temp).size; j++) {
-                if( (*temp).hasChild(j)) {
-                    List.add((*temp).returnChild(j));
-                }
-                else {
-                    addTo = temp;
-                    break;
-                }
-            }
-            if(addTo != (B_TreePoint *)0) break;
-            i++;
-        }
-        if(addTo == (B_TreePoint * )0) {
-            printf("Error: there aren't any free place in the tree");
-            return;
-        }
-        (*addTo).setChild(j, arg);
-
-    }
-
-    List<B_TreePoint*> search1() {
-        List<B_TreePoint*> List;
-        List.add(this);
-        (*this).Print();
-
-        int i = 0;
-        while(i < List.getSize()) {
-            B_TreePoint * temp = List.getItem(i);
-            for(int j = 0; j < (*temp).size; j++) {
-                if( (*temp).hasChild(j)) {
-                    List.add((*temp).returnChild(j));
-                    ( *(*temp).returnChild(j) ).Print();
-                }
-            }
-            i++;
-        }
-        return List;
     }
 
 
@@ -408,11 +322,9 @@ public:
         int i = 0;
         while(i < List.getSize()) {
             B_TreePoint * temp = List.getItem(i);
-            for(int j = 0; j < (*temp).size; j++) {
-                if( (*temp).hasChild(j)) {
-                    List.add((*temp).returnChild(j));
-                    action((*temp).returnChild(j));
-                }
+            for(int j = 0; j < (*temp).list.getSize(); j++) {
+                List.add((*temp).returnChild(j));
+                action((*temp).returnChild(j));
             }
             i++;
         }
@@ -421,41 +333,25 @@ public:
     template <typename Ret>
     Ret search(unsigned long int key, Ret (*action)(B_TreePoint *)) {
 
-        if(keys[0] == key) {
+        if(keys.getItem(0) == key) {
            return action(this);
         }
-        unsigned int i;
-        for(i = 1; i < size; i++) {
-            if( keys[i] >= key ) break;
-        }
-        if(keys[i] >= key) i--;
-        if( !hasChild(i)) {
-            printf("There aren't any child with this number");
+
+        if(keyMax < key) {
+            printf("Error: can't find item");
             exit(1);
         }
+
+        unsigned int i;
+        for(i = 1; i < keys.getSize(); i++) {
+            if( keys.getItem(i) >= key ) {
+                break;
+            }
+        }
+        i--;
         (*returnChild(i)).search(key, action);
     }
 
-    List<B_TreePoint*> search2() {
-        Stack<B_TreePoint*> Stack;
-        Stack.push(this);
-
-        List<B_TreePoint*> out;
-
-        int i = Stack.getSize();
-        while(i > 0) {
-            B_TreePoint * temp = Stack.pop();
-            out.add(temp);
-            (*temp).Print();
-            for(int j = (*temp).size - 1; j >= 0; j--) {
-                if( (*temp).hasChild(j)) {
-                    Stack.push((*temp).returnChild(j));
-                }
-            }
-            i = Stack.getSize();
-        }
-        return out;
-    }
 
     template <typename Ret>
     void visiting2WithAction(Ret (*action)(B_TreePoint *)) {
@@ -466,19 +362,12 @@ public:
         while(i > 0) {
             B_TreePoint * temp = Stack.pop();
             action(temp);
-            for(int j = (*temp).size - 1; j >= 0; j--) {
-                if( (*temp).hasChild(j)) {
-                    Stack.push((*temp).returnChild(j));
-                }
+            for(int j = (*temp).list.getSize() - 1; j >= 0; j--) {
+                Stack.push((*temp).returnChild(j));
             }
             i = Stack.getSize();
         }
     }
 
-
-    void balancing() {
-        List<B_TreePoint * > List1;
-        List1 = search1();
-    }
 };
 

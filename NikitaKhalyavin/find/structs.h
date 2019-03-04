@@ -20,6 +20,10 @@ public:
 
     }
 
+    ~Stack() {
+        if(size > 0) free(data);
+    }
+
     Stack(Stack &input) {
         this->size = input.size;
         this->data = (T * )malloc(size * sizeof(T));
@@ -70,6 +74,16 @@ public:
         memcpy(this->data, input.data, sizeof(T) * size);
     }
 
+    void operator = (List &input) {
+        this->size = input.size;
+        this->data = (T * )malloc(size * sizeof(T));
+        memcpy(this->data, input.data, sizeof(T) * size);
+    }
+
+    ~List() {
+        if(size > 0) free(data);
+    }
+
     void add(T input) {
         T * temp = (T * )malloc((size + 1) * sizeof(T));
         memcpy(temp, data, sizeof(T) * size);
@@ -78,6 +92,24 @@ public:
             free(data);
         data = temp;
         size++;
+    }
+
+    void deleteItem(unsigned int index) {
+        if(size == 1) {
+            size = 0;
+            free(data);
+            return;
+        }
+        if ( (index < size) && (size > 1 ) ) {
+            T * temp = (T * )malloc((size - 1) * sizeof(T));
+            memcpy(temp, data, sizeof(T) * index);
+            memcpy(&temp[index], &data[index + 1], sizeof(T) * (size - index - 1));
+            free(data);
+            data = temp;
+            size--;
+        }
+        printf("Error: can't delete this item");
+        exit(1);
     }
 
     T getItem(unsigned int index) {
