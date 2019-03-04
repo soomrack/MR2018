@@ -113,7 +113,7 @@ void Merge(int *arr, int begin, int end)
     {
         arr[i] = buf[i];
     }
-    delete[]buf;
+    delete buf[];
 }
 
 
@@ -429,17 +429,39 @@ int getOrderStatistic( int * arr, int size, int j )
 
 //ДВОИЧНОЕ ДЕРЕВО ПОИСКА
 
-void show(node *&tree)
+//вертикальный обход дерева
+//обратный обход
+void infix_traverse(node *&tree)
 {
     if (tree != NULL)
     {
-        show(tree->left);
+        infix_traverse(tree->left);
         std::cout<< tree->key;
-        show(tree->right);
+        infix_traverse(tree->right);
     }
-
 }
 
+//прямой обход
+void prefix_traverse(node *&tree)
+{
+    std::cout<< tree->key;
+    if (tree->left != NULL)
+        prefix_traverse(tree->left);
+    if (tree->right != NULL)
+        prefix_traverse(tree->right);
+}
+
+//концевой обход
+void postfix_traverse(node *&tree)
+{
+    if (tree->left != NULL)
+        postfix_traverse(tree->left);
+    if (tree->right != NULL)
+        postfix_traverse(tree->right);
+    std::cout<< tree->key;
+}
+
+//удаление ветви
 void clean(node *&tree)
 {
     if (tree != NULL)
@@ -451,6 +473,7 @@ void clean(node *&tree)
     }
 }
 
+//вставка узла
 void insert(node *&tree, int key, int value)
 {
     if (tree == NULL)
@@ -488,6 +511,7 @@ void insert(node *&tree, int key, int value)
     }
 }
 
+//поиск по ключу
 node search(node *&tree, int key)
 {
     if ((tree == NULL) || (tree->key == key))
@@ -499,6 +523,7 @@ node search(node *&tree, int key)
     return search(tree->right, key);
 }
 
+//удаление узла
 void delete_node(node *&tree, int key)
 {
     if (tree == NULL)

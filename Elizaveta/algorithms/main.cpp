@@ -38,7 +38,7 @@ int main() {
     node *mytree = NULL;
     for (int i = 5; i > 0; i--)
         insert(mytree, i, i*i);
-    show(mytree);
+    infix_traverse(mytree);
     std::cout<<'\n';
     clean(mytree);
 
@@ -48,9 +48,9 @@ int main() {
         insert(mytree, k, i);
     }
 
-    show(mytree);
+    infix_traverse(mytree);
     delete_node(mytree, 9);
-    show(mytree);
+    infix_traverse(mytree);
     node result = search(mytree, 8);
     std::cout<<'\n';
     std::cout<< result.value;
