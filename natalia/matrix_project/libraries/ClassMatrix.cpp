@@ -2,6 +2,40 @@
 #include <cmath>
 #include "ClassMatrix.h"
 
+void ClassMatrix::matrix_print(const ClassMatrix A) {
+    for (int i = 0; i < A.rows; i++) {
+        for (int j = 0; j < A.cols; j++) {
+            std::cout << A.data[i * (A.cols) + j]<< "  ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+ClassMatrix ClassMatrix::matrix_one(unsigned int rows, unsigned int cols){
+    ClassMatrix C(rows,cols);
+    for(int i = 0; i < C.rows; i++){
+        for(int j = 0; j < C.cols; j++){
+            if(i == j){
+                C.data[C.cols * i + j] = 1;
+            }
+            else{
+                C.data[C.cols * i + j] = 0;
+            }
+        }
+    }
+    //C.matrix_print(C);
+    return C;
+}
+
+ClassMatrix ClassMatrix::matrix_zero(const unsigned int rows, const unsigned int cols) {
+    ClassMatrix C(rows,cols);
+    for(int i = 0; i < C.rows; i++)
+        for(int j = 0; j < C.cols; j++)
+             C.data[C.cols * i + j] = 0;
+    return C;
+}
+
+
 double ClassMatrix::matrix_trace(const ClassMatrix A) {
     double sum=0.0;
     for (int i = 0; i < A.rows ; i++) {
@@ -98,7 +132,6 @@ void ClassMatrix::matrix_mult__scalar(const double scalar, ClassMatrix &A) {
 }
 
 extern ClassMatrix& matrix_sum(const ClassMatrix A, const ClassMatrix B, ClassMatrix& C) {
-
     for (int i = 0; i < A.rows; i++) {
         for (int j = 0; j < A.cols; j++){
             C.data[i*(A.cols)+j] = A.data[i*(A.cols)+j]+B.data[i*(A.cols)+j];
@@ -109,3 +142,53 @@ extern ClassMatrix& matrix_sum(const ClassMatrix A, const ClassMatrix B, ClassMa
     return C;
 }
 
+ClassMatrix ClassMatrix::operator + (const ClassMatrix &A){
+    if(this->rows != A.rows || this->cols != A.cols){
+        std::cout << "Error - different sizes" << std::endl;
+        exit(1);
+    }
+    else{
+        ClassMatrix C(this->rows,this->cols);
+        for(int i = 0 ; i < C.rows ; i++) {
+            for (int j = 0; j < C.cols; j++) {
+                C.data[C.cols * i + j] = this->data[this->cols * i + j] +A.data[A.cols * i + j];
+            }
+        }
+        return C;
+    }
+}
+
+ClassMatrix ClassMatrix::matrix_trans() {
+    ClassMatrix C(this->rows,this->cols);
+    for(int i = 0; i < C.rows; i++)
+        for(int j = 0; j < C.cols; j++)
+            C.data[C.cols * i + j] = this->data[this->rows*j+i];
+    return C;
+}
+
+ClassMatrix ClassMatrix::operator * (const ClassMatrix &A){
+    if(this->rows != A.cols || this->cols != A.rows){
+        std::cout << "Error - wrong sizes" << std::endl;
+        exit(1);
+    }
+    else{
+        ClassMatrix C(this->rows,this->cols);
+        ClassMatrix D(this->rows,this->cols);
+        D = this->matrix_trans();
+        for(int i = 0 ; i < C.rows ; i++) {
+            for (int j = 0; j < C.cols; j++) {
+                C.data[C.cols * i + j] = D.data[A.cols * i + j] * A.data[A.cols * i + j];
+            }
+        }
+        return C;
+    }
+}
+
+ClassMatrix ClassMatrix::matrix_rand(const unsigned int rows, const unsigned int cols){
+    ClassMatrix C(rows,cols);
+    for(int i = 0; i < C.rows; i++)
+        for(int j = 0; j < C.cols; j++)
+            C.data[C.cols * i + j] = (double)(rand())/RAND_MAX;
+    C.matrix_print(C);
+    return C;
+}

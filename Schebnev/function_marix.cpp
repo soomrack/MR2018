@@ -15,8 +15,55 @@ MatriXXX::MatriXXX(unsigned int rows_arg, unsigned int cols_arg) {// Constructor
     rows = rows_arg;
     data = new double[cols * rows];
 }
-void MatriXXX::setElement(unsigned int row, unsigned int col, double value) { //Assigns a value to the matrix element. Parameters: row, column, value assigned
+Matrix::MatriXXX_Destructor() {
+    delete[] data;
+}
+double Matrix::Get_Element(unsigned int row, unsigned int col) const {
+    return data[cols * row + col];
+}
+
+void MatriXXX::Set_Element(unsigned int row, unsigned int col, double value) { //Assigns a value to the matrix element. Parameters: row, column, value assigned
     data[cols * row + col] = value;
+}
+void MatriXXX::MatriXXX_print() {
+        for (unsigned int row = 0; row < rows; row++) {
+            for (unsigned int col = 0; col < cols; col++) {
+                std::cout << Get_Element(row, col) << '\t';
+            }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+
+extern MatriXXX MatriXXX_zero(const unsigned int Mrows, const unsigned int Mcols)
+{
+    rows=Mrows;
+    cols=Mcols;
+    data=(double *)malloc(cols*rows*sizeof(double));
+    for(unsigned int t=0;t<rows;t++)
+    {
+        for(unsigned int i=0;i<cols;i++)
+        {
+            data[i+t*cols]=0;
+        }
+    }
+}
+extern MatriXXX MatriXXX_one(const unsigned int Matrows, const unsigned int Matcols){
+
+    rows=Matrows;
+    cols=Matcols;
+    data=(double *)malloc(cols*rows*sizeof(double));
+    for(unsigned int i=0;i<rows;i++) {
+        for(unsigned int j=0;j<cols;j++) {
+            if(i==j){
+                data[j + i * cols] = 1;
+            }
+            else {
+                data[j + i * cols] = 0;
+            }
+        }
+    }
 }
 MatriXXX MatriXXX::matrix_rand(const unsigned int rows, const unsigned int cols)
 {
@@ -81,66 +128,23 @@ double MatriXXX::matrix_trace() {
 }
 
 
-void MatriXXX::matrix_print() {
-    for (unsigned int row = 0; row < rows; row++) {
-        for (unsigned int col = 0; col < cols; col++){
-            std::cout << getElement(row, col) << '\t';
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-}
-
-
-void MatriXXX::matrix_one(const unsigned int Matrows, const unsigned int Matcols){
-    rows=Matrows;
-    cols=Matcols;
-    data=(double *)malloc(cols*rows*sizeof(double));
-    for(unsigned int i=0;i<rows;i++) {
-        for(unsigned int j=0;j<cols;j++) {
-            if(i==j){
-                data[j + i * cols] = 1;
-            }
-            else {
-                data[j + i * cols] = 0;
-            }
-        }
-    }
-}
-
-
-void MatriXXX::matrix_zero(const unsigned int Mrows, const unsigned int Mcols)
-{
-
-    rows=Mrows;
-    cols=Mcols;
-    data=(double *)malloc(cols*rows*sizeof(double));
-    for(unsigned int t=0;t<rows;t++)
-    {
-        for(unsigned int i=0;i<cols;i++)
-        {
-            data[i+t*cols]=0;
-        }
-    }
-}
-
 MatriXXX MatriXXX::matrix_trans()
 {
     MatriXXX matrix = MatriXXX(cols, rows);
     for (unsigned int row = 0; row < matrix.rows; row++) {
         for (unsigned int col = 0; col < matrix.cols; col++) {
-            matrix.setElement(row, col, getElement(col, row));
+            matrix.Set_Element(row, col, Get_Element(col, row));
         }
     }
     return matrix;
 }
 
-MatriXXX MatriXXX::matrix_mult__scalar(const double scalar)
+MatriXXX MatriXXX::matrix_mult_scalar(const double scalar)
 {
     MatriXXX matrix = MatriXXX(rows, cols);
     for (unsigned int row = 0; row < rows; row++) {
         for (unsigned int col = 0; col < cols; col++) {
-            matrix.setElement(row, col, scalar * getElement(row, col));
+            matrix.Set_Element(row, col, scalar * Get_Element(row, col));
         }
     }
     return matrix;
@@ -157,7 +161,7 @@ MatriXXX MatriXXX::matrix_sum(const MatriXXX A, const MatriXXX B)
     MatriXXX matrix = MatriXXX(A.rows, A.cols);
     for (unsigned int row = 0; row < A.rows; row++) {
         for (unsigned int col = 0; col < A.cols; col++) {
-            matrix.setElement(row, col, (A.getElement(row, col) + B.getElement(row, col)));
+            matrix.Set_Element(row, col, (A.Get_Element(row, col) + B.Get_Element(row, col)));
         }
     }
     return matrix;
@@ -178,7 +182,7 @@ MatriXXX MatriXXX::matrix_mult( const MatriXXX A, const MatriXXX B)
                 a[numInARow] = A.getElement(row, numInARow) * B.getElement(numInARow, col);
                 sum += a[numInARow];
             }
-            matrix.setElement(row, col, sum);
+            matrix.Set_Element(row, col, sum);
         }
     }
     return matrix;

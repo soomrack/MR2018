@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
-project(untitled16 C)
+project(1)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 14)
 
-add_executable(AndreyCH main.c)
+add_executable(1 main.cpp S1.cpp S1.h)
