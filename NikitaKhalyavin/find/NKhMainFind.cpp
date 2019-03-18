@@ -12,6 +12,9 @@ void KeyAndValuePrint(B_TreePoint * object) {
     printf("%u\t%d\n",(*object).getKey(), (*object).value);
 }
 
+void KeyAndValuePrintBinary(binaryTreePoint * object) {
+    printf("%u\t%d\n",object->getKey(), object->value);
+}
 
 
 int main() {
@@ -31,47 +34,9 @@ int main() {
 
     tree[4].setValue(4);
 
-    binaryTreePointList listForSearch1;
-    binaryTreePointList listForSearch2;
+    tree[0].visiting1WithAction(KeyAndValuePrintBinary);
+    tree[0].visiting2WithAction(KeyAndValuePrintBinary);
 
-    listForSearch1.search1(tree[0]);
-    listForSearch2.search2(tree[0]);
-
-    B_TreePoint tree2[8];
-
-    tree2[0].setValue(0);
-    tree2[1].setValue(1);
-    tree2[2].setValue(2);
-    tree2[3].setValue(3);
-    tree2[4].setValue(4);
-    tree2[5].setValue(5);
-    tree2[6].setValue(6);
-    tree2[7].setValue(7);
-
-    tree2[0].resize(4);
-    tree2[3].resize(2);
-    tree2[6].resize(1);
-    tree2[1].resize(1);
-
-    tree2[0].addChild(&tree2[4]);
-    tree2[0].addChild(&tree2[2]);
-    tree2[0].addChild(&tree2[3]);
-    tree2[0].addChild(&tree2[1]);
-
-    tree2[3].addChild(&tree2[7]);
-    tree2[3].addChild(&tree2[6]);
-
-    tree2[6].addChild(&tree2[5]);
-
-    B_TreePoint AddPoint;
-
-    AddPoint.setValue(100);
-
-    printf("\n");
-
-
-    tree2[0].visiting1WithAction<void>(KeyAndValuePrint);
-
-
+    tree[0].search(2, KeyAndValuePrintBinary);
 
 }

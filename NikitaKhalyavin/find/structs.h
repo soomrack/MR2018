@@ -20,6 +20,13 @@ public:
 
     }
 
+    void operator = (Stack & input) {
+        if(this->size > 0) free(this->data);
+        this->size = input.size;
+        this->data = (T * )malloc(size * sizeof(T));
+        memcpy(this->data, input.data, sizeof(T) * size);
+    }
+
     ~Stack() {
         if(size > 0) free(data);
     }
@@ -75,6 +82,7 @@ public:
     }
 
     void operator = (List &input) {
+        if(this->size > 0) free(this->data);
         this->size = input.size;
         this->data = (T * )malloc(size * sizeof(T));
         memcpy(this->data, input.data, sizeof(T) * size);
