@@ -14,19 +14,17 @@
 
 #endif //MR2018_TREES_H
 
-class binaryTreePoint;
 
-class binaryTreePointStack;
-
-class binaryTreePointList;
 
 class binaryTreePoint {
 private:
     binaryTreePoint * leftChild;
     binaryTreePoint * rightChild;
+
     unsigned int startAdressPull;
     unsigned int  stopAdressPull;
     unsigned int eigenAdress;
+
 public:
     bool hasLeftChild;
     bool hasRightChild;
@@ -70,6 +68,18 @@ public:
         leftChild->readress(startAdressPull, middle - 1);
     }
 
+    void createLeftChild() {
+        binaryTreePoint * child = new binaryTreePoint;
+        setLeftChild(child);
+    }
+
+    void createRightChild() {
+        binaryTreePoint * child = new binaryTreePoint;
+        setRightChild(child);
+    }
+
+
+
     void setRightChild(binaryTreePoint * child) {
         hasRightChild = true;
         rightChild = child;
@@ -101,8 +111,8 @@ public:
         exit(1);
     }
 
-    template <typename Ret>
-    void visiting1WithAction(Ret (*action)(binaryTreePoint *)) {
+
+    void visiting1WithAction(void (*action)(binaryTreePoint *)) {
         List<binaryTreePoint*> List;
         List.add(this);
         action(this);
@@ -122,8 +132,8 @@ public:
         }
     }
 
-    template <typename Ret>
-    void visiting2WithAction(Ret (*action)(binaryTreePoint *)) {
+
+    void visiting2WithAction(void (*action)(binaryTreePoint *)) {
         Stack<binaryTreePoint*> Stack;
         Stack.push(this);
 
@@ -171,7 +181,86 @@ public:
         exit(1);
     }
 
+
+    binaryTreePoint * searchForParent(binaryTreePoint * heap) {
+        Stack<binaryTreePoint*> Stack;
+        Stack.push(heap);
+
+        int i = Stack.getSize();
+        while(i > 0) {
+            binaryTreePoint * temp = Stack.pop();
+            if( (temp->leftChild == this) || (temp->rightChild == this) ) {
+                return temp;
+            }
+            if(temp->hasRightChild) {
+                Stack.push(temp->returnRightChild());
+            }
+            if(temp->hasLeftChild) {
+                Stack.push(temp->returnLeftChild());
+            }
+
+            i = Stack.getSize();
+        }
+        printf("Can't find parent");
+        exit(1);
+    }
+
+    void deleteHimself(binaryTreePoint * heap) {
+
+        binaryTreePoint * parent = searchForParent(heap);
+        binaryTreePoint * orphan;
+        bool isOrphan = 0;
+
+        if (hasLeftChild || hasRightChild) {
+
+            binaryTreePoint * changer;
+
+            if(hasLeftChild) {
+                changer = leftChild;
+                if(hasRightChild) {
+                    orphan = rightChild;
+                    isOrphan = 1;
+                }
+            }
+            else {
+                changer = rightChild;
+            }
+            if(parent->leftChild == this) {
+                parent->setLeftChild(changer);
+            }
+            else {
+                parent->setRightChild(changer);
+            }
+            if(isOrphan) {
+                orphan->shelter(heap);
+            }
+        }
+        else {
+            if(parent->leftChild == this) {
+                parent->hasLeftChild = 0;
+            }
+            else {
+                parent->hasRightChild = 0;
+            }
+        }
+    }
+
+    void shelter(binaryTreePoint * heap);
+
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

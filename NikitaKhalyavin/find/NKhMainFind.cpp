@@ -38,5 +38,13 @@ int main() {
     tree[0].visiting2WithAction(KeyAndValuePrintBinary);
 
     tree[0].search(2, KeyAndValuePrintBinary);
+    binaryTreePoint * temp = tree[3].searchForParent(&tree[0]);
+    KeyAndValuePrintBinary(temp);
+
+    tree[1].createRightChild();
+    tree[1].returnRightChild()->setValue(5);
+    tree[0].visiting1WithAction(KeyAndValuePrintBinary);
+    tree[1].deleteHimself(&tree[0]);
+    tree[0].visiting1WithAction(KeyAndValuePrintBinary);
 
 }
