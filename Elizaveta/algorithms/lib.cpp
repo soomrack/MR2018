@@ -289,18 +289,21 @@ void Timsort (int *arr, int arr_size) {
     }
 }
 
+//ПИРАМИДАЛЬНАЯ СОРТИРОВКА
 
-
+//индекс родителя
 int iParent(int i)
 {
     return ((i-1)/2);
 }
 
+//индекс левого потомка
 int iLeftChild(int i)
 {
     return 2*i+1;
 }
 
+//просеивание вниз
 void siftDown(int32_t * arr, uint32_t start, uint32_t end)
 {
     int root = start;
@@ -335,6 +338,7 @@ void siftDown(int32_t * arr, uint32_t start, uint32_t end)
     }
 }
 
+//построение кучи
 void heapify (int * arr, int n)
 {
     int start;
@@ -355,6 +359,7 @@ void heapify (int * arr, int n)
     }
 }
 
+//сортировка
 void HeapSort (int * arr, int size)
 {
     if (size < 2) return;
@@ -372,12 +377,148 @@ void HeapSort (int * arr, int size)
     }
 }
 
+//ДВОИЧНОЕ ДЕРЕВО ПОИСКА
 
-
-/*way(*node)
+void show(node *&tree)
 {
-    way(node -> left);
-    push(node);
+    if (tree != NULL)
+    {
+        show(tree->left);
+        std::cout<< tree->key;
+        show(tree->right);
+    }
 
-    way(node -> right);
-}*/
+}
+
+void clean(node *&tree)
+{
+    if (tree != NULL)
+    {
+        clean(tree->left);
+        clean(tree->right);
+        delete tree;
+        tree = NULL;
+    }
+}
+
+void insert(node *&tree, int key, int value)
+{
+    if (tree == NULL)
+    {
+        tree = new node;
+        tree->key = key;
+        tree->value = value;
+        tree->left = tree->right = NULL;
+    }
+    else if (key == tree->key)
+         tree->value = value;
+    else if (key < tree->key)
+    {
+        if (tree->left != NULL)
+            insert(tree->left, key, value);
+        else
+        {
+            tree->left = new node;
+            tree->left->left = tree->left->right = NULL;
+            tree->left->key = key;
+            tree->left->value = value;
+        }
+    }
+    else
+    {
+        if (tree->right != NULL)
+            insert(tree->right, key, value);
+        else
+        {
+            tree->right = new node;
+            tree->right->left = tree->right->right = NULL;
+            tree->right->key = key;
+            tree->right->value = value;
+        }
+    }
+}
+
+node search(node *&tree, int key)
+{
+    if ((tree == NULL) || (tree->key == key))
+    {
+        return *tree;
+    }
+    if (key < tree->key)
+        return search(tree->left, key);
+    return search(tree->right, key);
+}
+
+void delete_node(node *&tree, int key)
+{
+    if (tree == NULL)
+        return;
+    if (key > tree->key)
+        delete_node(tree->right, key);
+    if (key < tree->key)
+        delete_node(tree->left, key);
+    if (key == tree->key)
+    {
+        if ((tree->left == NULL) && (tree->right == NULL))
+        {
+            clean(tree);
+            return;
+        }
+        if ((tree->left != NULL) && (tree->right != NULL))
+        {
+            if (tree->right->left == NULL)
+            {
+                tree->key = tree->right->key;
+                tree->value = tree->right->value;
+                tree->right->key = tree->right->right->key;
+                tree->right->value = tree->right->right->value;
+            }
+            else
+            {
+                tree->key = tree->right->key;
+                tree->value = tree->right->value;
+                delete_node(tree->right, tree->right->key);
+            }
+        }
+        else
+        {
+            if (tree->left == NULL)
+            {
+                tree->key = tree->right->key;
+                tree->value = tree->right->value;
+                delete_node(tree->right, tree->right->key);
+            }
+            else if (tree->right == NULL)
+            {
+                tree->key = tree->left->key;
+                tree->value = tree->left->value;
+                delete_node(tree->left, tree->left->key);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
