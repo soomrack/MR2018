@@ -16,6 +16,230 @@
 
 
 
+
+template <typename DataType>
+class binaryTreeUnit {
+private:
+    binaryTreeUnit * leftChild;
+    binaryTreeUnit * rightChild;
+    unsigned int key;
+    DataType data;
+public:
+
+    binaryTreeUnit() {
+        leftChild = NULL;
+        rightChild = NULL;
+        key = 0;
+    }
+    binaryTreeUnit(DataType input, unsigned int key) {
+        leftChild = NULL;
+        rightChild = NULL;
+        data = input;
+        this->key = key;
+    }
+    binaryTreeUnit(binaryTreeUnit & input) {
+        leftChild = input.leftChild;
+        rightChild = input.rightChild;
+        this->data = input.data;
+        this->key = input.key;
+    }
+
+    void setLeftChild(binaryTreeUnit * child) {
+        leftChild = child;
+    }
+    void setRightChild(binaryTreeUnit * child) {
+        rightChild = child;
+    }
+
+    bool hasLeftChild() {
+        return leftChild != NULL;
+    }
+    bool hasRightChild() {
+        return rightChild != NULL;
+    }
+
+    binaryTreeUnit * getRightChild() {
+        return rightChild;
+    }
+    binaryTreeUnit * getLeftChild() {
+        return leftChild;
+    }
+
+    void deleteLeftChild() {
+        leftChild = NULL;
+    }
+    void deleteRightChild() {
+        rightChild = NULL;
+    }
+
+    void setData(DataType input) {
+        data = input;
+    }
+    DataType getData() {
+        return data;
+    }
+
+    void setKey(unsigned int key) {
+        this->key = key;
+    }
+    unsigned int getKey() {
+        return key;
+    }
+};
+
+
+template <typename DataType>
+class binaryTree {
+private:
+    binaryTreeUnit<DataType> * root;
+public:
+    binaryTree() {
+        root = NULL;
+    }
+    void Add(unsigned int key, DataType data) {
+        binaryTreeUnit<DataType> * newUnit = new binaryTreeUnit<DataType>(data, key);
+        if(root == NULL) {
+            root = newUnit;
+            return;
+        }
+        addToTree(newUnit, root);
+    }
+    static void addToTree(binaryTreeUnit<DataType> * newUnit, binaryTreeUnit<DataType> * root) {
+        unsigned int key = newUnit->getKey();
+        unsigned int rootKey = root->getKey();
+        if(key == rootKey) {
+            printf("Error: this key is already exist");
+            exit(1);
+        }
+        if(key > rootKey) {
+            if(root->hasRightChild()) {
+                addToTree(newUnit, root->getRightChild());
+                return;
+            }
+            root->setRightChild(newUnit);
+            return;
+        }
+        if(root->hasLeftChild()) {
+            addToTree(newUnit, root->getLeftChild());
+            return;
+        }
+        root->setLeftChild(newUnit);
+        return;
+    }
+
+    void visiting1() {
+        Queue<binaryTreeUnit<DataType>*> Queue;
+        List<DataType> out;
+
+        Queue.enqueue(root);
+        out.add(root->getData());
+
+
+        while(Queue.getSize() > 0) {
+            binaryTreeUnit<DataType> * temp = Queue.dequeue();
+            if(temp->hasLeftChild()) {
+                Queue.enqueue(temp->getLeftChild());
+                out.add(temp->getLeftChild()->getData());
+            }
+            if(temp->hasRightChild()) {
+                Queue.enqueue(temp->getRightChild());
+                out.add(temp->getRightChild()->getData());
+            }
+        }
+        return;
+    }
+
+    void visiting2() {
+        Stack<binaryTreeUnit<DataType>*> Stack;
+        Stack.push(root);
+
+        while(Stack.getSize() > 0) {
+            binaryTreeUnit<DataType> * temp = Stack.pop();
+            action(temp);
+            if(temp->hasRightChild) {
+                Stack.push(temp->returnRightChild());
+            }
+            if(temp->hasLeftChild) {
+                Stack.push(temp->returnLeftChild());
+            }
+        }
+    }
+
+
+    static DataType recursionForSearch(binaryTreeUnit<DataType> * root, unsigned int key) {
+        if(root->getKey() == key) {
+            return root->getData();
+        }
+
+        if(key > root->getKey()) {
+            if(root->hasRightChild()) {
+                return recursionForSearch(root->getRightChild(), key);
+            }
+            printf("Error: can't find item");
+            exit(1);
+        }
+
+        if(root->hasLeftChild()) {
+            return recursionForSearch(root->getLeftChild(), key);
+        }
+        printf("Error: can't find item");
+        exit(1);
+    }
+
+    DataType search(unsigned long int key) {
+        return recursionForSearch(root, key);
+    }
+
+    static binaryTreeUnit<DataType> * recursionForSearchParent(binaryTreeUnit<DataType> * root, unsigned int key) {
+
+        if(key > root->getKey()) {
+            if(root->hasRightChild()) {
+                if(root->getRightChild()->getKey() == key) {
+                    return root;
+                }
+                return recursionForSearchParent(root->getRightChild(), key);
+            }
+            printf("Error: can't find item");
+            exit(1);
+        }
+
+        if(root->hasLeftChild()) {
+            if(root->getLeftChild()->getKey() == key) {
+                return root;
+            }
+            return recursionForSearchParent(root->getLeftChild(), key);
+        }
+        printf("Error: can't find item");
+        exit(1);
+    }
+
+    void deleteAllBranch(binaryTreeUnit<DataType> * root) {
+        if(root->hasLeftChild()) deleteAllBranch(root->getLeftChild());
+        if(root->hasRightChild()) deleteAllBranch(root->getRightChild());
+        delete root;
+    }
+
+    void deleteItem(unsigned int key) {
+        if(root->getKey() == key) {
+            deleteAllBranch(root);
+            return;
+        }
+        binaryTreeUnit<DataType> * parent = recursionForSearchParent(root, key);
+        binaryTreeUnit<DataType> * child;
+        if(key > parent->getKey()) {
+            child = parent->getRightChild();
+            parent->deleteRightChild();
+            deleteAllBranch(child);
+            return;
+        }
+        child = parent->getLeftChild();
+        parent->deleteLeftChild();
+        deleteAllBranch(child);
+        return;
+    }
+
+};
+
 class binaryTreePoint {
 private:
     binaryTreePoint * leftChild;

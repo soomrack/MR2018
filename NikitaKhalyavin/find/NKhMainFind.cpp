@@ -18,33 +18,19 @@ void KeyAndValuePrintBinary(binaryTreePoint * object) {
 
 
 int main() {
-    binaryTreePoint tree[5];
 
-    tree[0].setValue(0);
-    tree[0].setLeftChild(&tree[1]);
-    tree[0].setRightChild(&tree[2]);
+    binaryTree<int> tree1;
+    tree1.Add(512, 0);
+    tree1.Add(24, 1);
+    tree1.Add(513, 2);
+    tree1.Add(1024, 256);
 
-    tree[1].setValue(1);
-    tree[1].setLeftChild(&tree[3]);
+    int bla = tree1.search(1024);
 
-    tree[2].setValue(2);
-    tree[2].setLeftChild(&tree[4]);
+    tree1.deleteItem(513);
 
-    tree[3].setValue(3);
+    tree1.visiting1();
 
-    tree[4].setValue(4);
 
-    tree[0].visiting1WithAction(KeyAndValuePrintBinary);
-    tree[0].visiting2WithAction(KeyAndValuePrintBinary);
-
-    tree[0].search(2, KeyAndValuePrintBinary);
-    binaryTreePoint * temp = tree[3].searchForParent(&tree[0]);
-    KeyAndValuePrintBinary(temp);
-
-    tree[1].createRightChild();
-    tree[1].returnRightChild()->setValue(5);
-    tree[0].visiting1WithAction(KeyAndValuePrintBinary);
-    tree[1].deleteHimself(&tree[0]);
-    tree[0].visiting1WithAction(KeyAndValuePrintBinary);
 
 }
