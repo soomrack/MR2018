@@ -238,6 +238,72 @@ public:
         return;
     }
 
+    void deleteItemWithoutChildren(unsigned int key) {
+        binaryTreeUnit<DataType> * orphan = NULL;
+        if(root->getKey() == key) {
+            binaryTreeUnit<DataType> * temp = root;
+            if(temp->hasLeftChild()) {
+                root = temp->getLeftChild();
+                if(temp->hasRightChild()) {
+                    orphan = temp->getRightChild();
+                }
+            }
+            else {
+                if(temp->hasRightChild()) {
+                    root = temp->getRightChild();
+                }
+                else root = NULL;
+            }
+            delete temp;
+
+            if(orphan != NULL) {
+                addToTree(orphan, root);
+            }
+            return;
+        }
+        binaryTreeUnit<DataType> * parent = recursionForSearchParent(root, key);
+        binaryTreeUnit<DataType> * child;
+        if(key > parent->getKey()) {
+            child = parent->getRightChild();
+            parent->deleteRightChild();
+            if(child->hasLeftChild()) {
+                parent->setRightChild(child->getLeftChild());
+                if(child->hasRightChild()) {
+                    orphan = child->getRightChild();
+                }
+            }
+            else {
+                if(child->hasRightChild()) {
+                    parent->setRightChild(child->getLeftChild());
+                }
+            }
+            delete child;
+            if(orphan != NULL) {
+                addToTree(orphan, root);
+            }
+            return;
+        }
+        child = parent->getLeftChild();
+        parent->deleteLeftChild();
+        if(child->hasLeftChild()) {
+            parent->setLeftChild(child->getLeftChild());
+            if(child->hasRightChild()) {
+                orphan = child->getRightChild();
+            }
+        }
+        else {
+            if(child->hasRightChild()) {
+                parent->setLeftChild(child->getRightChild());
+            }
+        }
+        delete child;
+
+        if(orphan != NULL) {
+            addToTree(orphan, root);
+        }
+    }
+
+
 };
 
 class binaryTreePoint {

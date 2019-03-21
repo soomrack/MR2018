@@ -22,12 +22,14 @@ int main() {
     binaryTree<int> tree1;
     tree1.Add(512, 0);
     tree1.Add(24, 1);
-    tree1.Add(513, 2);
-    tree1.Add(1024, 256);
+    tree1.Add(514, 2);
+    tree1.Add(513,3);
+    tree1.Add(1024, 4);
 
     int bla = tree1.search(1024);
 
-    tree1.deleteItem(513);
+    tree1.deleteItemWithoutChildren(514);
+    tree1.deleteItemWithoutChildren(512);
 
     tree1.visiting1();
 
