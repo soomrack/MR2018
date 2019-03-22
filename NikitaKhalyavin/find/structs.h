@@ -146,6 +146,7 @@ public:
         memcpy(this->data, input.data, sizeof(T) * size);
     }
 
+
     ~List() {
         if(size > 0) free(data);
     }

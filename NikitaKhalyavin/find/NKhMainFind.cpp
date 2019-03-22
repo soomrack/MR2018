@@ -8,14 +8,14 @@
 #include <stdio.h>
 
 
-void KeyAndValuePrint(B_TreePoint * object) {
-    printf("%u\t%d\n",(*object).getKey(), (*object).value);
-}
 
-void KeyAndValuePrintBinary(binaryTreePoint * object) {
-    printf("%u\t%d\n",object->getKey(), object->value);
+void dataListPrint(List<int> data) {
+    for(unsigned int i = 0; i < data.getSize(); i++) {
+        int temp = data.getItem(i);
+        printf("%d\t", temp);
+    }
+    printf("\n");
 }
-
 
 int main() {
 
@@ -31,8 +31,7 @@ int main() {
     tree1.deleteItemWithoutChildren(514);
     tree1.deleteItemWithoutChildren(512);
 
-    tree1.visiting1();
-
-
+    List<int> temp;
+    temp = tree1.visiting1();
 
 }
