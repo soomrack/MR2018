@@ -32,6 +32,7 @@ int main() {
     tree1.deleteItemWithoutChildren(512);
 
     List<int> temp;
-    temp = tree1.visiting1();
+    tree1.fastSort();
+    //temp = tree1.visiting1();
 
 }

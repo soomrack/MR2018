@@ -139,12 +139,14 @@ public:
         memcpy(this->data, input.data, sizeof(T) * size);
     }
 
+
     void operator = (List &input) {
         if(this->size > 0) free(this->data);
         this->size = input.size;
         this->data = (T * )malloc(size * sizeof(T));
         memcpy(this->data, input.data, sizeof(T) * size);
     }
+
 
 
     ~List() {

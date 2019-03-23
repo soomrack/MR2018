@@ -97,6 +97,8 @@ private:
     void addToTree(binaryTreeUnit<DataType> * newUnit, binaryTreeUnit<DataType> * root);
     DataType recursionForSearch(binaryTreeUnit<DataType> * root, unsigned int key);
     binaryTreeUnit<DataType> * recursionForSearchParent(binaryTreeUnit<DataType> * root, unsigned int key);
+    List<binaryTreeUnit<DataType> *> recursionForSort(binaryTreeUnit<DataType> * root);
+
 public:
     binaryTree() {
         root = NULL;
@@ -108,6 +110,7 @@ public:
 
     List<DataType> visiting2();
 
+    List<binaryTreeUnit<DataType> *> fastSort();
 
     DataType search(unsigned long int key) {
         return recursionForSearch(root, key);
@@ -337,6 +340,38 @@ List<DataType>  binaryTree<DataType>::visiting2() {
         }
     }
     return out;
+}
+
+template <typename DataType>
+List<binaryTreeUnit<DataType> *> binaryTree<DataType>::recursionForSort(binaryTreeUnit<DataType> * root) {
+
+    static List<binaryTreeUnit<DataType> *> List;
+    static Stack<binaryTreeUnit<DataType> *> Stack;
+    if(root->hasLeftChild()) {
+        Stack.push(root);
+        recursionForSort(root->getLeftChild());
+    }
+    List.add(root);
+    if(root->hasRightChild()) {
+        recursionForSort(root->getRightChild());
+    }
+    while(Stack.getSize() > 0) {
+        binaryTreeUnit<DataType> * temp = Stack.pop();
+        List.add(temp);
+        if(temp->hasRightChild()) {
+            recursionForSort(temp->getRightChild());
+        }
+    }
+    return List;
+}
+
+template <typename DataType>
+List<binaryTreeUnit<DataType> *>binaryTree<DataType>::fastSort() {
+
+    List<binaryTreeUnit<DataType> *> List;
+    recursionForSort(root);
+    return List;
+
 }
 
 
