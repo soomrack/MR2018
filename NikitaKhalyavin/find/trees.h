@@ -5,6 +5,8 @@
 #include <malloc.h>
 #include <cstring>
 #include <cstdio>
+#include <limits.h>
+#include <stdint.h>
 #include "structs.h"
 
 #ifndef MR2018_TREES_H
@@ -12,342 +14,374 @@
 
 #endif //MR2018_TREES_H
 
-class binaryTreePoint;
 
-class binaryTreePointStack;
 
-class binaryTreePointList;
 
-class binaryTreePoint {
+template <typename DataType>
+class binaryTreeUnit {
 private:
-    binaryTreePoint * leftChild;
-    binaryTreePoint * rightChild;
+    binaryTreeUnit * leftChild;
+    binaryTreeUnit * rightChild;
+    unsigned int key;
+    DataType data;
 public:
-    bool hasLeftChild;
-    bool hasRightChild;
-    int value;
-    binaryTreePoint(binaryTreePoint &input) {
-        if(input.hasLeftChild) {
-            this->leftChild = input.leftChild;
-        }
-        this->hasLeftChild = input.hasLeftChild;
-        if(input.hasRightChild) {
-            this->rightChild = input.rightChild;
-        }
-        this->hasRightChild = input.hasRightChild;
-        this->value = input.value;
-    }
-    binaryTreePoint() : hasLeftChild(false), hasRightChild(false) {
 
+    binaryTreeUnit() {
+        leftChild = NULL;
+        rightChild = NULL;
+        key = 0;
     }
-    binaryTreePoint(int value) : hasLeftChild(false), hasRightChild(false) {
-        this->value = value;
+    binaryTreeUnit(DataType input, unsigned int key) {
+        leftChild = NULL;
+        rightChild = NULL;
+        data = input;
+        this->key = key;
     }
-    /*   void operator = (binaryTreePoint &input) {
-           if(input.hasLeftChild) {
-               this->hasLeftChild = true;
-               this->leftChild = input.leftChild;
-           }
-           if(input.hasRightChild) {
-               this->hasRightChild = true;
-               this->rightChild = input.rightChild;
-           }
-           this->value = input.value;
-       }*/
+    binaryTreeUnit(binaryTreeUnit & input) {
+        leftChild = input.leftChild;
+        rightChild = input.rightChild;
+        this->data = input.data;
+        this->key = input.key;
+    }
 
-    void setLeftChild(binaryTreePoint * child) {
-        hasLeftChild = true;
+    void setLeftChild(binaryTreeUnit * child) {
         leftChild = child;
     }
-    void setRightChild(binaryTreePoint * child) {
-        hasRightChild = true;
+    void setRightChild(binaryTreeUnit * child) {
         rightChild = child;
     }
-    void setValue(int value) {
-        this->value = value;
+
+    bool hasLeftChild() {
+        return leftChild != NULL;
+    }
+    bool hasRightChild() {
+        return rightChild != NULL;
     }
 
-    binaryTreePoint returnLeftChild() {
-        if(hasLeftChild) {
-            return *leftChild;
-        }
-        binaryTreePoint voidret;
-        return voidret;
+    binaryTreeUnit * getRightChild() {
+        return rightChild;
+    }
+    binaryTreeUnit * getLeftChild() {
+        return leftChild;
     }
 
-    binaryTreePoint returnRightChild() {
-        if(hasRightChild) {
-            return *rightChild;
-        }
-        binaryTreePoint voidret;
-        return voidret;
+    void deleteLeftChild() {
+        leftChild = NULL;
     }
-};
-
-class binaryTreePointStack {
-private:
-    binaryTreePoint * data;
-    unsigned int size;
-public:
-    binaryTreePointStack() : size(0) {
-        data = (binaryTreePoint * )0;
+    void deleteRightChild() {
+        rightChild = NULL;
     }
 
-    binaryTreePointStack(binaryTreePointStack &input) {
-        this->size = input.size;
-        this->data = (binaryTreePoint * )malloc(size * sizeof(binaryTreePoint));
-        memcpy(this->data, input.data, sizeof(binaryTreePoint) * size);
+    void setData(DataType input) {
+        data = input;
+    }
+    DataType getData() {
+        return data;
     }
 
-    void push(binaryTreePoint input) {
-        binaryTreePoint * temp = (binaryTreePoint * )malloc((size + 1) * sizeof(binaryTreePoint));
-        memcpy(temp, data, sizeof(binaryTreePoint) * size);
-        temp[size] = input;
-        size++;
-        free(data);
-        data = temp;
+    void setKey(unsigned int key) {
+        this->key = key;
     }
-
-    binaryTreePoint pop() {
-        if(size == 0) {
-            binaryTreePoint voidOut;
-            return voidOut;
-        }
-        size--;
-        binaryTreePoint * temp = (binaryTreePoint * )malloc((size) * sizeof(binaryTreePoint));
-        memcpy(temp, data, sizeof(binaryTreePoint) * size);
-        binaryTreePoint out = data[size];
-        free(data);
-        data = temp;
-        return out;
-    }
-
-    unsigned int getSize() {
-        return size;
+    unsigned int getKey() {
+        return key;
     }
 };
 
-class binaryTreePointList {
+
+template <typename DataType>
+class binaryTree {
 private:
-    binaryTreePoint * data;
-    unsigned int size;
+    binaryTreeUnit<DataType> * root;
+
+    void deleteAllBranch(binaryTreeUnit<DataType> * root);
+    void addToTree(binaryTreeUnit<DataType> * newUnit, binaryTreeUnit<DataType> * root);
+    DataType recursionForSearch(binaryTreeUnit<DataType> * root, unsigned int key);
+    binaryTreeUnit<DataType> * recursionForSearchParent(binaryTreeUnit<DataType> * root, unsigned int key);
+    List<binaryTreeUnit<DataType> *> recursionForSort(binaryTreeUnit<DataType> * root);
+
 public:
-    binaryTreePointList() : size(0) {
-        data = (binaryTreePoint * )0;
+    binaryTree() {
+        root = NULL;
     }
 
-    binaryTreePointList(binaryTreePointList &input) {
-        this->size = input.size;
-        this->data = (binaryTreePoint * )malloc(size * sizeof(binaryTreePoint));
-        memcpy(this->data, input.data, sizeof(binaryTreePoint) * size);
+    void Add(unsigned int key, DataType data);
+
+    List<DataType> visiting1();
+
+    List<DataType> visiting2();
+
+    List<binaryTreeUnit<DataType> *> fastSort();
+
+    DataType search(unsigned long int key) {
+        return recursionForSearch(root, key);
     }
 
-    void Add(binaryTreePoint input) {
-        binaryTreePoint * temp = (binaryTreePoint * )malloc((size + 1) * sizeof(binaryTreePoint));
-        memcpy(temp, data, sizeof(binaryTreePoint) * size);
-        temp[size] = input;
-        size++;
-        free(data);
-        data = temp;
-    }
+    void deleteItem(unsigned int key);
 
-    void Print() {
-        for(int i = 0; i < size; i++) {
-            printf("%d\t", data[i].value);
-        }
-    }
+    void deleteItemWithoutChildren(unsigned int key);
 
-    void search1(binaryTreePoint head) {
 
-        Add(head);
-        int i = 0;
-
-        while(i < size) {
-            binaryTreePoint temp;
-
-            if(data[i].hasLeftChild) {
-                temp = data[i].returnLeftChild();
-                Add(temp);
-            }
-
-            if (data[i].hasRightChild) {
-                temp = data[i].returnRightChild();
-                Add(temp);
-            }
-            i++;
-        }
-        Print();
-    }
-
-    void search2(binaryTreePoint head) {
-
-        int i = size;
-        binaryTreePointStack stack;
-        stack.push(head);
-        while(1) {
-            binaryTreePoint temp1;
-            temp1 = stack.pop();
-            Add(temp1);
-
-            binaryTreePoint temp2;
-
-            if(temp1.hasRightChild) {
-                temp2 = temp1.returnRightChild();
-                stack.push(temp2);
-            }
-
-            if (temp1.hasLeftChild) {
-                temp2 = temp1.returnLeftChild();
-                stack.push(temp2);
-            }
-            if(stack.getSize() == 0) break;
-        }
-        Print();
-    }
 };
 
-class B_TreePoint;
 
-
-class B_TreePoint {
-private:
-    B_TreePoint ** list;
-    unsigned int size;
-public:
-    int value;
-    B_TreePoint() : size(0) {
-
+template <typename DataType>
+void binaryTree<DataType>::addToTree(binaryTreeUnit<DataType> * newUnit, binaryTreeUnit<DataType> * root) {
+    unsigned int key = newUnit->getKey();
+    unsigned int rootKey = root->getKey();
+    if(key == rootKey) {
+        printf("Error: this key is already exist");
+        exit(1);
     }
-    B_TreePoint(unsigned int size) {
-        this->size = size;
-        list = (B_TreePoint **)malloc(sizeof(B_TreePoint * ) * size);
-        for(int i = 0; i < size; i++) {
-            list[i] = (B_TreePoint *)0;
+    if(key > rootKey) {
+        if(root->hasRightChild()) {
+            addToTree(newUnit, root->getRightChild());
+            return;
         }
+        root->setRightChild(newUnit);
+        return;
     }
-    B_TreePoint(B_TreePoint &input) {
-        this->size = input.size;
-        list = (B_TreePoint **) malloc(sizeof(B_TreePoint * ) * this->size);
-        memcpy(this->list, input.list, sizeof(B_TreePoint * ) * this->size);
-        this->value = input.value;
+    if(root->hasLeftChild()) {
+        addToTree(newUnit, root->getLeftChild());
+        return;
+    }
+    root->setLeftChild(newUnit);
+    return;
+}
+
+
+template <typename DataType>
+DataType binaryTree<DataType>::recursionForSearch(binaryTreeUnit<DataType> * root, unsigned int key) {
+    if(root->getKey() == key) {
+        return root->getData();
     }
 
-    bool hasChild(unsigned int number) {
-        if(number >= size) {
-            printf("there aren't any child with this number");
-            exit(1);
+    if(key > root->getKey()) {
+        if(root->hasRightChild()) {
+            return recursionForSearch(root->getRightChild(), key);
         }
-        if(list[number] == (B_TreePoint *)0) return false;
-        return  true;
-    }
-
-    unsigned int getSize() {
-        return size;
-    }
-
-    B_TreePoint * returnChild(unsigned int number) {
-        if(hasChild(number)) return list[number];
-        printf("there aren't any child with this number");
+        printf("Error: can't find item");
         exit(1);
     }
 
-    void setChild(unsigned int number, B_TreePoint * child) {
-        if(number >= size) {
-            printf("there aren't any child with this number");
-            exit(1);
-        }
-        list[number] = child;
+    if(root->hasLeftChild()) {
+        return recursionForSearch(root->getLeftChild(), key);
     }
-    void setValue(int value) {
-        this->value = value;
-    }
+    printf("Error: can't find item");
+    exit(1);
+}
 
-    void resize(unsigned int size) {
 
-        if(size == 0) {
-            if(this->size != 0) free(list);
-            this->size = size;
-            return;
-        }
-        B_TreePoint ** temp = (B_TreePoint **)malloc(sizeof(B_TreePoint * ) * size);
-        unsigned int twoHas = size;
-        if(this->size < twoHas) twoHas = this->size;
-        memcpy(temp, list, sizeof(B_TreePoint * ) * twoHas);
-        for(int i = twoHas; i < size; i++) {
-            temp[i] = (B_TreePoint *)0;
-        }
-        if(this->size != 0) free(list);
-        this->size = size;
-        list = temp;
-    }
+template <typename DataType>
+binaryTreeUnit<DataType> * binaryTree<DataType>::recursionForSearchParent(binaryTreeUnit<DataType> * root, unsigned int key) {
 
-    void Print() {
-        printf("%d\t", value);
-    }
-
-    void addPointWithBalance(B_TreePoint * arg) {
-
-        List<B_TreePoint *> List;
-        List.add(this);
-
-        int i = 0;
-        int j = 0;
-        B_TreePoint * addTo = (B_TreePoint * )0;
-        while(i < List.getSize()) {
-            B_TreePoint * temp = List.getItem(i);
-            for(int j = 0; j < (*temp).size; j++) {
-                if( (*temp).hasChild(j)) {
-                    List.add((*temp).returnChild(j));
-                }
-                else {
-                    addTo = temp;
-                    break;
-                }
+    if(key > root->getKey()) {
+        if(root->hasRightChild()) {
+            if(root->getRightChild()->getKey() == key) {
+                return root;
             }
-            if(addTo != (B_TreePoint *)0) break;
-            i++;
+            return recursionForSearchParent(root->getRightChild(), key);
         }
-        if(addTo == (B_TreePoint * )0) {
-            printf("Error: there aren't any free place in the tree");
-            return;
-        }
-        (*addTo).setChild(j, arg);
-
+        printf("Error: can't find item");
+        exit(1);
     }
 
-    void search1() {
-        List<B_TreePoint*> List;
-        List.add(this);
-        (*this).Print();
+    if(root->hasLeftChild()) {
+        if(root->getLeftChild()->getKey() == key) {
+            return root;
+        }
+        return recursionForSearchParent(root->getLeftChild(), key);
+    }
+    printf("Error: can't find item");
+    exit(1);
+}
 
-        int i = 0;
-        while(i < List.getSize()) {
-            B_TreePoint * temp = List.getItem(i);
-            for(int j = 0; j < (*temp).size; j++) {
-                if( (*temp).hasChild(j)) {
-                    List.add((*temp).returnChild(j));
-                    ( *(*temp).returnChild(j) ).Print();
-                }
+template <typename DataType>
+void binaryTree<DataType>::Add(unsigned int key, DataType data) {
+    binaryTreeUnit<DataType> * newUnit = new binaryTreeUnit<DataType>(data, key);
+    if(root == NULL) {
+        root = newUnit;
+        return;
+    }
+    addToTree(newUnit, root);
+}
+
+template <typename DataType>
+void binaryTree<DataType>::deleteItem(unsigned int key) {
+    if(root->getKey() == key) {
+        deleteAllBranch(root);
+        return;
+    }
+    binaryTreeUnit<DataType> * parent = recursionForSearchParent(root, key);
+    binaryTreeUnit<DataType> * child;
+    if(key > parent->getKey()) {
+        child = parent->getRightChild();
+        parent->deleteRightChild();
+        deleteAllBranch(child);
+        return;
+    }
+    child = parent->getLeftChild();
+    parent->deleteLeftChild();
+    deleteAllBranch(child);
+    return;
+}
+
+
+template <typename DataType>
+void binaryTree<DataType>::deleteItemWithoutChildren(unsigned int key) {
+    binaryTreeUnit<DataType> * orphan = NULL;
+    if(root->getKey() == key) {
+        binaryTreeUnit<DataType> * temp = root;
+        if(temp->hasLeftChild()) {
+            root = temp->getLeftChild();
+            if(temp->hasRightChild()) {
+                orphan = temp->getRightChild();
             }
-            i++;
         }
-    }
-
-    void search2() {
-        Stack<B_TreePoint*> Stack;
-        Stack.push(this);
-
-        int i = Stack.getSize();
-        while(i > 0) {
-            B_TreePoint * temp = Stack.pop();
-            (*temp).Print();
-            for(int j = (*temp).size - 1; j >= 0; j--) {
-                if( (*temp).hasChild(j)) {
-                    Stack.push((*temp).returnChild(j));
-                }
+        else {
+            if(temp->hasRightChild()) {
+                root = temp->getRightChild();
             }
-            i = Stack.getSize();
+            else root = NULL;
+        }
+        delete temp;
+
+        if(orphan != NULL) {
+            addToTree(orphan, root);
+        }
+        return;
+    }
+    binaryTreeUnit<DataType> * parent = recursionForSearchParent(root, key);
+    binaryTreeUnit<DataType> * child;
+    if(key > parent->getKey()) {
+        child = parent->getRightChild();
+        parent->deleteRightChild();
+        if(child->hasLeftChild()) {
+            parent->setRightChild(child->getLeftChild());
+            if(child->hasRightChild()) {
+                orphan = child->getRightChild();
+            }
+        }
+        else {
+            if(child->hasRightChild()) {
+                parent->setRightChild(child->getLeftChild());
+            }
+        }
+        delete child;
+        if(orphan != NULL) {
+            addToTree(orphan, root);
+        }
+        return;
+    }
+    child = parent->getLeftChild();
+    parent->deleteLeftChild();
+    if(child->hasLeftChild()) {
+        parent->setLeftChild(child->getLeftChild());
+        if(child->hasRightChild()) {
+            orphan = child->getRightChild();
         }
     }
-};
+    else {
+        if(child->hasRightChild()) {
+            parent->setLeftChild(child->getRightChild());
+        }
+    }
+    delete child;
+
+    if(orphan != NULL) {
+        addToTree(orphan, root);
+    }
+}
+
+template <typename DataType>
+void binaryTree<DataType>::deleteAllBranch(binaryTreeUnit<DataType> * root) {
+    if(root->hasLeftChild()) deleteAllBranch(root->getLeftChild());
+    if(root->hasRightChild()) deleteAllBranch(root->getRightChild());
+    delete root;
+}
+
+template <typename DataType>
+List<DataType>  binaryTree<DataType>::visiting1() {
+    Queue<binaryTreeUnit<DataType>*> Queue;
+    List<DataType> out;
+
+    Queue.enqueue(root);
+    out.add(root->getData());
+
+
+    while(Queue.getSize() > 0) {
+        binaryTreeUnit<DataType> * temp = Queue.dequeue();
+        if(temp->hasLeftChild()) {
+            Queue.enqueue(temp->getLeftChild());
+            out.add(temp->getLeftChild()->getData());
+        }
+        if(temp->hasRightChild()) {
+            Queue.enqueue(temp->getRightChild());
+            out.add(temp->getRightChild()->getData());
+        }
+    }
+    return out;
+}
+
+template <typename DataType>
+List<DataType>  binaryTree<DataType>::visiting2() {
+
+    Stack<binaryTreeUnit<DataType>*> Stack;
+    Stack.push(root);
+    List<DataType> out;
+
+    while(Stack.getSize() > 0) {
+        binaryTreeUnit<DataType> * temp = Stack.pop();
+        out.add(temp->getData());
+        if(temp->hasRightChild) {
+            Stack.push(temp->returnRightChild());
+        }
+        if(temp->hasLeftChild) {
+            Stack.push(temp->returnLeftChild());
+        }
+    }
+    return out;
+}
+
+template <typename DataType>
+List<binaryTreeUnit<DataType> *> binaryTree<DataType>::recursionForSort(binaryTreeUnit<DataType> * root) {
+
+    static List<binaryTreeUnit<DataType> *> List;
+    static Stack<binaryTreeUnit<DataType> *> Stack;
+    if(root->hasLeftChild()) {
+        Stack.push(root);
+        recursionForSort(root->getLeftChild());
+    }
+    List.add(root);
+    if(root->hasRightChild()) {
+        recursionForSort(root->getRightChild());
+    }
+    while(Stack.getSize() > 0) {
+        binaryTreeUnit<DataType> * temp = Stack.pop();
+        List.add(temp);
+        if(temp->hasRightChild()) {
+            recursionForSort(temp->getRightChild());
+        }
+    }
+    return List;
+}
+
+template <typename DataType>
+List<binaryTreeUnit<DataType> *>binaryTree<DataType>::fastSort() {
+
+    List<binaryTreeUnit<DataType> *> List;
+    recursionForSort(root);
+    return List;
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
