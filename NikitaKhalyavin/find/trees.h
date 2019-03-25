@@ -108,20 +108,16 @@ public:
     void Add(unsigned int key, DataType data);
 
     List<DataType> visiting1();
-
     List<DataType> visiting2();
 
     void balancing();
-
 
     DataType search(unsigned long int key) {
         return recursionForSearch(root, key);
     }
 
     void deleteItem(unsigned int key);
-
     void deleteItemWithoutChildren(unsigned int key);
-
 
 };
 
