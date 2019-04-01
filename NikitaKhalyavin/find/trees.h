@@ -98,6 +98,7 @@ private:
     DataType recursionForSearch(binaryTreeUnit<DataType> * root, unsigned int key);
     binaryTreeUnit<DataType> * recursionForSearchParent(binaryTreeUnit<DataType> * root, unsigned int key);
     List<binaryTreeUnit<DataType> *> recursionForSort(binaryTreeUnit<DataType> * root);
+    void recursionForBalancing(List<binaryTreeUnit<DataType> *> List, unsigned int Middle, unsigned int step, binaryTreeUnit<DataType> * root);
 
 public:
     binaryTree() {
@@ -107,118 +108,159 @@ public:
     void Add(unsigned int key, DataType data);
 
     List<DataType> visiting1();
-
     List<DataType> visiting2();
 
-    List<binaryTreeUnit<DataType> *> fastSort();
+    void balancing();
 
     DataType search(unsigned long int key) {
         return recursionForSearch(root, key);
     }
 
     void deleteItem(unsigned int key);
-
     void deleteItemWithoutChildren(unsigned int key);
-
 
 };
 
 
 template <typename DataType>
 void binaryTree<DataType>::addToTree(binaryTreeUnit<DataType> * newUnit, binaryTreeUnit<DataType> * root) {
+
     unsigned int key = newUnit->getKey();
     unsigned int rootKey = root->getKey();
+
+    binaryTreeUnit<DataType> * next;
+
     if(key == rootKey) {
         printf("Error: this key is already exist");
         exit(1);
     }
+
     if(key > rootKey) {
         if(root->hasRightChild()) {
-            addToTree(newUnit, root->getRightChild());
+            next = root->getRightChild();
+        }
+        else {
+            root->setRightChild(newUnit);
             return;
         }
-        root->setRightChild(newUnit);
-        return;
     }
-    if(root->hasLeftChild()) {
-        addToTree(newUnit, root->getLeftChild());
-        return;
+    else {
+        if (root->hasLeftChild()) {
+            next = root->getLeftChild();
+        }
+        else {
+            root->setLeftChild(newUnit);
+            return;
+        }
     }
-    root->setLeftChild(newUnit);
+    addToTree(newUnit, next);
     return;
+
 }
 
 
 template <typename DataType>
 DataType binaryTree<DataType>::recursionForSearch(binaryTreeUnit<DataType> * root, unsigned int key) {
+
     if(root->getKey() == key) {
         return root->getData();
     }
 
+    binaryTreeUnit<DataType> * next;
+
     if(key > root->getKey()) {
         if(root->hasRightChild()) {
-            return recursionForSearch(root->getRightChild(), key);
+            next = root->getRightChild();
         }
-        printf("Error: can't find item");
-        exit(1);
+        else {
+            printf("Error: can't find item");
+            exit(1);
+        }
     }
 
-    if(root->hasLeftChild()) {
-        return recursionForSearch(root->getLeftChild(), key);
+    else {
+
+        if (root->hasLeftChild()) {
+            next = root->getLeftChild();
+        }
+        else {
+            printf("Error: can't find item");
+            exit(1);
+        }
     }
-    printf("Error: can't find item");
-    exit(1);
+
+    return recursionForSearch(next, key);
 }
 
 
 template <typename DataType>
 binaryTreeUnit<DataType> * binaryTree<DataType>::recursionForSearchParent(binaryTreeUnit<DataType> * root, unsigned int key) {
 
+    if(root->getKey() == key) {
+        printf("Can't find any parent of the root");
+        exit(1);
+    }
+
+    binaryTreeUnit<DataType> * next;
+
     if(key > root->getKey()) {
         if(root->hasRightChild()) {
             if(root->getRightChild()->getKey() == key) {
                 return root;
             }
-            return recursionForSearchParent(root->getRightChild(), key);
+            next = root->getRightChild();
         }
-        printf("Error: can't find item");
-        exit(1);
-    }
-
-    if(root->hasLeftChild()) {
-        if(root->getLeftChild()->getKey() == key) {
-            return root;
+        else {
+            printf("Error: can't find item");
+            exit(1);
         }
-        return recursionForSearchParent(root->getLeftChild(), key);
     }
-    printf("Error: can't find item");
-    exit(1);
+    else {
+        if (root->hasLeftChild()) {
+            if (root->getLeftChild()->getKey() == key) {
+                return root;
+            }
+            next = root->getLeftChild();
+        }
+        else {
+            printf("Error: can't find item");
+            exit(1);
+        }
+    }
+    return recursionForSearchParent(next, key);
 }
 
 template <typename DataType>
 void binaryTree<DataType>::Add(unsigned int key, DataType data) {
+
     binaryTreeUnit<DataType> * newUnit = new binaryTreeUnit<DataType>(data, key);
+
     if(root == NULL) {
         root = newUnit;
         return;
     }
+
     addToTree(newUnit, root);
 }
 
 template <typename DataType>
 void binaryTree<DataType>::deleteItem(unsigned int key) {
+
     if(root->getKey() == key) {
         deleteAllBranch(root);
         return;
     }
+
     binaryTreeUnit<DataType> * parent = recursionForSearchParent(root, key);
     binaryTreeUnit<DataType> * child;
+
     if(key > parent->getKey()) {
         child = parent->getRightChild();
         parent->deleteRightChild();
         deleteAllBranch(child);
         return;
     }
+
     child = parent->getLeftChild();
     parent->deleteLeftChild();
     deleteAllBranch(child);
@@ -228,7 +270,9 @@ void binaryTree<DataType>::deleteItem(unsigned int key) {
 
 template <typename DataType>
 void binaryTree<DataType>::deleteItemWithoutChildren(unsigned int key) {
+
     binaryTreeUnit<DataType> * orphan = NULL;
+
     if(root->getKey() == key) {
         binaryTreeUnit<DataType> * temp = root;
         if(temp->hasLeftChild()) {
@@ -250,8 +294,10 @@ void binaryTree<DataType>::deleteItemWithoutChildren(unsigned int key) {
         }
         return;
     }
+
     binaryTreeUnit<DataType> * parent = recursionForSearchParent(root, key);
     binaryTreeUnit<DataType> * child;
+
     if(key > parent->getKey()) {
         child = parent->getRightChild();
         parent->deleteRightChild();
@@ -272,8 +318,10 @@ void binaryTree<DataType>::deleteItemWithoutChildren(unsigned int key) {
         }
         return;
     }
+
     child = parent->getLeftChild();
     parent->deleteLeftChild();
+
     if(child->hasLeftChild()) {
         parent->setLeftChild(child->getLeftChild());
         if(child->hasRightChild()) {
@@ -294,6 +342,7 @@ void binaryTree<DataType>::deleteItemWithoutChildren(unsigned int key) {
 
 template <typename DataType>
 void binaryTree<DataType>::deleteAllBranch(binaryTreeUnit<DataType> * root) {
+
     if(root->hasLeftChild()) deleteAllBranch(root->getLeftChild());
     if(root->hasRightChild()) deleteAllBranch(root->getRightChild());
     delete root;
@@ -301,6 +350,7 @@ void binaryTree<DataType>::deleteAllBranch(binaryTreeUnit<DataType> * root) {
 
 template <typename DataType>
 List<DataType>  binaryTree<DataType>::visiting1() {
+
     Queue<binaryTreeUnit<DataType>*> Queue;
     List<DataType> out;
 
@@ -330,8 +380,10 @@ List<DataType>  binaryTree<DataType>::visiting2() {
     List<DataType> out;
 
     while(Stack.getSize() > 0) {
+
         binaryTreeUnit<DataType> * temp = Stack.pop();
         out.add(temp->getData());
+
         if(temp->hasRightChild) {
             Stack.push(temp->returnRightChild());
         }
@@ -347,11 +399,16 @@ List<binaryTreeUnit<DataType> *> binaryTree<DataType>::recursionForSort(binaryTr
 
     static List<binaryTreeUnit<DataType> *> List;
     static Stack<binaryTreeUnit<DataType> *> Stack;
+    binaryTreeUnit<DataType> * next;
+
+
     if(root->hasLeftChild()) {
         Stack.push(root);
         recursionForSort(root->getLeftChild());
     }
+
     List.add(root);
+
     if(root->hasRightChild()) {
         recursionForSort(root->getRightChild());
     }
@@ -366,12 +423,30 @@ List<binaryTreeUnit<DataType> *> binaryTree<DataType>::recursionForSort(binaryTr
 }
 
 template <typename DataType>
-List<binaryTreeUnit<DataType> *>binaryTree<DataType>::fastSort() {
+void binaryTree<DataType>::balancing() {
 
+    if(root == NULL) return;
     List<binaryTreeUnit<DataType> *> List;
-    recursionForSort(root);
-    return List;
+    List = recursionForSort(root);
 
+    int step = List.getSize() / 2;
+
+    root = List.getItem(step);
+    recursionForBalancing(List, step, step, root);
+
+}
+
+template <typename DataType>
+void binaryTree<DataType>::recursionForBalancing(List<binaryTreeUnit<DataType> *> List, unsigned int Middle, unsigned int step, binaryTreeUnit<DataType> * root) {
+    if(step == 0) {
+        root->deleteLeftChild();
+        root->deleteRightChild();
+        return;
+    }
+    root->setLeftChild(List.getItem(Middle - step));
+    root->setRightChild(List.getItem(Middle + step));
+    recursionForBalancing(List, Middle - step, step / 2, root->getLeftChild());
+    recursionForBalancing(List, Middle + step, step / 2, root->getRightChild());
 }
 
 
