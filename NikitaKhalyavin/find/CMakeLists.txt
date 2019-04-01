@@ -10,13 +10,15 @@ add_library(NKhStructs structs.cpp structs.h)
 
 add_library(NKhTreesParent trees/treesParent.cpp trees/treesParent.h)
 add_library(NKhBinaryTree trees/binaryTree.cpp trees/binaryTree.h)
+add_library(NKhRBTree trees/RBTree.cpp trees/RBTree.h)
 
 add_executable(NKhTestChange tests/testChange.cpp)
 add_executable(NKhTestSorts tests/allSortTest.cpp)
 
 target_link_libraries(NKhBinaryTree NKhStructs NKhTreesParent)
+target_link_libraries(NKhRBTree NKhStructs NKhTreesParent)
 
-target_link_libraries(NKhfind NKhfindArray NKhsortArray NKhStructs NKhBinaryTree)
+target_link_libraries(NKhfind NKhfindArray NKhsortArray NKhStructs NKhBinaryTree NKhRBTree)
 target_link_libraries(NKhTestChange NKhfindArray NKhsortArray)
 target_link_libraries(NKhTestSorts NKhsortArray)
 

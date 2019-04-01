@@ -18,7 +18,10 @@ typedef struct {
     void * rightChild;
 }binaryTreeNode;
 
+
+
 class binaryTree : public Tree {
+
 private:
 
     void delete_all_branch(binaryTreeNode * root);
