@@ -4,12 +4,14 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
+
 
 #ifndef MR2018_STRUCTS_H
 #define MR2018_STRUCTS_H
 
 #endif //MR2018_STRUCTS_H
-
+/*
 template <typename T>
 class DataField {
 private:
@@ -68,7 +70,7 @@ public:
 
     }
 };
-
+*/
 
 
 template <typename T>
