@@ -4,7 +4,7 @@
 
 #include "findInArray.h"
 #include "ArraySort.h"
-#include "trees/binaryTree.h"
+#include "trees/RBTree.h"
 #include <stdio.h>
 #include <iostream>
 
@@ -21,7 +21,7 @@ void dataListPrint(List<void *> data) {
 
 int main() {
 
-    binaryTree tree1;
+    RBTree tree1;
 
     int data[10] = {0,1,2,3,4,5,6,7,8,9};
 

@@ -7,28 +7,25 @@
 
 #endif //MR2018_RBTREE_H
 
-#include "treesParent.h"
+#include "binaryTree.h"
 
 enum color {RED, BLACK};
 
-typedef struct {
-    void * data;
-    unsigned int key;
-    void * leftChild;
-    void * rightChild;
+struct RBNode : binaryTreeNode {
+
     color type;
-}RBTreeNode;
+};
 
 
+class RBTree : public binaryTree {
 
-class RBTree : public Tree {
+protected:
+
+    typedef RBNode Node;
 
 private:
 
-    void delete_all_branch(RBTreeNode * root);
-    void add_to_tree(RBTreeNode * newUnit, RBTreeNode * root);
-    void * recursion_for_search(RBTreeNode * root, unsigned int key);
-    RBTreeNode * recursion_for_search_parent(RBTreeNode * root, unsigned int key);
+    void add_to_tree(Node * newUnit, Node * root);
 
 public:
     RBTree() {
@@ -36,13 +33,6 @@ public:
     }
 
     void add(unsigned int key, void * data);
-
-    List<void *> visiting1();
-    List<void *> visiting2();
-
-    void * search(unsigned int key) {
-        return recursion_for_search((RBTreeNode *)root, key);
-    }
 
     void remove(unsigned int key);
 };

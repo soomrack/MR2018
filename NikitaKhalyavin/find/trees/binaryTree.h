@@ -11,23 +11,28 @@
 #include "treesParent.h"
 
 
-typedef struct {
+struct binaryTreeNode{
     void * data;
     unsigned int key;
     void * leftChild;
     void * rightChild;
-}binaryTreeNode;
-
+};
 
 
 class binaryTree : public Tree {
 
+protected:
+
+    typedef binaryTreeNode Node;
+
+    void delete_all_branch(Node * root);
+    void * recursion_for_search(Node * root, unsigned int key);
+    void * recursion_for_search_parent(Node * root, unsigned int key);
+
+
 private:
 
-    void delete_all_branch(binaryTreeNode * root);
-    void add_to_tree(binaryTreeNode * newUnit, binaryTreeNode * root);
-    void * recursion_for_search(binaryTreeNode * root, unsigned int key);
-    binaryTreeNode * recursion_for_search_parent(binaryTreeNode * root, unsigned int key);
+    void add_to_tree(Node * newUnit, Node * root);
 
 public:
     binaryTree() {
@@ -40,7 +45,7 @@ public:
     List<void *> visiting2();
 
     void * search(unsigned int key) {
-        return recursion_for_search((binaryTreeNode *)root, key);
+        return recursion_for_search((Node *)root, key);
     }
 
     void remove(unsigned int key);
