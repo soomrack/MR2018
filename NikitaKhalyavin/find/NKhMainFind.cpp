@@ -4,69 +4,52 @@
 
 #include "findInArray.h"
 #include "ArraySort.h"
-#include "trees.h"
+#include "trees/RBTree.h"
 #include <stdio.h>
+#include <iostream>
+
+
+using namespace std;
+
+void dataListPrint(List<void *> data) {
+    for(unsigned int i = 0; i < data.getSize(); i++) {
+        int temp = *( (int *)(data.getItem(i)) );
+        printf("%d\t", temp);
+    }
+    printf("\n");
+}
 
 int main() {
-    binaryTreePoint tree[5];
 
-    tree[0].setValue(0);
-    tree[0].setLeftChild(&tree[1]);
-    tree[0].setRightChild(&tree[2]);
+    RBTree tree1;
 
-    tree[1].setValue(1);
-    tree[1].setLeftChild(&tree[3]);
+    int data[10] = {0,1,2,3,4,5,6,7,8,9};
 
-    tree[2].setValue(2);
-    tree[2].setLeftChild(&tree[4]);
+    tree1.add(100,&data[0]);
+    tree1.add(150,&data[1]);
+    tree1.add(900,&data[2]);
+    tree1.add(90,&data[3]);
+    tree1.add(60,&data[4]);
+    tree1.add(75,&data[5]);
+    tree1.add(98,&data[6]);
+    tree1.add(152,&data[7]);
+    tree1.add(45,&data[8]);
+    tree1.add(0,&data[9]);
 
-    tree[3].setValue(3);
+    List<void *> result;
 
-    tree[4].setValue(4);
+    result = tree1.visiting1();
+    dataListPrint(result);
+    result = tree1.visiting2();
+    dataListPrint(result);
 
-    binaryTreePointList listForSearch1;
-    binaryTreePointList listForSearch2;
+    tree1.remove(900);
+    tree1.remove(90);
 
-    listForSearch1.search1(tree[0]);
-    listForSearch2.search2(tree[0]);
+    result = tree1.visiting1();
+    dataListPrint(result);
+    result = tree1.visiting2();
+    dataListPrint(result);
 
-    B_TreePoint tree2[8];
-
-    tree2[0].setValue(0);
-    tree2[1].setValue(1);
-    tree2[2].setValue(2);
-    tree2[3].setValue(3);
-    tree2[4].setValue(4);
-    tree2[5].setValue(5);
-    tree2[6].setValue(6);
-    tree2[7].setValue(7);
-
-    tree2[0].resize(4);
-    tree2[3].resize(2);
-    tree2[6].resize(1);
-
-    tree2[1].resize(1);
-
-    tree2[0].setChild(0, &tree2[4]);
-    tree2[0].setChild(1, &tree2[2]);
-    tree2[0].setChild(2, &tree2[3]);
-    tree2[0].setChild(3, &tree2[1]);
-
-    tree2[3].setChild(0, &tree2[7]);
-    tree2[3].setChild(1, &tree2[6]);
-
-    tree2[6].setChild(0, &tree2[5]);
-
-    B_TreePoint AddPoint;
-
-    AddPoint.setValue(100);
-
-    tree2[0].addPointWithBalance(&AddPoint);
-    printf("\n");
-    tree2[0].search1();
-    printf("\n");
-    tree2[0].search2();
-
-
-
+    printf("%d", *( (int *)tree1.search(152) ) );
 }

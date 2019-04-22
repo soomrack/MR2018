@@ -4,11 +4,74 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
+
 
 #ifndef MR2018_STRUCTS_H
 #define MR2018_STRUCTS_H
 
 #endif //MR2018_STRUCTS_H
+/*
+template <typename T>
+class DataField {
+private:
+    DataField * pointer;
+    T data;
+public:
+    void AllStructCopy(DataField * input) {
+
+        this->data = input->data;
+
+        if(input->pointer != NULL) {
+            this->pointer = new DataField();
+            pointer->AllStructCopy(input->pointer);
+        }
+    }
+
+    void DeleteAll() {
+        if(pointer == NULL) {
+            delete this;
+        }
+        else {
+            DataField * temp = pointer;
+            delete this;
+            temp->DeleteAll();
+        }
+    }
+
+    DataField(T data) {
+        this->data = data;
+        pointer = NULL;
+    }
+
+    DataField(T data, DataField * next) {
+        this->data = data;
+        pointer = next;
+    }
+
+    DataField() {
+        pointer = NULL;
+    }
+
+    T getData() {
+        return data;
+    }
+    DataField * getNext() {
+        return pointer;
+    }
+    void setNext(DataField * next) {
+        pointer = next;
+    }
+    void setData(T data) {
+        this->data = data;
+    }
+
+    ~DataField() {
+
+    }
+};
+*/
+
 
 template <typename T>
 class Stack {
@@ -18,6 +81,17 @@ private:
 public:
     Stack() : size(0) {
 
+    }
+
+    void operator = (Stack & input) {
+        if(this->size > 0) free(this->data);
+        this->size = input.size;
+        this->data = (T * )malloc(size * sizeof(T));
+        memcpy(this->data, input.data, sizeof(T) * size);
+    }
+
+    ~Stack() {
+        if(size > 0) free(data);
     }
 
     Stack(Stack &input) {
@@ -54,6 +128,63 @@ public:
     }
 };
 
+ template <typename T>
+class Queue {
+private:
+    unsigned int size;
+    T * data;
+public:
+    Queue() : size(0) {
+        data = NULL;
+    }
+
+    void operator = (Queue & input) {
+        if(this->size > 0) free(this->data);
+        this->size = input.size;
+        this->data = (T * )malloc(size * sizeof(T));
+        memcpy(this->data, input.data, sizeof(T) * size);
+    }
+
+    ~Queue() {
+        if(size > 0) free(data);
+    }
+
+    Queue(Queue &input) {
+        this->size = input.size;
+        this->data = (T * )malloc(size * sizeof(T));
+        memcpy(this->data, input.data, sizeof(T) * size);
+    }
+
+    void enqueue(T input) {
+        T * temp = (T * )malloc((size + 1) * sizeof(T));
+        memcpy(temp, data, sizeof(T) * size);
+        temp[size] = input;
+        size++;
+        free(data);
+        data = temp;
+    }
+
+    T dequeue() {
+        if(size == 0) {
+            printf("Error: queue is empty");
+            exit(1);
+        }
+        size--;
+        T * temp = (T * )malloc((size) * sizeof(T));
+        memcpy(temp, &data[1], sizeof(T) * size);
+        T out = data[0];
+        free(data);
+        data = temp;
+        return out;
+    }
+
+    unsigned int getSize() {
+        return size;
+    }
+};
+
+
+
 template <typename T>
 class List {
 private:
@@ -70,13 +201,46 @@ public:
         memcpy(this->data, input.data, sizeof(T) * size);
     }
 
+
+    void operator= (const List<T> &input) {
+        if(this->size > 0) free(this->data);
+        this->size = input.size;
+        this->data = (T * )malloc(size * sizeof(T));
+        memcpy(this->data, input.data, sizeof(T) * size);
+    }
+
+
+
+    ~List() {
+        if(size > 0) free(data);
+    }
+
     void add(T input) {
         T * temp = (T * )malloc((size + 1) * sizeof(T));
         memcpy(temp, data, sizeof(T) * size);
         temp[size] = input;
-        size++;
-        free(data);
+        if(size != 0)
+            free(data);
         data = temp;
+        size++;
+    }
+
+    void deleteItem(unsigned int index) {
+        if(size == 1) {
+            size = 0;
+            free(data);
+            return;
+        }
+        if ( (index < size) && (size > 1 ) ) {
+            T * temp = (T * )malloc((size - 1) * sizeof(T));
+            memcpy(temp, data, sizeof(T) * index);
+            memcpy(&temp[index], &data[index + 1], sizeof(T) * (size - index - 1));
+            free(data);
+            data = temp;
+            size--;
+        }
+        printf("Error: can't delete this item");
+        exit(1);
     }
 
     T getItem(unsigned int index) {
@@ -90,3 +254,215 @@ public:
     }
 
 };
+
+/*
+template <typename T>
+class Stack {
+private:
+    unsigned int size;
+    DataField<T> * data;
+public:
+    Stack() : size(0) {
+        data = NULL;
+    }
+
+    void operator = (Stack & input) {
+        if(this->size > 0) data->DeleteAll();
+        this->size = input.size;
+        if(this->size > 0) {
+            data = new DataField<T>();
+            data->AllStructCopy(input.data);
+        }
+    }
+
+    ~Stack() {
+        if(size > 0) {
+            data->DeleteAll();
+        }
+    }
+
+    Stack(Stack &input) {
+        this->size = input.size;
+        if(this->size > 0) {
+            data = new DataField<T>();
+            data->AllStructCopy(input.data);
+        }
+    }
+
+    void push(T input) {
+
+         DataField<T> *newField = new DataField<T>(input, data);
+         data = newField;
+
+         size++;
+    }
+
+    T pop() {
+        if(size == 0) {
+            printf("Error: stack is empty");
+            exit(1);
+        }
+        size--;
+        DataField<T> * temp = data;
+        data = data->getNext();
+        return temp->getData();
+    }
+
+    unsigned int getSize() {
+        return size;
+    }
+};
+
+
+template <typename T>
+class Queue {
+private:
+    unsigned int size;
+    DataField * data;
+public:
+    Queue() : size(0) {
+        data = NULL;
+    }
+
+    void operator = (Queue & input) {
+        if(this->size > 0) data->DeleteAll();
+        this->size = input.size;
+        if(this->size > 0) {
+            data = new DataField<T>();
+            data->AllStructCopy(input.data);
+        }
+    }
+
+    ~Queue() {
+        if(size > 0) {
+            data->DeleteAll();
+        }
+    }
+
+    Queue(Queue &input) {
+        this->size = input.size;
+        if(this->size > 0) {
+            data = new DataField<T>();
+            data->AllStructCopy(input.data);
+        }
+    }
+
+    void push(T input) {
+
+        DataField<T> *newField = new DataField<T>(input, data);
+        data = newField;
+
+        size++;
+    }
+
+    T pop() {
+        if(size == 0) {
+            printf("Error: stack is empty");
+            exit(1);
+        }
+        size--;
+        DataField<T> * temp = data;
+        data = data->getNext();
+        return temp->getData();
+    }
+
+    void enqueue(T input) {
+        T * temp = (T * )malloc((size + 1) * sizeof(T));
+        memcpy(temp, data, sizeof(T) * size);
+        temp[size] = input;
+        size++;
+        free(data);
+        data = temp;
+    }
+
+    T dequeue() {
+        if(size == 0) {
+            printf("Error: queue is empty");
+            exit(1);
+        }
+        size--;
+        T * temp = (T * )malloc((size) * sizeof(T));
+        memcpy(temp, &data[1], sizeof(T) * size);
+        T out = data[0];
+        free(data);
+        data = temp;
+        return out;
+    }
+
+    unsigned int getSize() {
+        return size;
+    }
+};
+
+
+
+template <typename T>
+class List {
+private:
+    unsigned int size;
+    T * data;
+public:
+    List() : size(0) {
+
+    }
+
+    List(List &input) {
+        this->size = input.size;
+        this->data = (T * )malloc(size * sizeof(T));
+        memcpy(this->data, input.data, sizeof(T) * size);
+    }
+
+
+    void operator = (List &input) {
+        if(this->size > 0) free(this->data);
+        this->size = input.size;
+        this->data = (T * )malloc(size * sizeof(T));
+        memcpy(this->data, input.data, sizeof(T) * size);
+    }
+
+
+
+    ~List() {
+        if(size > 0) free(data);
+    }
+
+    void add(T input) {
+        T * temp = (T * )malloc((size + 1) * sizeof(T));
+        memcpy(temp, data, sizeof(T) * size);
+        temp[size] = input;
+        if(size != 0)
+            free(data);
+        data = temp;
+        size++;
+    }
+
+    void deleteItem(unsigned int index) {
+        if(size == 1) {
+            size = 0;
+            free(data);
+            return;
+        }
+        if ( (index < size) && (size > 1 ) ) {
+            T * temp = (T * )malloc((size - 1) * sizeof(T));
+            memcpy(temp, data, sizeof(T) * index);
+            memcpy(&temp[index], &data[index + 1], sizeof(T) * (size - index - 1));
+            free(data);
+            data = temp;
+            size--;
+        }
+        printf("Error: can't delete this item");
+        exit(1);
+    }
+
+    T getItem(unsigned int index) {
+        if(index < size) return data[index];
+        printf("There aren't item with this index in the List");
+        exit(1);
+    }
+
+    unsigned int getSize() {
+        return size;
+    }
+
+};
+*/
