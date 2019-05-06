@@ -21,7 +21,7 @@ void dataListPrint(List<void *> data) {
 
 int main() {
 
-    RBTree tree1;
+    binaryTree tree1;
 
     int data[10] = {0,1,2,3,4,5,6,7,8,9};
 

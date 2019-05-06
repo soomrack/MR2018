@@ -48,10 +48,12 @@ void RBTree::add(unsigned int key, void * data) {
     newUnit->data = data;
 
     if(root == NULL) {
+        newUnit->type = BLACK;
         root = newUnit;
         return;
     }
 
+    newUnit->type = RED;
     add_to_tree(newUnit, (Node *)root);
 }
 
