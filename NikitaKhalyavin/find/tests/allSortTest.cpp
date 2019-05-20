@@ -8,7 +8,7 @@
 
 int main() {
 
-    for (int size = 0; size < 5000; size++ ) {
+    for (int size = 127; size < 5000; size++ ) {
 
         int *array = CreateRandArray(size, -100, 100);
 

@@ -78,11 +78,11 @@ void InsertSort(int * array, int size) {
     }
 }
 
-void MergeSort(int * array, int size) {
+
+void MergeRecursion(int * array, int size, int * buf) {
     if(size < 2) return;
     MergeSort(array, size / 2);
     MergeSort(array + (size / 2), size - (size / 2));
-    int temp[size];
 
     int i = 0;
     int counterLeft = 0;
@@ -90,12 +90,12 @@ void MergeSort(int * array, int size) {
 
     for(i = 0; i < size; i++) {
         if(array[counterLeft] < array[counterRight]) {
-            temp[i] = array[counterLeft];
+            buf[i] = array[counterLeft];
             counterLeft++;
             if(counterLeft == (size / 2)) break;
         }
         else {
-            temp[i] = array[counterRight];
+            buf[i] = array[counterRight];
             counterRight++;
             if(counterRight == size) break;
         }
@@ -103,15 +103,21 @@ void MergeSort(int * array, int size) {
 
     for(counterLeft; counterLeft < size / 2; counterLeft++) {
         i++;
-        temp[i] = array[counterLeft];
+        buf[i] = array[counterLeft];
     }
     for(counterRight; counterRight < size; counterRight++) {
         i++;
-        temp[i] = array[counterRight];
+        buf[i] = array[counterRight];
     }
 
-    memcpy(array, temp, sizeof(int) * size);
+    memcpy(array, buf, sizeof(int) * size);
 }
+
+void MergeSort(int * array, int size) {
+    int buf[size];
+    MergeRecursion(array, size, buf);
+}
+
 
 static int GetMinrun(int n)
 {
@@ -322,7 +328,6 @@ void TimSort ( int * array, int size) {
 
 
     }
-
     if(stack.size == 2) stack.subArraysMerging(array, 0, 1);
 
 }
