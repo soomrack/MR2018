@@ -17,7 +17,7 @@ protected:
 private:
     void sift_down(Node * start);
     void sift_up(Node * start) = 0;
-
+    void merge(Node * currentRoot, Node * newRoot);
     List<void *>  visiting();
 
 public:

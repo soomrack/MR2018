@@ -48,7 +48,6 @@ void binaryHeap::sift_up(Node * start) {
         }
     }
 
-
 }
 
 
@@ -76,9 +75,34 @@ List<void *>  binaryHeap::visiting() {
 }
 
 void * binaryHeap::extract() {
+    void * out = root->data;
+    Node * left = root->leftChild;
+    Node * right = root->rightChild;
+    delete root;
+
+    root = left;
+    merge(root, right);
+
+    return out;
+}
+
+void * binaryHeap::merge(Node * currentRoot, Node * newRoot) {
+    if(currentRoot->key > newRoot->key) {
+        currentRoot.swap(newRoot);
+    }
+
+
+    root = left;
+    merge(currentRoot, newRoot);
+
+    return out;
+}
+
+void * binaryHeap::extract() {
     return root->data;
 }
 
 void binaryHeap::add(void * data, int key) {
-
+    List<void *> nodes = visiting();
+    int i;
 }
