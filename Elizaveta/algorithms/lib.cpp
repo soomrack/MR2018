@@ -2,6 +2,7 @@
 // Created by Елизавета on 13.02.2019.
 //
 #include "lib.h"
+#include <stdio.h>
 #include <iostream>
 #include <cstdlib>
 #include <stack>
@@ -413,53 +414,55 @@ int getOrderStatistic( int * arr, int size, int j )
 }
 
 //ДВОИЧНОЕ ДЕРЕВО ПОИСКА
+Tree::Tree() {root = nullptr;}
+Tree::~Tree() {if (root != nullptr) Tree::delete_node(root, root->key);}
 //вертикальный обход дерева
 //обратный обход
-void infix_traverse(node *&tree)
+void Tree::infix_traverse(node *root)
 {
-    if (tree != nullptr)
+    if (root != nullptr)
     {
-        infix_traverse(tree->left);
-        std::cout<< tree->key;
-        infix_traverse(tree->right);
+        Tree::infix_traverse(root->left);
+        std::cout<< root->key;
+        Tree::infix_traverse(root->right);
     }
 }
 
 //прямой обход
-void prefix_traverse(node *&tree)
+void Tree::prefix_traverse(node *root)
 {
-    std::cout<< tree->key;
-    if (tree->left != nullptr)
-        prefix_traverse(tree->left);
-    if (tree->right != nullptr)
-        prefix_traverse(tree->right);
+    std::cout<< root->key;
+    if (root->left != nullptr)
+        Tree::prefix_traverse(root->left);
+    if (root->right != nullptr)
+        Tree::prefix_traverse(root->right);
 }
 
 //концевой обход
-void postfix_traverse(node *&tree)
+void Tree::postfix_traverse(node *root)
 {
-    if (tree->left != nullptr)
-        postfix_traverse(tree->left);
-    if (tree->right != nullptr)
-        postfix_traverse(tree->right);
-    std::cout<< tree->key;
+    if (root->left != nullptr)
+        Tree::postfix_traverse(root->left);
+    if (root->right != nullptr)
+        Tree::postfix_traverse(root->right);
+    std::cout<< root->key;
 }
 
 //горизонтальный обход дерева
 #include <queue>
-void level_traverse(node *&tree)
+void Tree::level_traverse(node *root)
 {
     std::queue <node*> myqueue;
     do
     {
-        std::cout<< tree->key;
-        if (tree->left != nullptr)
-            myqueue.push(tree->left);
-        if (tree->right != nullptr)
-            myqueue.push(tree->right);
+        std::cout<< root->key;
+        if (root->left != nullptr)
+            myqueue.push(root->left);
+        if (root->right != nullptr)
+            myqueue.push(root->right);
         if (!myqueue.empty())
         {
-            tree = myqueue.front();
+            root = myqueue.front();
             myqueue.pop();
         }
     }
@@ -467,112 +470,129 @@ void level_traverse(node *&tree)
 }
 
 //удаление ветви
-void clean(node *&tree)
+void Tree::delete_branch(node *root)
 {
-    if (tree != nullptr)
+    if (root != nullptr)
     {
-        clean(tree->left);
-        clean(tree->right);
-        delete tree;
-        tree = nullptr;
+        Tree::delete_branch(root->left);
+        Tree::delete_branch(root->right);
+        delete root;
+        root = nullptr;
     }
 }
 
 //вставка узла
-void insert(node *&tree, int key, int value)
+
+void Tree::insert(int key, int *value)
 {
-    if (tree == nullptr)
+    Tree::insertion(root, key, value);
+}
+
+void Tree::insertion(node *root, int key, int *value)
+{
+    if (root == nullptr)
     {
-        tree = new node;
-        tree->key = key;
-        tree->value = value;
-        tree->left = tree->right = nullptr;
+        root = new node;
+        root->key = key;
+        root->value = value;
+        root->left = root->right = nullptr;
     }
-    else if (key == tree->key)
-         tree->value = value;
-    else if (key < tree->key)
+    else if (key == root->key)
+         root->value = value;
+    else if (key < root->key)
     {
-        if (tree->left != nullptr)
-            insert(tree->left, key, value);
+        if (root->left != nullptr)
+            insertion(root->left, key, value);
         else
         {
-            tree->left = new node;
-            tree->left->left = tree->left->right = nullptr;
-            tree->left->key = key;
-            tree->left->value = value;
+            root->left = new node;
+            root->left->left = root->left->right = nullptr;
+            root->left->key = key;
+            root->left->value = value;
         }
     }
     else
     {
-        if (tree->right != nullptr)
-            insert(tree->right, key, value);
+        if (root->right != nullptr)
+            insertion(root->right, key, value);
         else
         {
-            tree->right = new node;
-            tree->right->left = tree->right->right = nullptr;
-            tree->right->key = key;
-            tree->right->value = value;
+            root->right = new node;
+            root->right->left = root->right->right = nullptr;
+            root->right->key = key;
+            root->right->value = value;
         }
     }
 }
 
 //поиск по ключу
-node search(node *&tree, int key)
+
+node Tree::search(int key)
 {
-    if ((tree == nullptr) || (tree->key == key))
+    return Tree::search(root, key);
+}
+
+node Tree::search(node *root, int key)
+{
+    if ((root == nullptr) || (root->key == key))
     {
-        return *tree;
+        return *root;
     }
-    if (key < tree->key)
-        return search(tree->left, key);
-    return search(tree->right, key);
+    if (key < root->key)
+        return search(root->left, key);
+    return search(root->right, key);
+}
+
+void Tree::remove(int key)
+{
+    Tree::delete_node(root,key);
 }
 
 //удаление узла
-void delete_node(node *&tree, int key)
+void Tree::delete_node(node *root, int key)
 {
-    if (tree == nullptr)
+    if (root == nullptr)
         return;
-    if (key > tree->key)
-        delete_node(tree->right, key);
-    if (key < tree->key)
-        delete_node(tree->left, key);
-    if (key == tree->key)
+    if (key > root->key)
+        delete_node(root->right, key);
+    if (key < root->key)
+        delete_node(root->left, key);
+    if (key == root->key)
     {
-        if ((tree->left == nullptr) && (tree->right == nullptr))
+        if ((root->left == nullptr) && (root->right == nullptr))
         {
-            clean(tree);
+            Tree::delete_branch(root);
             return;
         }
-        if ((tree->left != nullptr) && (tree->right != nullptr))
+        if ((root->left != nullptr) && (root->right != nullptr))
         {
-            if (tree->right->left == nullptr)
+            if (root->right->left == nullptr)
             {
-                tree->key = tree->right->key;
-                tree->value = tree->right->value;
-                tree->right->key = tree->right->right->key;
-                tree->right->value = tree->right->right->value;
+                root->key = root->right->key;
+                root->value = root->right->value;
+                root->right->key = root->right->right->key;
+                root->right->value = root->right->right->value;
             }
             else
             {
-                tree->key = tree->right->key;
-                tree->value = tree->right->value;
-                delete_node(tree->right, tree->right->key);
+                root->key = root->right->key;
+                root->value = root->right->value;
+                delete_node(root->right, root->right->key);
             }
         }
         else
         {
-            if (tree->left == nullptr)
+            if (root->left == nullptr)
             {
-                tree->key = tree->right->key;
-                tree->value = tree->right->value;
-                delete_node(tree->right, tree->right->key);
+                root->key = root->right->key;
+                root->value = root->right->value;
+                delete_node(root->right, root->right->key);
             }
-            else if (tree->right == nullptr)
+            else if (root->right == nullptr)
             {
-                tree->key = tree->left->key;
-                tree->value = tree->left->value;
-                delete_node(tree->left, tree->left->key);
+                root->key = root->left->key;
+                root->value = root->left->value;
+                delete_node(root->left, root->left->key);
             }
         }
     }
@@ -790,12 +810,12 @@ void Btree::restruct(Bnode *node)
 }
 
 //поиск
-bool Btree::search(int key)
+Bnode * Btree::search(int key)
 {
     return Btree::search_key(key, this->root);
 }
 
-bool Btree::search_key(int key, Bnode *node)
+Bnode * Btree::search_key(int key, Bnode *node)
 {
     if (node != nullptr) {
         if (node->leaf == false) {
@@ -803,7 +823,7 @@ bool Btree::search_key(int key, Bnode *node)
             for (i = 0; i <= (2 * t - 1); i++) {
                 if (node->key[i] != 0) {
                     if (key == node->key[i])
-                        return true;
+                        return node;
                     if (key < node->key[i]) {
                         return Btree::search_key(key, node->child[i]);
                         break;
@@ -814,11 +834,11 @@ bool Btree::search_key(int key, Bnode *node)
         } else {
             for (int j = 0; j <= (2 * t - 1); j++)
                 if (key == node->key[j])
-                    return true;
-            return false;
+                    return node;
+            return nullptr;
         }
     }
-    else return false;
+    else return nullptr;
 }
 
 //удаление ключа из узла
@@ -920,16 +940,10 @@ void Btree::repair(Bnode *node)
         {
             while (ptr->count == 2*t)
             {
-                if (ptr == root)
-                {
-                    Btree::restruct(ptr);
-                    break;
-                }
-                else
-                {
-                    Btree::restruct(ptr);
+                Btree::restruct(ptr);
+                if (ptr != root)
                     ptr = ptr->parent;
-                }
+                else break;
             }
         }
         else
@@ -950,16 +964,10 @@ void Btree::repair(Bnode *node)
             {
                 while (temp->count == 2*t)
                 {
-                    if (temp == root)
-                    {
-                        Btree::restruct(temp);
-                        break;
-                    }
-                    else
-                    {
-                        Btree::restruct(temp);
+                    Btree::restruct(temp);
+                    if (temp != root)
                         temp = temp->parent;
-                    }
+                    else break;
                 }
             }
             else
@@ -977,16 +985,10 @@ void Btree::repair(Bnode *node)
             {
                 while (ptr->count == 2*t)
                 {
-                    if (ptr == root)
-                    {
-                        Btree::restruct(ptr);
-                        break;
-                    }
-                    else
-                    {
-                        Btree::restruct(ptr);
+                    Btree::restruct(ptr);
+                    if (ptr != root)
                         ptr = ptr->parent;
-                    }
+                    else break;
                 }
             }
             else
@@ -1000,24 +1002,19 @@ void Btree::remove_leaf(int key, Bnode *node)
 {
     if ((node == root) && (node->count == 1))
     {
-        Btree:remove_from_node(key, node);
+        Btree::remove_from_node(key, node);
         root->child[0] = nullptr;
         delete root;
         root = nullptr;
         return;
     }
 
-    if (node == root)
+    if ((node == root) || (node->count > (t-1)))
     {
         Btree::remove_from_node(key, node);
         return;
     }
 
-    if (node->count > (t-1))
-    {
-        Btree::remove_from_node(key, node);
-        return;
-    }
     Bnode *ptr = node;
     int k1;
     int k2;
@@ -1168,7 +1165,7 @@ void Btree::remove(int key)
     Bnode *ptr = this->root;
     int position;
     int positionChild;
-    if (Btree::search_key(key,ptr) == false)
+    if (Btree::search_key(key,ptr) == nullptr)
         return;
     else
     {
@@ -1187,15 +1184,12 @@ void Btree::remove(int key)
                         positionChild = i;
                         i = -1;
                     }
-                    else
-                    {
-                        if (i == (ptr->count-1))
+                    else if (i == (ptr->count-1))
                         {
                             ptr = ptr->child[i+1];
                             positionChild = i+1;
                             i = -1;
                         }
-                    }
                 }
             }
             else break;
@@ -1261,226 +1255,267 @@ void Btree::remove(int key)
 //КРАСНО-ЧЕРНОЕ ДЕРЕВО
 //конструктор и деструктор
 
+RBtree::RBtree() {root = nullptr;}
+RBtree::~RBtree() {if (root != nullptr) RBtree::delete_node(root);}
 
-RBnode * RBtree::get_grandparent (RBnode *n)
+RBnode * RBtree::rotate_left(RBnode *root, RBnode *node)
 {
-    if ((n != nullptr) && (n->parent != nullptr))
-        return n->parent->parent;
-    else
-        return nullptr;
-}
-
-RBnode * RBtree::get_uncle (RBnode *n)
-{
-    RBnode *g = RBtree::get_grandparent(n);
-    if (g == nullptr)
-        return nullptr;
-    if (n->parent == g->left)
-        return g->right;
-    else
-        return g->left;
-}
-
-void RBtree::rotate_left(RBnode *n)
-{
-    RBnode *pivot = n->right;
-
-    pivot->parent = n->parent;
-    if (n->parent != nullptr) {
-        if (n->parent->left == n)
-            n->parent->left = pivot;
-        else
-            n->parent->right = pivot;
-    }
-    n->right = pivot->left;
-    if (pivot->left != nullptr)
-        pivot->left->parent = n;
-    n->parent = pivot;
-    pivot->left = n;
-}
-
-void RBtree::rotate_right(RBnode *n)
-{
-    RBnode *pivot = n->left;
-    pivot->parent = n->parent;
-    if (n->parent != nullptr)
+    RBnode *right = node->right;
+    node->right = right->left;
+    if (right->left != NullNode)
+        right->left->parent = node;
+    if (right != NullNode)
+        right->parent = node->parent;
+    if (node->parent != NullNode)
     {
-        if (n->parent->left == n)
-            n->parent->left = pivot;
+        if (node == node->parent->left)
+            node->parent->left = right;
         else
-            n->parent->right = pivot;
+            node->parent->right = right;
+    } else
+        root = right;
+    right->left = node;
+    if (node != NullNode)
+        node->parent = right;
+    return root;
+}
+
+RBnode * RBtree::rotate_right(RBnode *root, RBnode *node)
+{
+    RBnode *left = node->left;
+    node->left = left->right;
+    if (left->right != NullNode)
+        left->right->parent = node;
+    if (left != NullNode)
+        left->parent = node->parent;
+    if (node->parent != NullNode)
+    {
+        if (node == node->parent->right)
+            node->parent->right = left;
+        else
+            node->parent->left = left;
+    } else
+        root = left;
+    left->right = node;
+    if (node != NullNode)
+        node->parent = left;
+    return root;
+}
+
+void RBtree::insert(int key, void *data)
+{
+    RBtree::insert(root, key, data);
+}
+
+RBnode * RBtree::insert(RBnode *root, int key, void *data)
+{
+    RBnode *node = nullptr;
+    RBnode *parent = nullptr;
+    for (node = root; node != NullNode && node != nullptr;)
+    {
+        parent = node;
+        if (key < node->key)
+            node = node->left;
+        else if (key > node->key)
+            node = node->right;
+        else
+            return root;
     }
-    n->left = pivot->right;
-    if (pivot->right != nullptr)
-        pivot->right->parent = n;
-    n->parent = pivot;
-    pivot->right = n;
-}
 
-//текущий узел в корне дерева
-void RBtree::insert_case1(RBnode *n)
-{
-    if (n->parent == nullptr)
-        n->color = BLACK;
+    if (node == nullptr)
+        return nullptr;
+
+    node->key = key;
+    node->data = data;
+    node->color = RED;
+    node->parent = parent;
+    node->left = NullNode;
+    node->right = NullNode;
+
+    if (parent != NullNode)
+    {
+        if (key < parent->key)
+            parent->left = node;
+        else
+            parent->right = node;
+    }
     else
-        RBtree::insert_case2(n);
+        root = node;
+    return RBtree::insert_recover(root, node);
 }
 
-//предок текущего узла черный
-void RBtree::insert_case2(RBnode *n)
+RBnode * RBtree::insert_recover(RBnode *root, RBnode *node)
 {
-    if (n->parent->color == BLACK)
+    RBnode *uncle;
+
+    while (node != root && node->parent->color == RED)
+    {
+        if (node->parent == node->parent->parent->left)
+        {
+            uncle = node->parent->parent->right;
+            if (uncle->color == RED) {
+                node->parent->color = BLACK;
+                uncle->color = BLACK;
+                node->parent->parent->color = RED;
+                node = node->parent->parent;
+            } else {
+                if (node == node->parent->right) {
+                    node = node->parent;
+                    root = RBtree::rotate_left(root, node);
+                }
+                node->parent->color = BLACK;
+                node->parent->parent->color = RED;
+                root = RBtree::rotate_right(root, node->parent->parent);
+            }
+        }
+        else
+        {
+            uncle = node->parent->parent->left;
+            if (uncle->color == RED)
+            {
+                node->parent->color = BLACK;
+                uncle->color = BLACK;
+                node->parent->parent->color = RED;
+                node = node->parent->parent;
+            }
+            else
+            {
+                if (node == node->parent->left)
+                {
+                    node = node->parent;
+                    root = RBtree::rotate_right(root, node);
+                }
+                node->parent->color = BLACK;
+                node->parent->parent->color = RED;
+                root = RBtree::rotate_left(root, node->parent->parent);
+            }
+        }
+    }
+    root->color = BLACK;
+    return root;
+}
+
+RBnode * RBtree::search(int key)
+{
+    RBnode *current = root;
+    while (current != nullptr)
+        if (key == current->key)
+            return current;
+        else
+            current = (key < current->key) ? current->left : current->right;
+        return 0;
+}
+
+void RBtree::remove(int key)
+{
+    RBnode *temp = search(key);
+    RBtree::delete_node(temp);
+}
+
+void RBtree::delete_node(RBnode *n)
+{
+    RBnode *x;
+    RBnode *y;
+    if (!n || n == nullptr)
         return;
+    if ((n->left == nullptr) || (n->right == nullptr))
+        y = n;
     else
-        RBtree::insert_case3(n);
-}
-
-//родитель и дядя красные
-void RBtree::insert_case3(RBnode *n)
-{
-    RBnode *u = RBtree::get_uncle(n);
-    RBnode *g;
-    if ((u != nullptr) && (u->color == RED))// && (n->parent->color == RED) Второе условие проверяется в insert_case2, то есть родитель уже является красным.
     {
-        n->parent->color = BLACK;
-        u->color = BLACK;
-        g = RBtree::get_grandparent(n);
-        g->color = RED;
-        RBtree::insert_case1(g);
+        y = n->right;
+        while (y->left != nullptr)
+            y = y->left;
     }
+    if (y->left != nullptr)
+        x = y->left;
     else
-        RBtree::insert_case4(n);
-}
-
-//родитель красный, дядя черный
-void RBtree::insert_case4(RBnode *n)
-{
-    RBnode *g = RBtree::get_grandparent(n);
-    if ((n == n->parent->right) && (n->parent == g->left))
+        x = y->right;
+    x->parent = y->parent;
+    if (y->parent)
     {
-        RBtree::rotate_left(n->parent);
-        n = n->left;
-    }
-    else if ((n == n->parent->left) && (n->parent == g->right))
-    {
-        RBtree::rotate_right(n->parent);
-        n = n->right;
-    }
-    RBtree::insert_case5(n);
-}
-
-//родитель красный, дядя черный, текущий узел - левый потомок левого потомка
-void RBtree::insert_case5(RBnode *n)
-{
-    RBnode *g = RBtree::get_grandparent(n);
-    n->parent->color = BLACK;
-    g->color = RED;
-    if ((n == n->parent->left) && (n->parent == g->left))
-        RBtree::rotate_right(g);
-    else
-        RBtree::rotate_left(g);
-}
-
-//поиск брата
-RBnode * RBtree::get_sibling(RBnode *n)
-{
-    if (n == n->parent->left)
-        return n->parent->right;
-    else
-        return n->parent->left;
-}
-
-//n - новый корень
-void RBtree::delete_case1(RBnode *n)
-{
-    if (n->parent != nullptr)
-        RBtree::delete_case2(n);
-}
-
-//s - красный
-void RBtree::delete_case2(RBnode *n)
-{
-    RBnode *s = RBtree::get_sibling(n);
-    if (s->color == RED)
-    {
-        n->parent->color = RED;
-        s->color = BLACK;
-        if (n == n->parent->left)
-            RBtree::rotate_left(n->parent);
+        if (y == y->parent->left)
+            y->parent->left = x;
         else
-            RBtree::rotate_right(n->parent);
-    }
-    RBtree::delete_case3(n);
-}
-
-//p, s, дети s - черные
-void RBtree::delete_case3(RBnode *n)
-{
-    RBnode *s = get_sibling(n);
-    if ((n->parent->color == BLACK) && (s->color == BLACK)&&
-            (s->left->color == BLACK) && (s->right->color == BLACK))
-    {
-        s->color = RED;
-        RBtree::delete_case1(n->parent);
+            y->parent->right = x;
     }
     else
-        RBtree::delete_case4(n);
+        root = x;
+    if (y != n)
+        n->data = y->data;
+    if (y->color == BLACK)
+        delete_recover(x);
+    free(y);
 }
 
-//s, дети s - черные, p - красный
-void RBtree::delete_case4(RBnode *n)
+void RBtree::delete_recover(RBnode *node)
 {
-    RBnode *s = RBtree::get_sibling(n);
-    if ((n->parent->color == RED) && (s->color == BLACK) &&
-            (s->left->color == BLACK) && (s->right->color == BLACK))
+    while ((node != root) && (node->color == BLACK))
     {
-        s->color = RED;
-        n->parent->color = BLACK;
-    }
-    else
-        RBtree::delete_case5(n);
-}
-
-//s - черный, лев потомок s - красный, прав потомок s - черный,  n - левый потомок
-void RBtree::delete_case5(RBnode *n)
-{
-    RBnode *s = RBtree::get_sibling(n);
-    if (s->color == BLACK)
-    {
-        if ((n == n->parent->left) &&
-            (s->right->color == BLACK) &&
-            (s->left->color == RED))
+        if (node == node->parent->left)
         {
-            s->color = RED;
-            s->left->color = BLACK;
-            RBtree::rotate_right(s);
+            RBnode *s = node->parent->right;
+            if (s->color == RED)
+            {
+                s->color = BLACK;
+                node->parent->color = RED;
+                rotate_left(root, node->parent);
+                s = node->parent->right;
+            }
+            if ((s->left->color == BLACK) && (s->right->color == BLACK))
+            {
+                s->color = RED;
+                node = node->parent;
+            }
+            else
+            {
+                if (s->right->color == BLACK)
+                {
+                    s->left->color = BLACK;
+                    s->color = RED;
+                    rotate_right(root, s);
+                    s = node->parent->right;
+                }
+                s->color = node->parent->color;
+                node->parent->color = BLACK;
+                s->right->color = BLACK;
+                rotate_left(root, node->parent);
+                node = root;
+            }
         }
-        else if ((n == n->parent->right) &&
-                 (s->left->color == BLACK) &&
-                 (s->right->color == RED))
+        else
         {
-            s->color = RED;
-            s->right->color = BLACK;
-            RBtree::rotate_left(s);
+            RBnode *s = node->parent->left;
+            if (s->color == RED)
+            {
+                s->color = BLACK;
+                node->parent->color = RED;
+                rotate_right(root, node->parent);
+                s = node->parent->left;
+            }
+            if ((s->right->color == BLACK) && (s->left->color == BLACK))
+            {
+                s->color = RED;
+                node = node->parent;
+            }
+            else
+            {
+                if (s->left->color == BLACK)
+                {
+                    s->right->color = BLACK;
+                    s->color = RED;
+                    rotate_left(root, s);
+                    s = node->parent->left;
+                }
+                s->color = node->parent->color;
+                node->parent->color = BLACK;
+                s->left->color = BLACK;
+                rotate_right(root, node->parent);
+                node = root;
+            }
         }
     }
-    RBtree::delete_case6(n);
+    node->color = BLACK;
 }
 
-//s - черный, прав потомок s - красный, n - левый потомок
-void RBtree::delete_case6(RBnode *n)
-{
-    RBnode *s = RBtree::get_sibling(n);
-    s->color = n->parent->color;
-    n->parent->color = BLACK;
-    if (n == n->parent->left)
-    {
-        s->right->color = BLACK;
-        RBtree::rotate_left(n->parent);
-    }
-    else
-    {
-        s->left->color = BLACK;
-        RBtree::rotate_right(n->parent);
-    }
-}
+//РАСШИРЯЮЩЕЕСЯ (КОСОЕ) ДЕРЕВО
+
