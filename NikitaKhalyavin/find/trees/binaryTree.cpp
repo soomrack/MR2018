@@ -7,16 +7,16 @@
 #define DEBUG 1
 
 
-void binaryTree::add_to_tree(binaryTreeNode * newUnit, binaryTreeNode * root) {
+void binaryTree::add_to_tree(Node * newUnit, Node * root) {
 
     unsigned int key = newUnit->key;
     unsigned int rootKey = root->key;
 
-    binaryTreeNode * next;
+    Node * next;
 
     if(key > rootKey) {
         if(root->rightChild != NULL) {
-            next = (binaryTreeNode *)root->rightChild;
+            next = (Node *)root->rightChild;
         }
         else {
             root->rightChild = newUnit;
@@ -25,7 +25,7 @@ void binaryTree::add_to_tree(binaryTreeNode * newUnit, binaryTreeNode * root) {
     }
     else {
         if (root->leftChild != NULL) {
-            next = (binaryTreeNode *)root->leftChild;
+            next = (Node *)root->leftChild;
         }
         else {
             root->leftChild = newUnit;
@@ -38,17 +38,17 @@ void binaryTree::add_to_tree(binaryTreeNode * newUnit, binaryTreeNode * root) {
 }
 
 
-void * binaryTree::recursion_for_search(binaryTreeNode * root, unsigned int key) {
+void * binaryTree::recursion_for_search(Node * root, unsigned int key) {
 
     if(root->key == key) {
         return root->data;
     }
 
-    binaryTreeNode * next;
+    Node * next;
 
     if(key > root->key) {
         if(root->rightChild != NULL) {
-            next = (binaryTreeNode *)root->rightChild;
+            next = (Node *)root->rightChild;
         }
         else {
 #if DEBUG == 1
@@ -61,7 +61,7 @@ void * binaryTree::recursion_for_search(binaryTreeNode * root, unsigned int key)
     else {
 
         if (root->leftChild != NULL) {
-            next = (binaryTreeNode *)root->leftChild;
+            next = (Node *)root->leftChild;
         }
         else {
 #if DEBUG == 1
@@ -75,7 +75,7 @@ void * binaryTree::recursion_for_search(binaryTreeNode * root, unsigned int key)
 }
 
 
-binaryTreeNode * binaryTree::recursion_for_search_parent(binaryTreeNode * root, unsigned int key) {
+void * binaryTree::recursion_for_search_parent(Node * root, unsigned int key) {
 
     if(root->key == key) {
 #if DEBUG == 1
@@ -84,14 +84,14 @@ binaryTreeNode * binaryTree::recursion_for_search_parent(binaryTreeNode * root, 
         return NULL;
     }
 
-    binaryTreeNode * next;
+    Node * next;
 
     if(key > root->key) {
         if(root->rightChild != NULL) {
-            if( ( (binaryTreeNode *)(root->rightChild) )->key == key) {
+            if( ( (Node *)(root->rightChild) )->key == key) {
                 return root;
             }
-            next = (binaryTreeNode *)root->rightChild;
+            next = (Node *)root->rightChild;
         }
         else {
 #if DEBUG == 1
@@ -102,10 +102,10 @@ binaryTreeNode * binaryTree::recursion_for_search_parent(binaryTreeNode * root, 
     }
     else {
         if (root->leftChild) {
-            if (( (binaryTreeNode *)(root->leftChild) )->key == key) {
+            if (( (Node *)(root->leftChild) )->key == key) {
                 return root;
             }
-            next = (binaryTreeNode *)root->leftChild;
+            next = (Node *)root->leftChild;
         }
         else {
 #if DEBUG == 1
@@ -119,7 +119,7 @@ binaryTreeNode * binaryTree::recursion_for_search_parent(binaryTreeNode * root, 
 
 void binaryTree::add(unsigned int key, void * data) {
 
-    binaryTreeNode * newUnit = new binaryTreeNode;
+    Node * newUnit = new Node;
 
     newUnit->rightChild = NULL;
     newUnit->leftChild = NULL;
@@ -131,21 +131,21 @@ void binaryTree::add(unsigned int key, void * data) {
         return;
     }
 
-    add_to_tree(newUnit, (binaryTreeNode *)root);
+    add_to_tree(newUnit, (Node *)root);
 }
 
 
 
 void binaryTree::remove(unsigned int key) {
 
-    binaryTreeNode * orphan = NULL;
+    Node * orphan = NULL;
 
-    if( ( (binaryTreeNode *)root )->key == key) {
-        binaryTreeNode * temp = (binaryTreeNode *)root;
+    if( ( (Node *)root )->key == key) {
+        Node * temp = (Node *)root;
         if(temp->leftChild) {
             root = temp->leftChild;
             if(temp->rightChild) {
-                orphan = (binaryTreeNode *)temp->rightChild;
+                orphan = (Node *)temp->rightChild;
             }
         }
         else {
@@ -157,21 +157,21 @@ void binaryTree::remove(unsigned int key) {
         delete temp;
 
         if(orphan != NULL) {
-            add_to_tree(orphan, (binaryTreeNode *)root);
+            add_to_tree(orphan, (Node *)root);
         }
         return;
     }
 
-    binaryTreeNode * parent = recursion_for_search_parent((binaryTreeNode *)root, key);
-    binaryTreeNode * child;
+    Node * parent = (Node *)recursion_for_search_parent((Node *)root, key);
+    Node * child;
 
     if(key > parent->key) {
-        child = (binaryTreeNode *)(parent->rightChild);
+        child = (Node *)(parent->rightChild);
         parent->rightChild = NULL;
         if(child->leftChild) {
             parent->rightChild = child->leftChild;
             if(child->rightChild) {
-                orphan = (binaryTreeNode *)child->rightChild;
+                orphan = (Node *)child->rightChild;
             }
         }
         else {
@@ -181,18 +181,18 @@ void binaryTree::remove(unsigned int key) {
         }
         delete child;
         if(orphan != NULL) {
-            add_to_tree(orphan, (binaryTreeNode *)root);
+            add_to_tree(orphan, (Node *)root);
         }
         return;
     }
 
-    child = (binaryTreeNode *)parent->leftChild;
+    child = (Node *)parent->leftChild;
     parent->leftChild = NULL;
 
     if(child->leftChild != NULL) {
         parent->leftChild = child->leftChild;
         if(child->rightChild != NULL) {
-            orphan = (binaryTreeNode *)child->rightChild;
+            orphan = (Node *)child->rightChild;
         }
     }
     else {
@@ -203,35 +203,35 @@ void binaryTree::remove(unsigned int key) {
     delete child;
 
     if(orphan != NULL) {
-        add_to_tree(orphan, (binaryTreeNode *)root);
+        add_to_tree(orphan, (Node *)root);
     }
 }
 
-void binaryTree::delete_all_branch(binaryTreeNode * root) {
+void binaryTree::delete_all_branch(Node * root) {
 
-    if(root->leftChild != NULL) delete_all_branch((binaryTreeNode *)root->leftChild);
-    if(root->rightChild != NULL) delete_all_branch((binaryTreeNode *)root->rightChild);
+    if(root->leftChild != NULL) delete_all_branch((Node *)root->leftChild);
+    if(root->rightChild != NULL) delete_all_branch((Node *)root->rightChild);
     delete root;
 }
 
 List<void *>  binaryTree::visiting1() {
 
-    Queue<binaryTreeNode *> Queue;
+    Queue<Node *> Queue;
     List<void *> out;
 
-    Queue.enqueue((binaryTreeNode *)root);
-    out.add(((binaryTreeNode *)root)->data);
+    Queue.enqueue((Node *)root);
+    out.add(((Node *)root)->data);
 
 
     while(Queue.getSize() > 0) {
-        binaryTreeNode * temp = Queue.dequeue();
+        Node * temp = Queue.dequeue();
         if(temp->leftChild != NULL) {
-            Queue.enqueue( (binaryTreeNode *)(temp->leftChild) );
-            out.add( ((binaryTreeNode *)temp->leftChild)->data);
+            Queue.enqueue( (Node *)(temp->leftChild) );
+            out.add( ((Node *)temp->leftChild)->data);
         }
         if(temp->rightChild != NULL) {
-            Queue.enqueue((binaryTreeNode *)(temp->rightChild));
-            out.add( ((binaryTreeNode *)temp->rightChild)->data);
+            Queue.enqueue((Node *)(temp->rightChild));
+            out.add( ((Node *)temp->rightChild)->data);
         }
     }
     return out;
@@ -240,20 +240,20 @@ List<void *>  binaryTree::visiting1() {
 
 List<void *>  binaryTree::visiting2() {
 
-    Stack<binaryTreeNode *> Stack;
-    Stack.push((binaryTreeNode *)root);
+    Stack<Node *> Stack;
+    Stack.push((Node *)root);
     List<void *> out;
 
     while(Stack.getSize() > 0) {
 
-        binaryTreeNode * temp = Stack.pop();
+        Node * temp = Stack.pop();
         out.add(temp->data);
 
         if(temp->rightChild != NULL) {
-            Stack.push((binaryTreeNode *)temp->rightChild);
+            Stack.push((Node *)temp->rightChild);
         }
         if(temp->leftChild != NULL) {
-            Stack.push((binaryTreeNode *)temp->leftChild);
+            Stack.push((Node *)temp->leftChild);
         }
     }
     return out;

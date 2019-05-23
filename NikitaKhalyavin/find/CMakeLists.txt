@@ -14,6 +14,7 @@ add_library(NKhRBTree trees/RBTree.cpp trees/RBTree.h)
 
 add_executable(NKhTestChange tests/testChange.cpp)
 add_executable(NKhTestSorts tests/allSortTest.cpp)
+add_executable(NKhTestStructs tests/testStructs.cpp)
 
 target_link_libraries(NKhBinaryTree NKhStructs NKhTreesParent)
 target_link_libraries(NKhRBTree NKhStructs NKhTreesParent)
@@ -21,6 +22,7 @@ target_link_libraries(NKhRBTree NKhStructs NKhTreesParent)
 target_link_libraries(NKhfind NKhfindArray NKhsortArray NKhStructs NKhBinaryTree NKhRBTree)
 target_link_libraries(NKhTestChange NKhfindArray NKhsortArray)
 target_link_libraries(NKhTestSorts NKhsortArray)
+target_link_libraries(NKhTestStructs NKhStructs)
 
 
 enable_testing()
@@ -28,3 +30,4 @@ enable_testing()
 
 add_test(testSort NKhTestSorts)
 add_test(testChange NKhTestChange)
+add_test(testStructs NKhTestStructs)

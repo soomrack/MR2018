@@ -11,68 +11,19 @@
 #define MR2018_STRUCTS_H
 
 #endif //MR2018_STRUCTS_H
-/*
+
+#ifndef DEBUG
+#define DEBUG 1
+#endif
+
 template <typename T>
-class DataField {
-private:
+struct DataField {
     DataField * pointer;
     T data;
-public:
-    void AllStructCopy(DataField * input) {
-
-        this->data = input->data;
-
-        if(input->pointer != NULL) {
-            this->pointer = new DataField();
-            pointer->AllStructCopy(input->pointer);
-        }
-    }
-
-    void DeleteAll() {
-        if(pointer == NULL) {
-            delete this;
-        }
-        else {
-            DataField * temp = pointer;
-            delete this;
-            temp->DeleteAll();
-        }
-    }
-
-    DataField(T data) {
-        this->data = data;
-        pointer = NULL;
-    }
-
-    DataField(T data, DataField * next) {
-        this->data = data;
-        pointer = next;
-    }
-
-    DataField() {
-        pointer = NULL;
-    }
-
-    T getData() {
-        return data;
-    }
-    DataField * getNext() {
-        return pointer;
-    }
-    void setNext(DataField * next) {
-        pointer = next;
-    }
-    void setData(T data) {
-        this->data = data;
-    }
-
-    ~DataField() {
-
-    }
 };
-*/
 
 
+/*
 template <typename T>
 class Stack {
 private:
@@ -254,8 +205,8 @@ public:
     }
 
 };
+*/
 
-/*
 template <typename T>
 class Stack {
 private:
@@ -266,46 +217,72 @@ public:
         data = NULL;
     }
 
-    void operator = (Stack & input) {
-        if(this->size > 0) data->DeleteAll();
+    void operator = (const Stack & input) {
+        while(this->size > 0) pop();
+
         this->size = input.size;
-        if(this->size > 0) {
-            data = new DataField<T>();
-            data->AllStructCopy(input.data);
+        data = NULL;
+
+        DataField<T> *temp = new DataField<T>;
+        DataField<T> *floatingRoot;
+        temp = input.data;
+
+        for (int i = 0; i < this->size; i++) {
+            floatingRoot->pointer = new DataField<T>;
+            if(i == 0) {
+                data = floatingRoot;
+            }
+            floatingRoot->data = temp.data;
+            temp = temp->pointer;
         }
     }
 
     ~Stack() {
-        if(size > 0) {
-            data->DeleteAll();
+        while(size > 0) {
+            pop();
         }
     }
 
-    Stack(Stack &input) {
+    Stack(const Stack &input) {
         this->size = input.size;
-        if(this->size > 0) {
-            data = new DataField<T>();
-            data->AllStructCopy(input.data);
+        data = NULL;
+
+        DataField<T> *temp = new DataField<T>;
+        DataField<T> *floatingRoot;
+        temp = input.data;
+
+        for (int i = 0; i < this->size; i++) {
+            floatingRoot->pointer = new DataField<T>;
+            if(i == 0) {
+                data = floatingRoot;
+            }
+            floatingRoot->data = temp.data;
+            temp = temp->pointer;
         }
     }
 
-    void push(T input) {
+    void push(const T input) {
 
-         DataField<T> *newField = new DataField<T>(input, data);
+         DataField<T> * newField = new DataField<T>;
+         newField->data = input;
+         newField->pointer = data;
          data = newField;
-
          size++;
     }
 
     T pop() {
-        if(size == 0) {
-            printf("Error: stack is empty");
-            exit(1);
+        if(size > 0) {
+            size--;
+            DataField<T> * temp = data;
+            data = data->pointer;
+            T out = temp->data;
+            delete temp;
+            return out;
         }
-        size--;
-        DataField<T> * temp = data;
-        data = data->getNext();
-        return temp->getData();
+#if DEBUG == 1
+        printf("Error: stack is empty");
+        exit(1);
+#endif
     }
 
     unsigned int getSize() {
@@ -318,75 +295,83 @@ template <typename T>
 class Queue {
 private:
     unsigned int size;
-    DataField * data;
+    DataField<T> * data;
+    DataField<T> * last;
 public:
     Queue() : size(0) {
         data = NULL;
     }
 
-    void operator = (Queue & input) {
-        if(this->size > 0) data->DeleteAll();
+    void operator = (const Queue & input) {
+        while(this->size > 0) dequeue();
         this->size = input.size;
-        if(this->size > 0) {
-            data = new DataField<T>();
-            data->AllStructCopy(input.data);
+        data = NULL;
+
+        DataField<T> * temp = new DataField<T>;
+        DataField<T> * floatingRoot;
+        temp = input.data;
+
+        for (int i = 0; i < this->size; i++) {
+            floatingRoot->pointer = new DataField<T>;
+            if(i == 0) {
+                data = floatingRoot;
+            }
+            floatingRoot->data = temp.data;
+            temp = temp->pointer;
         }
+        last = floatingRoot;
     }
 
     ~Queue() {
-        if(size > 0) {
-            data->DeleteAll();
-        }
+        while(this->size > 0) dequeue();
     }
 
-    Queue(Queue &input) {
+    Queue(const Queue &input) {
         this->size = input.size;
-        if(this->size > 0) {
-            data = new DataField<T>();
-            data->AllStructCopy(input.data);
+        data = NULL;
+
+        DataField<T> * temp = new DataField<T>;
+        DataField<T> * floatingRoot;
+        temp = input.data;
+
+        for (int i = 0; i < this->size; i++) {
+            floatingRoot->pointer = new DataField<T>;
+            if(i == 0) {
+                data = floatingRoot;
+            }
+            floatingRoot->data = temp.data;
+            temp = temp->pointer;
         }
+        last = floatingRoot;
     }
 
-    void push(T input) {
-
-        DataField<T> *newField = new DataField<T>(input, data);
-        data = newField;
-
-        size++;
-    }
-
-    T pop() {
-        if(size == 0) {
-            printf("Error: stack is empty");
-            exit(1);
+    void enqueue(const T input) {
+        DataField<T> *newField = new DataField<T>;
+        newField->data = input;
+        if(size > 0) {
+            last->pointer = newField;
+            last = newField;
         }
-        size--;
-        DataField<T> * temp = data;
-        data = data->getNext();
-        return temp->getData();
-    }
-
-    void enqueue(T input) {
-        T * temp = (T * )malloc((size + 1) * sizeof(T));
-        memcpy(temp, data, sizeof(T) * size);
-        temp[size] = input;
+        else {
+            data = newField;
+            last = newField;
+        }
         size++;
-        free(data);
-        data = temp;
     }
 
     T dequeue() {
-        if(size == 0) {
-            printf("Error: queue is empty");
-            exit(1);
+        if(size > 0) {
+            size--;
+            DataField<T> * temp = data;
+            data = data->pointer;
+            T out = temp->data;
+            delete temp;
+            return out;
         }
-        size--;
-        T * temp = (T * )malloc((size) * sizeof(T));
-        memcpy(temp, &data[1], sizeof(T) * size);
-        T out = data[0];
-        free(data);
-        data = temp;
-        return out;
+#if DEBUG == 1
+        printf("Error: queue is empty");
+        exit(1);
+#endif
     }
 
     unsigned int getSize() {
@@ -413,7 +398,7 @@ public:
     }
 
 
-    void operator = (List &input) {
+    void operator = (const List &input) {
         if(this->size > 0) free(this->data);
         this->size = input.size;
         this->data = (T * )malloc(size * sizeof(T));
@@ -465,4 +450,3 @@ public:
     }
 
 };
-*/
