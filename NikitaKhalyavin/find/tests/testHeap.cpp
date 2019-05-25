@@ -14,5 +14,10 @@ int main() {
     for(int i = 0; i < 10; i++) {
         heap1.add((void *)(&data[i]), i);
     }
+    for(int i = 9; i >=0; i--) {
+        int out = *(int *)(heap1.extract());
+        if(out != i)
+            return 1;
+    }
     return 0;
 }
