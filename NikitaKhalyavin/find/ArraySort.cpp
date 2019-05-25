@@ -245,7 +245,7 @@ public:
         subArrayCoord * tempData = (subArrayCoord *)malloc(sizeof(subArrayCoord) * (size) );
         memcpy(tempData, data, sizeof(subArrayCoord) * ind1);
         tempData[ind1] = newSubArr;
-        memcpy(&tempData[ind2], &data[ind2 + 1], sizeof(subArrayCoord) * (size - ind1));
+        memcpy(&tempData[ind2], &data[ind2 + 1], sizeof(subArrayCoord) * (size - ind2));
         free(data);
         data = tempData;
 

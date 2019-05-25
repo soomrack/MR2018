@@ -29,7 +29,6 @@ protected:
     void * recursion_for_search(Node * root, unsigned int key);
     void * recursion_for_search_parent(Node * root, unsigned int key);
 
-
 private:
 
     void add_to_tree(Node * newUnit, Node * root);
@@ -43,6 +42,7 @@ public:
 
     List<void *> visiting1();
     List<void *> visiting2();
+    List<void *> visiting3();
 
     void * search(unsigned int key) {
         return recursion_for_search((Node *)root, key);

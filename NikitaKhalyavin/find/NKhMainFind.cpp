@@ -42,6 +42,8 @@ int main() {
     dataListPrint(result);
     result = tree1.visiting2();
     dataListPrint(result);
+    result = tree1.visiting3();
+    dataListPrint(result);
 
     tree1.remove(900);
     tree1.remove(90);
@@ -49,6 +51,8 @@ int main() {
     result = tree1.visiting1();
     dataListPrint(result);
     result = tree1.visiting2();
+    dataListPrint(result);
+    result = tree1.visiting3();
     dataListPrint(result);
 
     printf("%d", *( (int *)tree1.search(152) ) );

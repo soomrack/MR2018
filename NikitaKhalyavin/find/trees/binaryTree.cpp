@@ -258,3 +258,36 @@ List<void *>  binaryTree::visiting2() {
     }
     return out;
 }
+
+
+List<void *>  binaryTree::visiting3() {
+
+    Stack<Node *> Stack;
+    Node * Current = (Node *)root;
+    List<void *> out;
+
+    while( (Stack.getSize() > 0) || (Current->leftChild != nullptr)
+    || (Current->rightChild != nullptr) ){
+
+        if(Current->leftChild != nullptr) {
+            Stack.push(Current);
+            Current = (Node *)(Current->leftChild);
+        }
+        else {
+            while(1) {
+                out.add(Current->data);
+                if (Current->rightChild != nullptr) {
+                    Current = (Node *) (Current->rightChild);
+                    break;
+                }
+                else {
+                    if(Stack.getSize() == 0) return out;
+                    Current = Stack.pop();
+                }
+            }
+        }
+
+    }
+    out.add(Current->data);
+    return out;
+}
