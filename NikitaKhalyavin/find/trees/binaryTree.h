@@ -37,6 +37,9 @@ public:
     binaryTree() {
         root = NULL;
     }
+    ~binaryTree() {
+        delete_all_branch((Node *)root);
+    }
 
     void add(unsigned int key, void * data);
 
