@@ -7,17 +7,17 @@
 #define DEBUG 1
 
 
-void binaryHeap::sift_down(Node * start) {
+void binaryHeap :: sift_down(Node * start) {
     Node * next = nullptr;
     if(start->rightChild->key > start->leftChild->key) {
         if (start->key < start->rightChild->key) {
-            start->swap(&start->rightChild);
+            start->Swap(start->rightChild);
             next = start->rightChild;
         }
     }
     else {
         if (start->key < start->leftChild->key) {
-            start->swap(&start->leftChild);
+            start->Swap(start->leftChild);
             next = start->leftChild;
         }
     }
@@ -26,32 +26,20 @@ void binaryHeap::sift_down(Node * start) {
     }
 }
 
-void binaryHeap::sift_up(Node * start) {
+void binaryHeap :: sift_up(int startNumber) {
 
-    List<void *> nodes = visiting();
-    int i;
-    for(i = 0; i < nodes.getSize(); i++) {
-        if(nodes.getItem(i) == (void *)start) break;
-    }
-    if(i == nodes.getSize()) {
-#if DEBUG == 1
-      printf("error: there aren't node in heap");
-      exit(1);
-#endif
-    }
-    int parent = i;
-    while(parent != 0) {
-        parent = parent / 2;
-        if(start->key > ((Node *)nodes.getItem(parent))->key ) {
-            start->swap((Node *) nodes.getItem(parent));
-            start = (Node *) nodes.getItem(parent);
-        }
-    }
+    int parent = startNumber / 2;
 
+    Node * Current = getItem(startNumber);
+    Node * Parent = getItem(parent);
+    if(Current->key > Parent->key ) {
+        Current->Swap(Parent);
+        sift_up(parent);
+    }
 }
 
 
-List<void *>  binaryHeap::visiting() {
+List<void *>  binaryHeap :: visiting() {
 
     Queue<Node *> Queue;
     List<void *> out;
@@ -68,13 +56,13 @@ List<void *>  binaryHeap::visiting() {
         }
         if(temp->rightChild != NULL) {
             Queue.enqueue((Node *)(temp->rightChild));
-            out.add( ((void *)(temp->rightChild));
+            out.add( (void *)(temp->rightChild) );
         }
     }
     return out;
 }
 
-void * binaryHeap::extract() {
+void * binaryHeap :: extract() {
     void * out = root->data;
     Node * left = root->leftChild;
     Node * right = root->rightChild;
@@ -86,23 +74,61 @@ void * binaryHeap::extract() {
     return out;
 }
 
-void * binaryHeap::merge(Node * currentRoot, Node * newRoot) {
-    if(currentRoot->key > newRoot->key) {
-        currentRoot.swap(newRoot);
+
+void binaryHeap :: merge(Node * currentRoot, Node * newRoot) {
+
+    if (currentRoot->key < newRoot->key) {
+        currentRoot->Swap(newRoot);
+    }
+    if ( (currentRoot->rightChild != nullptr) && (currentRoot->leftChild != nullptr) )
+    if (currentRoot->rightChild->key > currentRoot->leftChild->key) {
+        currentRoot = currentRoot->leftChild;
+    }
+    else {
+        currentRoot = currentRoot->rightChild;
     }
 
-
-    root = left;
     merge(currentRoot, newRoot);
-
-    return out;
 }
 
-void * binaryHeap::extract() {
-    return root->data;
-}
 
 void binaryHeap::add(void * data, int key) {
-    List<void *> nodes = visiting();
-    int i;
+    size++;
+    if(size == 1) {
+        root = new abstractNode(data, key);
+        return;
+    }
+
+    int high = log(size);
+    int leftBord = power(2, high) - 1;
+    int rightBord = leftBord * 2;
+    Node * parent;
+    Node * place = root;
+
+    while(1) {
+        int half = (leftBord + rightBord) / 2;
+        if (size - 1 <= half) {
+            rightBord = half;
+            parent = place;
+            place = parent->leftChild;
+            if(place == nullptr)
+            {
+                parent->leftChild = new abstractNode(data, key);
+                break;
+            }
+        }
+        else {
+            leftBord = half + 1;
+            parent = place;
+            place = parent->rightChild;
+            if(place == nullptr)
+            {
+                parent->rightChild = new abstractNode(data, key);
+                break;
+            }
+        }
+    }
+
+    sift_up(size - 1);
+
 }
