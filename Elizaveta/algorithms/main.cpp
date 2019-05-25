@@ -35,26 +35,35 @@ int main() {
     //HeapSort(arr, 23);
    // print_array(arr, 23);
 
-    node *mytree = NULL;
+    Tree mytree;
+
+
+    int temp;
     for (int i = 5; i > 0; i--)
-        insert(mytree, i, i*i);
-    show(mytree);
+    {
+        temp = i*i;
+        mytree.insert(i, &temp);
+    }
+
+    mytree.infix_traverse(mytree.root);
     std::cout<<'\n';
-    clean(mytree);
+    mytree.remove(mytree.root->key);
+    //удаление всего дерева??
+
 
     for (int i = 20; i > 5; i--)
     {
         int k = arr[i];
-        insert(mytree, k, i);
+        mytree.insert(k, &i);
     }
 
-    show(mytree);
-    delete_node(mytree, 9);
-    show(mytree);
-    node result = search(mytree, 8);
+    mytree.infix_traverse(mytree.root);
+    mytree.remove(9);
+    mytree.infix_traverse(mytree.root);
+    node result = mytree.search(8);
     std::cout<<'\n';
     std::cout<< result.value;
-    clean(mytree);
+    mytree.remove(mytree.root->key);
 
 
 

@@ -2,12 +2,12 @@
 // Created by Елизавета on 13.02.2019.
 //
 #include "lib.h"
+#include <stdio.h>
 #include <iostream>
 #include <cstdlib>
 #include <stack>
 
 //СОРТИРОВКА ПУЗЫРЬКОМ
-
 void bubble_sort (int* array, int size)
 {
     for (int k = size - 1; k >= 1; k--)
@@ -24,9 +24,7 @@ void bubble_sort (int* array, int size)
     }
 }
 
-
 //ЛИНЕЙНЫЙ ПОИСК
-
 int linear_search (int element, int* array, int size)
 {
     for (int i = 0; i < size; i++)
@@ -37,9 +35,7 @@ int linear_search (int element, int* array, int size)
     return 0;
 }
 
-
 //БИНАРНЫЙ ПОИСК
-
 int binary_search (int element, int* array, int size)
 {
     bubble_sort(array, size);
@@ -63,9 +59,7 @@ int binary_search (int element, int* array, int size)
     }
 }
 
-
 //ВЫВОД МАССИВА
-
 void print_array (int *array, int size)
 {
     for (int i = 0; i < size; i++)
@@ -75,9 +69,7 @@ void print_array (int *array, int size)
     std::cout<<std::endl;
 }
 
-
 //ЗАМЕНА ЭЛЕМЕНТА
-
 void element_replacement (int element, int* array, int size)
 {
     int i = 0;
@@ -88,9 +80,7 @@ void element_replacement (int element, int* array, int size)
     array[i] = element;
 }
 
-
 //СЛИЯНИЕ
-
 void Merge(int *arr, int begin, int end)
 {
     int *buf = new int[100];
@@ -113,12 +103,10 @@ void Merge(int *arr, int begin, int end)
     {
         arr[i] = buf[i];
     }
-    delete[]buf;
+    delete []buf;
 }
 
-
 //СОРТИРОВКА СЛИЯНИЕМ
-
 void MergeSort(int *arr, int begin, int end)
 {
     if (begin < end)
@@ -129,7 +117,7 @@ void MergeSort(int *arr, int begin, int end)
     }
 }
 
-
+//смена элементов массива
 void swap_arr (int * a, int * b)
 {
     int t = * a;
@@ -138,7 +126,6 @@ void swap_arr (int * a, int * b)
 }
 
 //СОРТИРОВКА ВСТАВКАМИ
-
 void InsertSort (int *arr, int begin, int end)
 {
     unsigned int item = begin + 1;
@@ -159,15 +146,14 @@ void InsertSort (int *arr, int begin, int end)
     }
 }
 
+//минимальное значение из пары
 int min (int a, int b)
 {
     if (a <= b) return a;
     else return b;
 }
 
-
 //ГИБРИДНАЯ СОРТИРОВКА
-
 int GetMinrun (int size)
 {
     int r = 0;
@@ -179,6 +165,7 @@ int GetMinrun (int size)
     return size + r;
 }
 
+//модифицированное слияние
 void merge_modified(int *arr, int first, int size_1, int second,  int size_2)
 {
     int buf[size_1];
@@ -211,6 +198,7 @@ void merge_modified(int *arr, int first, int size_1, int second,  int size_2)
     }
 }
 
+//ГИБРИДНАЯ СОРТИРОВКА
 void Timsort (int *arr, int arr_size) {
     int minrun = GetMinrun(arr_size);
     std::cout << minrun << std::endl;
@@ -290,7 +278,6 @@ void Timsort (int *arr, int arr_size) {
 }
 
 //ПИРАМИДАЛЬНАЯ СОРТИРОВКА
-
 //индекс родителя
 int iParent(int i)
 {
@@ -304,7 +291,7 @@ int iLeftChild(int i)
 }
 
 //просеивание вниз
-void siftDown(int32_t * arr, uint32_t start, uint32_t end)
+void siftDown(int * arr, int start, int end)
 {
     int root = start;
     int child;
@@ -377,148 +364,1158 @@ void HeapSort (int * arr, int size)
     }
 }
 
+//ПОИСК k-ПОРЯДКОВОЙ СТАТИСТИКИ
+int getOrderStatistic( int * arr, int size, int j )
+{
+	int left = 0;
+	int right = size - 1;
+	int pivot;
+	int border;
+	int p, i;
+
+	while (1)
+	{
+		if (left == right)
+		{
+			return arr[left];
+		}
+		p =(left + right)/2;
+		pivot = arr[p];
+		swap_arr(&arr[p], &arr[right]);
+
+		border = left;
+
+		for (i = left; i < right; i++)
+		{
+			if (arr[i] <= pivot)
+			{
+				swap_arr(&arr[border], &arr[i]);
+				border++;
+			}
+		}
+
+		swap_arr(&arr[border], &arr[right]);
+
+		if (border == j)
+		{
+			return arr[border];
+		}
+
+		if (j < border)
+		{
+			right = border - 1;
+		}
+
+		else
+		{
+			left = border + 1;
+		}
+	}
+}
+
 //ДВОИЧНОЕ ДЕРЕВО ПОИСКА
-
-void show(node *&tree)
+Tree::Tree() {root = nullptr;}
+Tree::~Tree() {if (root != nullptr) Tree::delete_node(root, root->key);}
+//вертикальный обход дерева
+//обратный обход
+void Tree::infix_traverse(node *root)
 {
-    if (tree != NULL)
+    if (root != nullptr)
     {
-        show(tree->left);
-        std::cout<< tree->key;
-        show(tree->right);
-    }
-
-}
-
-void clean(node *&tree)
-{
-    if (tree != NULL)
-    {
-        clean(tree->left);
-        clean(tree->right);
-        delete tree;
-        tree = NULL;
+        Tree::infix_traverse(root->left);
+        std::cout<< root->key;
+        Tree::infix_traverse(root->right);
     }
 }
 
-void insert(node *&tree, int key, int value)
+//прямой обход
+void Tree::prefix_traverse(node *root)
 {
-    if (tree == NULL)
+    std::cout<< root->key;
+    if (root->left != nullptr)
+        Tree::prefix_traverse(root->left);
+    if (root->right != nullptr)
+        Tree::prefix_traverse(root->right);
+}
+
+//концевой обход
+void Tree::postfix_traverse(node *root)
+{
+    if (root->left != nullptr)
+        Tree::postfix_traverse(root->left);
+    if (root->right != nullptr)
+        Tree::postfix_traverse(root->right);
+    std::cout<< root->key;
+}
+
+//горизонтальный обход дерева
+#include <queue>
+void Tree::level_traverse(node *root)
+{
+    std::queue <node*> myqueue;
+    do
     {
-        tree = new node;
-        tree->key = key;
-        tree->value = value;
-        tree->left = tree->right = NULL;
+        std::cout<< root->key;
+        if (root->left != nullptr)
+            myqueue.push(root->left);
+        if (root->right != nullptr)
+            myqueue.push(root->right);
+        if (!myqueue.empty())
+        {
+            root = myqueue.front();
+            myqueue.pop();
+        }
     }
-    else if (key == tree->key)
-         tree->value = value;
-    else if (key < tree->key)
+    while (!myqueue.empty());
+}
+
+//удаление ветви
+void Tree::delete_branch(node *root)
+{
+    if (root != nullptr)
     {
-        if (tree->left != NULL)
-            insert(tree->left, key, value);
+        Tree::delete_branch(root->left);
+        Tree::delete_branch(root->right);
+        delete root;
+        root = nullptr;
+    }
+}
+
+//вставка узла
+
+void Tree::insert(int key, int *value)
+{
+    Tree::insertion(root, key, value);
+}
+
+void Tree::insertion(node *root, int key, int *value)
+{
+    if (root == nullptr)
+    {
+        root = new node;
+        root->key = key;
+        root->value = value;
+        root->left = root->right = nullptr;
+    }
+    else if (key == root->key)
+         root->value = value;
+    else if (key < root->key)
+    {
+        if (root->left != nullptr)
+            insertion(root->left, key, value);
         else
         {
-            tree->left = new node;
-            tree->left->left = tree->left->right = NULL;
-            tree->left->key = key;
-            tree->left->value = value;
+            root->left = new node;
+            root->left->left = root->left->right = nullptr;
+            root->left->key = key;
+            root->left->value = value;
         }
     }
     else
     {
-        if (tree->right != NULL)
-            insert(tree->right, key, value);
+        if (root->right != nullptr)
+            insertion(root->right, key, value);
         else
         {
-            tree->right = new node;
-            tree->right->left = tree->right->right = NULL;
-            tree->right->key = key;
-            tree->right->value = value;
+            root->right = new node;
+            root->right->left = root->right->right = nullptr;
+            root->right->key = key;
+            root->right->value = value;
         }
     }
 }
 
-node search(node *&tree, int key)
+//поиск по ключу
+
+node Tree::search(int key)
 {
-    if ((tree == NULL) || (tree->key == key))
-    {
-        return *tree;
-    }
-    if (key < tree->key)
-        return search(tree->left, key);
-    return search(tree->right, key);
+    return Tree::search(root, key);
 }
 
-void delete_node(node *&tree, int key)
+node Tree::search(node *root, int key)
 {
-    if (tree == NULL)
-        return;
-    if (key > tree->key)
-        delete_node(tree->right, key);
-    if (key < tree->key)
-        delete_node(tree->left, key);
-    if (key == tree->key)
+    if ((root == nullptr) || (root->key == key))
     {
-        if ((tree->left == NULL) && (tree->right == NULL))
+        return *root;
+    }
+    if (key < root->key)
+        return search(root->left, key);
+    return search(root->right, key);
+}
+
+void Tree::remove(int key)
+{
+    Tree::delete_node(root,key);
+}
+
+//удаление узла
+void Tree::delete_node(node *root, int key)
+{
+    if (root == nullptr)
+        return;
+    if (key > root->key)
+        delete_node(root->right, key);
+    if (key < root->key)
+        delete_node(root->left, key);
+    if (key == root->key)
+    {
+        if ((root->left == nullptr) && (root->right == nullptr))
         {
-            clean(tree);
+            Tree::delete_branch(root);
             return;
         }
-        if ((tree->left != NULL) && (tree->right != NULL))
+        if ((root->left != nullptr) && (root->right != nullptr))
         {
-            if (tree->right->left == NULL)
+            if (root->right->left == nullptr)
             {
-                tree->key = tree->right->key;
-                tree->value = tree->right->value;
-                tree->right->key = tree->right->right->key;
-                tree->right->value = tree->right->right->value;
+                root->key = root->right->key;
+                root->value = root->right->value;
+                root->right->key = root->right->right->key;
+                root->right->value = root->right->right->value;
             }
             else
             {
-                tree->key = tree->right->key;
-                tree->value = tree->right->value;
-                delete_node(tree->right, tree->right->key);
+                root->key = root->right->key;
+                root->value = root->right->value;
+                delete_node(root->right, root->right->key);
             }
         }
         else
         {
-            if (tree->left == NULL)
+            if (root->left == nullptr)
             {
-                tree->key = tree->right->key;
-                tree->value = tree->right->value;
-                delete_node(tree->right, tree->right->key);
+                root->key = root->right->key;
+                root->value = root->right->value;
+                delete_node(root->right, root->right->key);
             }
-            else if (tree->right == NULL)
+            else if (root->right == nullptr)
             {
-                tree->key = tree->left->key;
-                tree->value = tree->left->value;
-                delete_node(tree->left, tree->left->key);
+                root->key = root->left->key;
+                root->value = root->left->value;
+                delete_node(root->left, root->left->key);
             }
         }
     }
 }
 
+// B-ДЕРЕВО
+// конструктор и деструктор
+
+Btree::Btree() {root = nullptr;}
+Btree::~Btree() {if (root != nullptr) deletenode(root);}
+
+void Btree::deletenode(Bnode *node)
+{
+    if (node != nullptr)
+    {
+        for (int i = 0; i <= (2*t-1); i++)
+        {
+            if (node->child[i] != nullptr) Btree::deletenode(node->child[i]);
+            else
+            {
+                delete(node);
+                break;
+            }
+        }
+    }
+}
+
+// простое добавление узла
+void Btree::insert_to_node(int key, Bnode *node)
+{
+    node->key[node->count] = key;
+    node->count = node->count+1;
+    Btree::sort(node);
+}
+
+//сортировка чисел в узле
+void Btree::sort(Bnode *node)
+{
+    int m;
+    for (int i = 0; i <(2*t-1); i++)
+    {
+        for (int j = i+1; j <= (2*t-1); j++)
+        {
+            if ((node->key[i] != 0) && (node->key[j] != 0))
+            {
+                if ((node->key[i]) > (node->key[j]))
+                {
+                    m = node->key[i];
+                    node->key[i] = node->key[j];
+                    node->key[j] = m;
+                }
+            }
+            else break;
+        }
+    }
+}
+
+//добавление в узел с предварительным поиском
+void Btree::insert(int key)
+{
+    if (root == nullptr)
+    {
+        Bnode *newRoot = new Bnode;
+        newRoot->key[0] = key;
+        for (int j = 1; j <= (2*t-1); j++)
+            newRoot->key[j] = 0;
+        for (int i = 0; i <= (2*t); i++)
+            newRoot->child[i] = nullptr;
+        newRoot->count = 1;
+        newRoot->child_count = 0;
+        newRoot->leaf = true;
+        newRoot->parent = nullptr;
+        root = newRoot;
+    }
+    else
+    {
+        Bnode *ptr = root;
+        while (ptr->leaf == false)
+        {
+            for (int i = 0; i <= (2*t-1); i++)
+            {
+                if (ptr->key[i] != 0)
+                {
+                    if (key < ptr->key[i])
+                    {
+                        ptr = ptr->child[i];
+                        break;
+                    }
+                    if ((ptr->key[i+1] == 0) && (key > ptr->key[i]))
+                    {
+                        ptr = ptr->child[i+1];
+                        break;
+                    }
+                    else break;
+                }
+            }
+            Btree::insert_to_node(key, ptr);
+
+            while (ptr->count == 2*t)
+            {
+                if (ptr == root)
+                {
+                    Btree::restruct(ptr);
+                    break;
+                }
+                else
+                {
+                    Btree::restruct(ptr);
+                    ptr = ptr->parent;
+                }
+            }
+        }
+    }
+}
+
+//разбиение узла
+void Btree::restruct(Bnode *node)
+{
+    if (node->count < (2*t-1))
+        return;
+    Bnode *child1 = new Bnode;
+    int j;
+    for (j = 0; j <= t-2; j++)
+        child1->key[j] = node->key[j];
+    for (j = t-1; j <= (2*t-1); j++)
+        child1->key[j] = 0;
+    child1->count = t-1;
+    if (node->child_count != 0)
+    {
+        for (int i = 0; i <= (t-1); i++)
+        {
+            child1->child[i] = node->child[i];
+            child1->child[i]->parent = child1;
+        }
+        for (int i = t; i <= (2*t); i++)
+            child1->child[i] = nullptr;
+        child1->leaf = false;
+        child1->child_count = t-1;
+    }
+    else
+    {
+        child1->leaf = true;
+        child1->child_count = 0;
+        for (int i = 0; i <= (2*t); i++)
+            child1->child[i] = nullptr;
+    }
+
+    Bnode *child2 = new Bnode;
+    for (int j = 0; j <= (t-1); j++)
+        child2->key[j] = node->key[j+t];
+    for (j = t; j <= (2*t-1); j++)
+        child2->key[j] = 0;
+    child2->count = t;
+    if (node->child_count != 0)
+    {
+        for (int i = 0; i <= t; i++)
+        {
+            child2->child[i] = node->child[i+t];
+            child2->child[i]->parent = child2;
+        }
+        for (int i = t+1; i <= (2*t); i++)
+            child2->child[i] = nullptr;
+        child2->leaf = false;
+        child2->child_count = t;
+    }
+    else
+    {
+        child2->leaf = true;
+        child2->child_count = 0;
+        for (int i = 0; i <= (2*t); i++)
+            child2->child[i] = nullptr;
+    }
+
+    if (node->parent == nullptr)
+    {
+        node->key[0] = node->key[t-1];
+        for (int j = 1; j <= (2*t-1); j++)
+            node->key[j] = 0;
+        node->child[0] = child1;
+        node->child[1] = child2;
+        for (int i = 2; i <= (2*t); i++)
+            node->child[i] = nullptr;
+        node->parent = nullptr;
+        node->leaf = false;
+        node->count = 1;
+        node->child_count = 2;
+        child1->parent = node;
+        child2->parent = node;
+    }
+    else
+    {
+        Btree::insert_to_node(node->key[t-1], node->parent);
+        for (int i = 0; i <= (2*t); i++)
+        {
+            if (node->parent->child[i] == node)
+            node->parent->child[i] = nullptr;
+
+        }
+        for (int i = 0; i <= (2*t); i++)
+        {
+            if (node->parent->child[i] == nullptr)
+            {
+                for (int j = (2*t); j > (i+1); j--)
+                    node->parent->child[j] = node->parent->child[j-1];
+                node->parent->child[i+1] = child2;
+                node->parent->child[i] = child1;
+                break;
+            }
+        }
+        child1->parent = node->parent;
+        child2->parent = node->parent;
+        node->parent->leaf = false;
+        delete node;
+    }
+}
+
+//поиск
+Bnode * Btree::search(int key)
+{
+    return Btree::search_key(key, this->root);
+}
+
+Bnode * Btree::search_key(int key, Bnode *node)
+{
+    if (node != nullptr) {
+        if (node->leaf == false) {
+            int i;
+            for (i = 0; i <= (2 * t - 1); i++) {
+                if (node->key[i] != 0) {
+                    if (key == node->key[i])
+                        return node;
+                    if (key < node->key[i]) {
+                        return Btree::search_key(key, node->child[i]);
+                        break;
+                    }
+                } else break;
+            }
+            return Btree::search_key(key, node->child[i]);
+        } else {
+            for (int j = 0; j <= (2 * t - 1); j++)
+                if (key == node->key[j])
+                    return node;
+            return nullptr;
+        }
+    }
+    else return nullptr;
+}
+
+//удаление ключа из узла
+void Btree::remove_from_node(int key, Bnode *node)
+{
+    for (int i = 0; i < node->count; i++)
+    {
+        if (node->key[i] == key)
+        {
+            for (int j = 1; j < node->count; j++)
+            {
+                node->key[j] = node->key[j+1];
+                node->child[j] = node->child[j+1];
+            }
+            node->key[node->count-1] = 0;
+            node->child[node->count-1] = node->child[node->count];
+            node->child[node->count] = nullptr;
+            break;
+        }
+    }
+    node->count--;
+}
+
+//соединение узлов
+void Btree::left_connect(Bnode *node, Bnode *othernode)
+{
+    if (node == nullptr)
+        return;
+    for (int i = 0; i <= (othernode->count-1); i++)
+    {
+        node->key[node->count] = othernode->key[i];
+        node->child[node->count] = othernode->child[i];
+        node->count = node->count+1;
+    }
+    node->child[node->count] = othernode->child[othernode->count];
+    for (int j = 0; j <= node->count; j++)
+    {
+        if (node->child[j] == nullptr)
+            break;
+        node->child[j]->parent = node;
+    }
+    delete othernode;
+}
+
+void Btree::right_connect(Bnode *node, Bnode *othernode)
+{
+    if (node == nullptr)
+        return;
+    for (int i = 0; i <= (othernode->count-1); i++)
+    {
+        node->key[node->count] = othernode->key[i];
+        node->child[node->count+1] = othernode->child[i+1];
+        node->count = node->count+1;
+    }
+    for (int j = 0; j <= node->count; j++)
+    {
+        if (node->child[j] == nullptr)
+            break;
+        node->child[j]->parent = node;
+    }
+    delete othernode;
+}
+
+//восстановление условий
+void Btree::repair(Bnode *node)
+{
+    if ((node == root) && (node->count == 0))
+    {
+        if (root->child[0] != nullptr)
+        {
+            root->child[0]->parent = nullptr;
+            root = root->child[0];
+        }
+        else
+        {
+            delete root;
+        }
+        return;
+    }
+    Bnode *ptr = node;
+    int positionChild;
+    Bnode *parent = ptr->parent;
+    for (int j = 0; j <= parent->count; j++)
+    {
+        if (parent->child[j] == ptr)
+        {
+            positionChild = j;
+            break;
+        }
+    }
+    if (positionChild == 0)
+    {
+        Btree::insert_to_node(parent->key[positionChild], ptr);
+        Btree::left_connect(ptr, parent->child[positionChild+1]);
+        parent->child[positionChild+1] = ptr;
+        parent->child[positionChild] = nullptr;
+        Btree::remove_from_node(parent->key[positionChild], parent);
+        if (ptr->count == 2*t)
+        {
+            while (ptr->count == 2*t)
+            {
+                Btree::restruct(ptr);
+                if (ptr != root)
+                    ptr = ptr->parent;
+                else break;
+            }
+        }
+        else
+            if (parent->count <= (t-2))
+                Btree::repair(parent);
+    }
+    else
+    {
+        if (positionChild == parent->count)
+        {
+            Btree::insert_to_node(parent->key[positionChild-1], parent->child[positionChild-1]);
+            Btree::left_connect(parent->child[positionChild-1], ptr);
+            parent->child[positionChild] = parent->child[positionChild-1];
+            parent->child[positionChild-1] = nullptr;
+            Btree::remove_from_node(parent->key[positionChild-1], parent);
+            Bnode *temp = parent->child[positionChild];
+            if (ptr->count == 2*t)
+            {
+                while (temp->count == 2*t)
+                {
+                    Btree::restruct(temp);
+                    if (temp != root)
+                        temp = temp->parent;
+                    else break;
+                }
+            }
+            else
+                if (parent->count <= (t-2))
+                    Btree::repair(parent);
+        }
+        else
+        {
+            Btree::insert_to_node(parent->key[positionChild], ptr);
+            Btree::left_connect(ptr, parent->child[positionChild+1]);
+            parent->child[positionChild+1] = ptr;
+            parent->child[positionChild] = nullptr;
+            Btree::remove_from_node(parent->key[positionChild], parent);
+            if (ptr->count == 2*t)
+            {
+                while (ptr->count == 2*t)
+                {
+                    Btree::restruct(ptr);
+                    if (ptr != root)
+                        ptr = ptr->parent;
+                    else break;
+                }
+            }
+            else
+                if (parent->count <= (t-2))
+                    Btree::repair(parent);
+        }
+    }
+}
+
+void Btree::remove_leaf(int key, Bnode *node)
+{
+    if ((node == root) && (node->count == 1))
+    {
+        Btree::remove_from_node(key, node);
+        root->child[0] = nullptr;
+        delete root;
+        root = nullptr;
+        return;
+    }
+
+    if ((node == root) || (node->count > (t-1)))
+    {
+        Btree::remove_from_node(key, node);
+        return;
+    }
+
+    Bnode *ptr = node;
+    int k1;
+    int k2;
+    int position;
+    int positionSon;
+    for (int i = 0; i <= node->count-1; i++)
+    {
+        if (key == node->key[i])
+        {
+            position = i;
+            break;
+        }
+    }
+    Bnode *parent = ptr->parent;
+    for (int j = 0; j <= parent->count; j++)
+    {
+        if (parent->child[j] == ptr)
+        {
+            positionSon = j;
+            break;
+        }
+    }
+    if (positionSon == 0)
+    {
+        if (parent->child[positionSon+1]->count > (t-1))
+        {
+            k1 = parent->child[positionSon+1]->key[0];
+            k2 = parent->key[positionSon];
+            Btree::insert_to_node(k2, ptr);
+            Btree::remove_from_node(key, ptr);
+            parent->key[positionSon] = k1;
+            Btree::remove_from_node(k1, parent->child[positionSon+1]);
+        }
+        else
+        {
+            Btree::remove_from_node(key, ptr);
+            if (ptr->count <= (t-2))
+                repair(ptr);
+        }
+    }
+    else
+    {
+        if (positionSon == parent->count)
+        {
+            if (parent->child[positionSon-1]->count > (t-1))
+            {
+                Bnode *temp = parent->child[positionSon-1];
+                k1 = temp->key[temp->count-1];
+                k2 = parent->key[positionSon-1];
+                Btree::insert_to_node(k2, ptr);
+                Btree::remove_from_node(key, ptr);
+                parent->key[positionSon-1] = k1;
+                Btree::remove_from_node(k1, temp);
+            }
+            else
+            {
+                Btree::remove_from_node(key, ptr);
+                if (ptr->count <= (t-2))
+                    repair(ptr);
+            }
+        }
+        else
+        {
+            if (parent->child[positionSon+1]->count > (t-1))
+            {
+                k1 = parent->child[positionSon+1]->key[0];
+                k2 = parent->key[positionSon];
+                Btree::insert_to_node(k2, ptr);
+                Btree::remove_from_node(key, ptr);
+                parent->key[positionSon] = k1;
+                Btree::remove_from_node(k1, parent->child[positionSon+1]);
+            }
+            else
+            {
+                if (parent->child[positionSon-1]->count > (t-1))
+                {
+                    Bnode *temp = parent->child[positionSon-1];
+                    k1 = temp->key[temp->count-1];
+                    k2 = parent->key[positionSon-1];
+                    Btree::insert_to_node(k2, ptr);
+                    Btree::remove_from_node(key, ptr);
+                    parent->key[positionSon-1] = k1;
+                    Btree::remove_from_node(k1, temp);
+                }
+                else
+                {
+                    Btree::remove_from_node(key, ptr);
+                    if (ptr->count <= (t-2))
+                        repair(ptr);
+                }
+            }
+        }
+    }
+}
+
+void Btree::remove(int key, Bnode *node)
+{
+    Bnode *ptr = node;
+    int position;
+    for (int i = 0; i <= node->count-1; i++)
+    {
+        if (key == node->key[i])
+        {
+            position = i;
+            break;
+        }
+    }
+    int positionSon;
+    if (ptr->parent != nullptr)
+    {
+        for (int i = 0; i <= ptr->parent->count; i++)
+        {
+            if (ptr->child[i] == ptr)
+            {
+                positionSon == i;
+                break;
+            }
+        }
+    }
+    ptr = ptr->child[position+1];
+    int newkey = ptr->key[0];
+    while (ptr->leaf == false)
+        ptr = ptr->child[0];
+    if (ptr->count > (t-1))
+    {
+        newkey = ptr->key[0];
+        Btree::remove_from_node(newkey, ptr);
+        node->key[position] = newkey;
+    }
+    else
+    {
+        ptr = node;
+        ptr = ptr->child[position];
+        newkey = ptr->key[ptr->count-1];
+        while (ptr->leaf == false)
+            ptr = ptr->child[ptr->count];
+        newkey = ptr->key[ptr->count-1];
+        node->key[position] = newkey;
+        if (ptr->count > (t-1))
+            Btree::remove_from_node(newkey, ptr);
+        else
+            Btree::remove_leaf(newkey, ptr);
+    }
+}
+
+void Btree::remove(int key)
+{
+    Bnode *ptr = this->root;
+    int position;
+    int positionChild;
+    if (Btree::search_key(key,ptr) == nullptr)
+        return;
+    else
+    {
+        for (int i = 0; i <= ptr->count-1; i++)
+        {
+            if (ptr->key[i] != 0)
+            {
+                if (key == ptr->key[i])
+                {
+                    position = i;
+                    break;
+                }
+                else {
+                    if ((key < ptr->key[i])) {
+                        ptr = ptr->child[i];
+                        positionChild = i;
+                        i = -1;
+                    }
+                    else if (i == (ptr->count-1))
+                        {
+                            ptr = ptr->child[i+1];
+                            positionChild = i+1;
+                            i = -1;
+                        }
+                }
+            }
+            else break;
+        }
+    }
+    if (ptr->leaf == true)
+    {
+        if (ptr->count > (t-1))
+            Btree::remove_from_node(key, ptr);
+        else Btree::remove_leaf(key, ptr);
+    }
+    else Btree::remove(key, ptr);
+}
+
+
+/*
+ в си++ это пишут в заголовочный файл
+ stack
+ class Stack {
+ public:
+    push(int data);
+    int pop();
+}
+ сначала интерфейс, потом его реализация
+ в си была бы структура и два метода
+ инкапсуляция
+
+
+ struct TyA {
+    int a1;
+    int a2;
+}
+
+ struct TyB {
+    int a1;
+    int a2;
+    int a3;
+}
+
+ int sum (TyA *A) {
+    return A->a1+A->a2;
+}
+
+
+ QUEUE
+ class Queue {
+ public:
+    push(int data);
+    int pop();
+}
+
+ class Queue {
+ public:
+    push (T data, int priority);
+    int pop();
+    merge (Queue q);
+}
 
 
 
+ */
 
+//КРАСНО-ЧЕРНОЕ ДЕРЕВО
+//конструктор и деструктор
 
+RBtree::RBtree() {root = nullptr;}
+RBtree::~RBtree() {if (root != nullptr) RBtree::delete_node(root);}
 
+RBnode * RBtree::rotate_left(RBnode *root, RBnode *node)
+{
+    RBnode *right = node->right;
+    node->right = right->left;
+    if (right->left != NullNode)
+        right->left->parent = node;
+    if (right != NullNode)
+        right->parent = node->parent;
+    if (node->parent != NullNode)
+    {
+        if (node == node->parent->left)
+            node->parent->left = right;
+        else
+            node->parent->right = right;
+    } else
+        root = right;
+    right->left = node;
+    if (node != NullNode)
+        node->parent = right;
+    return root;
+}
 
+RBnode * RBtree::rotate_right(RBnode *root, RBnode *node)
+{
+    RBnode *left = node->left;
+    node->left = left->right;
+    if (left->right != NullNode)
+        left->right->parent = node;
+    if (left != NullNode)
+        left->parent = node->parent;
+    if (node->parent != NullNode)
+    {
+        if (node == node->parent->right)
+            node->parent->right = left;
+        else
+            node->parent->left = left;
+    } else
+        root = left;
+    left->right = node;
+    if (node != NullNode)
+        node->parent = left;
+    return root;
+}
 
+void RBtree::insert(int key, void *data)
+{
+    RBtree::insert(root, key, data);
+}
 
+RBnode * RBtree::insert(RBnode *root, int key, void *data)
+{
+    RBnode *node = nullptr;
+    RBnode *parent = nullptr;
+    for (node = root; node != NullNode && node != nullptr;)
+    {
+        parent = node;
+        if (key < node->key)
+            node = node->left;
+        else if (key > node->key)
+            node = node->right;
+        else
+            return root;
+    }
 
+    if (node == nullptr)
+        return nullptr;
 
+    node->key = key;
+    node->data = data;
+    node->color = RED;
+    node->parent = parent;
+    node->left = NullNode;
+    node->right = NullNode;
 
+    if (parent != NullNode)
+    {
+        if (key < parent->key)
+            parent->left = node;
+        else
+            parent->right = node;
+    }
+    else
+        root = node;
+    return RBtree::insert_recover(root, node);
+}
 
+RBnode * RBtree::insert_recover(RBnode *root, RBnode *node)
+{
+    RBnode *uncle;
 
+    while (node != root && node->parent->color == RED)
+    {
+        if (node->parent == node->parent->parent->left)
+        {
+            uncle = node->parent->parent->right;
+            if (uncle->color == RED) {
+                node->parent->color = BLACK;
+                uncle->color = BLACK;
+                node->parent->parent->color = RED;
+                node = node->parent->parent;
+            } else {
+                if (node == node->parent->right) {
+                    node = node->parent;
+                    root = RBtree::rotate_left(root, node);
+                }
+                node->parent->color = BLACK;
+                node->parent->parent->color = RED;
+                root = RBtree::rotate_right(root, node->parent->parent);
+            }
+        }
+        else
+        {
+            uncle = node->parent->parent->left;
+            if (uncle->color == RED)
+            {
+                node->parent->color = BLACK;
+                uncle->color = BLACK;
+                node->parent->parent->color = RED;
+                node = node->parent->parent;
+            }
+            else
+            {
+                if (node == node->parent->left)
+                {
+                    node = node->parent;
+                    root = RBtree::rotate_right(root, node);
+                }
+                node->parent->color = BLACK;
+                node->parent->parent->color = RED;
+                root = RBtree::rotate_left(root, node->parent->parent);
+            }
+        }
+    }
+    root->color = BLACK;
+    return root;
+}
 
+RBnode * RBtree::search(int key)
+{
+    RBnode *current = root;
+    while (current != nullptr)
+        if (key == current->key)
+            return current;
+        else
+            current = (key < current->key) ? current->left : current->right;
+        return 0;
+}
 
+void RBtree::remove(int key)
+{
+    RBnode *temp = search(key);
+    RBtree::delete_node(temp);
+}
 
+void RBtree::delete_node(RBnode *n)
+{
+    RBnode *x;
+    RBnode *y;
+    if (!n || n == nullptr)
+        return;
+    if ((n->left == nullptr) || (n->right == nullptr))
+        y = n;
+    else
+    {
+        y = n->right;
+        while (y->left != nullptr)
+            y = y->left;
+    }
+    if (y->left != nullptr)
+        x = y->left;
+    else
+        x = y->right;
+    x->parent = y->parent;
+    if (y->parent)
+    {
+        if (y == y->parent->left)
+            y->parent->left = x;
+        else
+            y->parent->right = x;
+    }
+    else
+        root = x;
+    if (y != n)
+        n->data = y->data;
+    if (y->color == BLACK)
+        delete_recover(x);
+    free(y);
+}
 
+void RBtree::delete_recover(RBnode *node)
+{
+    while ((node != root) && (node->color == BLACK))
+    {
+        if (node == node->parent->left)
+        {
+            RBnode *s = node->parent->right;
+            if (s->color == RED)
+            {
+                s->color = BLACK;
+                node->parent->color = RED;
+                rotate_left(root, node->parent);
+                s = node->parent->right;
+            }
+            if ((s->left->color == BLACK) && (s->right->color == BLACK))
+            {
+                s->color = RED;
+                node = node->parent;
+            }
+            else
+            {
+                if (s->right->color == BLACK)
+                {
+                    s->left->color = BLACK;
+                    s->color = RED;
+                    rotate_right(root, s);
+                    s = node->parent->right;
+                }
+                s->color = node->parent->color;
+                node->parent->color = BLACK;
+                s->right->color = BLACK;
+                rotate_left(root, node->parent);
+                node = root;
+            }
+        }
+        else
+        {
+            RBnode *s = node->parent->left;
+            if (s->color == RED)
+            {
+                s->color = BLACK;
+                node->parent->color = RED;
+                rotate_right(root, node->parent);
+                s = node->parent->left;
+            }
+            if ((s->right->color == BLACK) && (s->left->color == BLACK))
+            {
+                s->color = RED;
+                node = node->parent;
+            }
+            else
+            {
+                if (s->left->color == BLACK)
+                {
+                    s->right->color = BLACK;
+                    s->color = RED;
+                    rotate_left(root, s);
+                    s = node->parent->left;
+                }
+                s->color = node->parent->color;
+                node->parent->color = BLACK;
+                s->left->color = BLACK;
+                rotate_right(root, node->parent);
+                node = root;
+            }
+        }
+    }
+    node->color = BLACK;
+}
 
-
-
-
-
+//РАСШИРЯЮЩЕЕСЯ (КОСОЕ) ДЕРЕВО
 
