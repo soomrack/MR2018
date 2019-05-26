@@ -17,7 +17,7 @@ void binaryTree::add_to_tree(Node * newUnit, Node * root) {
     Node * next;
 
     if(key > rootKey) {
-        if(root->rightChild != NULL) {
+        if(root->rightChild != nullptr) {
             next = (Node *)root->rightChild;
         }
         else {
@@ -26,7 +26,7 @@ void binaryTree::add_to_tree(Node * newUnit, Node * root) {
         }
     }
     else {
-        if (root->leftChild != NULL) {
+        if (root->leftChild != nullptr) {
             next = (Node *)root->leftChild;
         }
         else {
@@ -46,7 +46,7 @@ Stack<void *> binaryTree::search_node(unsigned int key, Node * item) {
 
     //unsigned int key = item->key;
 
-    while(1) {
+    while(true) {
         if (next == nullptr)  return out;
         if ( (next->key == key) && (item == nullptr) ) return out;
         if (next == item) return out;
@@ -67,12 +67,12 @@ void binaryTree::add(unsigned int key, void * data) {
 
     Node * newUnit = new Node;
 
-    newUnit->rightChild = NULL;
-    newUnit->leftChild = NULL;
+    newUnit->rightChild = nullptr;
+    newUnit->leftChild = nullptr;
     newUnit->key = key;
     newUnit->data = data;
 
-    if(root == NULL) {
+    if(root == nullptr) {
         root = newUnit;
         return;
     }
@@ -142,8 +142,8 @@ void binaryTree::delete_node(unsigned int key, binaryTree::Node *item) {
 
 void binaryTree::delete_all_branch(Node * root) {
 
-    if(root->leftChild != NULL) delete_all_branch((Node *)root->leftChild);
-    if(root->rightChild != NULL) delete_all_branch((Node *)root->rightChild);
+    if(root->leftChild != nullptr) delete_all_branch((Node *)root->leftChild);
+    if(root->rightChild != nullptr) delete_all_branch((Node *)root->rightChild);
     delete root;
 }
 
@@ -158,11 +158,11 @@ List<void *>  binaryTree::visiting1() {
 
     while(Queue.getSize() > 0) {
         Node * temp = Queue.dequeue();
-        if(temp->leftChild != NULL) {
+        if(temp->leftChild != nullptr) {
             Queue.enqueue( (Node *)(temp->leftChild) );
             out.add( ((Node *)temp->leftChild)->data);
         }
-        if(temp->rightChild != NULL) {
+        if(temp->rightChild != nullptr) {
             Queue.enqueue((Node *)(temp->rightChild));
             out.add( ((Node *)temp->rightChild)->data);
         }
@@ -182,10 +182,10 @@ List<void *>  binaryTree::visiting2() {
         Node * temp = Stack.pop();
         out.add(temp->data);
 
-        if(temp->rightChild != NULL) {
+        if(temp->rightChild != nullptr) {
             Stack.push((Node *)temp->rightChild);
         }
-        if(temp->leftChild != NULL) {
+        if(temp->leftChild != nullptr) {
             Stack.push((Node *)temp->leftChild);
         }
     }
@@ -207,7 +207,7 @@ List<void *>  binaryTree::visiting3() {
             Current = (Node *)(Current->leftChild);
         }
         else {
-            while(1) {
+            while(true) {
                 out.add(Current->data);
                 if (Current->rightChild != nullptr) {
                     Current = (Node *) (Current->rightChild);
@@ -236,7 +236,7 @@ void binaryTree::add_to_tree(Node * newUnit, Node * root) {
     Node * next;
 
     if(key > rootKey) {
-        if(root->rightChild != NULL) {
+        if(root->rightChild != nullptr) {
             next = (Node *)root->rightChild;
         }
         else {
@@ -245,7 +245,7 @@ void binaryTree::add_to_tree(Node * newUnit, Node * root) {
         }
     }
     else {
-        if (root->leftChild != NULL) {
+        if (root->leftChild != nullptr) {
             next = (Node *)root->leftChild;
         }
         else {
@@ -268,27 +268,27 @@ void * binaryTree::recursion_for_search(Node * root, unsigned int key) {
     Node * next;
 
     if(key > root->key) {
-        if(root->rightChild != NULL) {
+        if(root->rightChild != nullptr) {
             next = (Node *)root->rightChild;
         }
         else {
 #if DEBUG == 1
             printf("Error: can't find item");
 #endif
-            return NULL;
+            return nullptr;
         }
     }
 
     else {
 
-        if (root->leftChild != NULL) {
+        if (root->leftChild != nullptr) {
             next = (Node *)root->leftChild;
         }
         else {
 #if DEBUG == 1
             printf("Error: can't find item");
 #endif
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -302,13 +302,13 @@ void * binaryTree::recursion_for_search_parent(Node * root, unsigned int key) {
 #if DEBUG == 1
         printf("Can't find any parent of the root");
 #endif
-        return NULL;
+        return nullptr;
     }
 
     Node * next;
 
     if(key > root->key) {
-        if(root->rightChild != NULL) {
+        if(root->rightChild != nullptr) {
             if( ( (Node *)(root->rightChild) )->key == key) {
                 return root;
             }
@@ -318,7 +318,7 @@ void * binaryTree::recursion_for_search_parent(Node * root, unsigned int key) {
 #if DEBUG == 1
             printf("Error: can't find item");
 #endif
-            return NULL;
+            return nullptr;
         }
     }
     else {
@@ -332,7 +332,7 @@ void * binaryTree::recursion_for_search_parent(Node * root, unsigned int key) {
 #if DEBUG == 1
             printf("Error: can't find item");
 #endif
-            return NULL;
+            return nullptr;
         }
     }
     return recursion_for_search_parent(next, key);
@@ -342,12 +342,12 @@ void binaryTree::add(unsigned int key, void * data) {
 
     Node * newUnit = new Node;
 
-    newUnit->rightChild = NULL;
-    newUnit->leftChild = NULL;
+    newUnit->rightChild = nullptr;
+    newUnit->leftChild = nullptr;
     newUnit->key = key;
     newUnit->data = data;
 
-    if(root == NULL) {
+    if(root == nullptr) {
         root = newUnit;
         return;
     }
@@ -359,7 +359,7 @@ void binaryTree::add(unsigned int key, void * data) {
 
 void binaryTree::remove(unsigned int key) {
 
-    Node * orphan = NULL;
+    Node * orphan = nullptr;
 
     if( ( (Node *)root )->key == key) {
         Node * temp = (Node *)root;
@@ -373,11 +373,11 @@ void binaryTree::remove(unsigned int key) {
             if(temp->rightChild) {
                 root = temp->rightChild;
             }
-            else root = NULL;
+            else root = nullptr;
         }
         delete temp;
 
-        if(orphan != NULL) {
+        if(orphan != nullptr) {
             add_to_tree(orphan, (Node *)root);
         }
         return;
@@ -388,7 +388,7 @@ void binaryTree::remove(unsigned int key) {
 
     if(key > parent->key) {
         child = (Node *)(parent->rightChild);
-        parent->rightChild = NULL;
+        parent->rightChild = nullptr;
         if(child->leftChild) {
             parent->rightChild = child->leftChild;
             if(child->rightChild) {
@@ -396,23 +396,23 @@ void binaryTree::remove(unsigned int key) {
             }
         }
         else {
-            if(child->rightChild != NULL) {
+            if(child->rightChild != nullptr) {
                 parent->rightChild = child->leftChild;
             }
         }
         delete child;
-        if(orphan != NULL) {
+        if(orphan != nullptr) {
             add_to_tree(orphan, (Node *)root);
         }
         return;
     }
 
     child = (Node *)parent->leftChild;
-    parent->leftChild = NULL;
+    parent->leftChild = nullptr;
 
-    if(child->leftChild != NULL) {
+    if(child->leftChild != nullptr) {
         parent->leftChild = child->leftChild;
-        if(child->rightChild != NULL) {
+        if(child->rightChild != nullptr) {
             orphan = (Node *)child->rightChild;
         }
     }
@@ -423,15 +423,15 @@ void binaryTree::remove(unsigned int key) {
     }
     delete child;
 
-    if(orphan != NULL) {
+    if(orphan != nullptr) {
         add_to_tree(orphan, (Node *)root);
     }
 }
 
 void binaryTree::delete_all_branch(Node * root) {
 
-    if(root->leftChild != NULL) delete_all_branch((Node *)root->leftChild);
-    if(root->rightChild != NULL) delete_all_branch((Node *)root->rightChild);
+    if(root->leftChild != nullptr) delete_all_branch((Node *)root->leftChild);
+    if(root->rightChild != nullptr) delete_all_branch((Node *)root->rightChild);
     delete root;
 }
 
@@ -446,11 +446,11 @@ List<void *>  binaryTree::visiting1() {
 
     while(Queue.getSize() > 0) {
         Node * temp = Queue.dequeue();
-        if(temp->leftChild != NULL) {
+        if(temp->leftChild != nullptr) {
             Queue.enqueue( (Node *)(temp->leftChild) );
             out.add( ((Node *)temp->leftChild)->data);
         }
-        if(temp->rightChild != NULL) {
+        if(temp->rightChild != nullptr) {
             Queue.enqueue((Node *)(temp->rightChild));
             out.add( ((Node *)temp->rightChild)->data);
         }
@@ -470,10 +470,10 @@ List<void *>  binaryTree::visiting2() {
         Node * temp = Stack.pop();
         out.add(temp->data);
 
-        if(temp->rightChild != NULL) {
+        if(temp->rightChild != nullptr) {
             Stack.push((Node *)temp->rightChild);
         }
-        if(temp->leftChild != NULL) {
+        if(temp->leftChild != nullptr) {
             Stack.push((Node *)temp->leftChild);
         }
     }

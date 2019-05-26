@@ -38,26 +38,26 @@ private:
 
 public:
     binaryTree() {
-        root = NULL;
+        root = nullptr;
     }
     ~binaryTree() {
         delete_all_branch((Node *)root);
     }
 
-    void add(unsigned int key, void * data);
+    void add(unsigned int key, void * data) override;
 
-    List<void *> visiting1();
-    List<void *> visiting2();
-    List<void *> visiting3();
+    List<void *> visiting1() final;
+    List<void *> visiting2() final;
+    List<void *> visiting3() final;
 
-    void * search(unsigned int key) {
+    void * search(unsigned int key) final {
         Stack<void *> wayToItem;
         wayToItem = search_node(key);
         Node * item = (Node *)wayToItem.pop();
         return item->data;
     }
 
-    void remove(unsigned int key);
+    void remove(unsigned int key) override;
 };
 
 //version 3
@@ -78,7 +78,7 @@ private:
 
 public:
     binaryTree() {
-        root = NULL;
+        root = nullptr;
     }
     ~binaryTree() {
         delete_all_branch((Node *)root);

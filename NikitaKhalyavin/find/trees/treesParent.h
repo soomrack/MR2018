@@ -15,6 +15,9 @@ class Tree {
 protected:
     void * root;
 public:
+    Tree () : root(nullptr) {
+
+    }
     virtual void add(unsigned int key, void * data) = 0;
     virtual void * search(unsigned int key) = 0;
     virtual void remove(unsigned int key) = 0;

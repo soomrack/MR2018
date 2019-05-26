@@ -29,10 +29,10 @@ private:
 
 public:
     RBTree() {
-        root = NULL;
+        root = nullptr;
     }
 
-    void add(unsigned int key, void * data);
+    void add(unsigned int key, void * data) final;
 
-    void remove(unsigned int key);
+    void remove(unsigned int key) final;
 };
