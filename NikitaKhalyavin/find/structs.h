@@ -210,31 +210,40 @@ public:
 template <typename T>
 class Stack {
 private:
+
     unsigned int size;
     DataField<T> * data;
+
+    void copy (const Stack & input) {
+        this->size = input.size;
+        data = NULL;
+
+        if(this->size > 0) {
+
+            DataField<T> *temp;
+            DataField<T> *floatingRoot = new DataField<T>;
+            this->data = floatingRoot;
+            temp = input.data;
+            floatingRoot->data = temp->data;
+            temp = temp->pointer;
+            for (int i = 1; i < this->size; i++) {
+                floatingRoot->pointer = new DataField<T>;
+                floatingRoot = floatingRoot->pointer;
+                floatingRoot->data = temp->data;
+                temp = temp->pointer;
+            }
+        }
+    }
+
 public:
     Stack() : size(0) {
         data = NULL;
     }
 
     void operator = (const Stack & input) {
+
         while(this->size > 0) pop();
-
-        this->size = input.size;
-        data = NULL;
-
-        DataField<T> *temp = new DataField<T>;
-        DataField<T> *floatingRoot;
-        temp = input.data;
-
-        for (int i = 0; i < this->size; i++) {
-            floatingRoot->pointer = new DataField<T>;
-            if(i == 0) {
-                data = floatingRoot;
-            }
-            floatingRoot->data = temp.data;
-            temp = temp->pointer;
-        }
+        copy(input);
     }
 
     ~Stack() {
@@ -244,21 +253,7 @@ public:
     }
 
     Stack(const Stack &input) {
-        this->size = input.size;
-        data = NULL;
-
-        DataField<T> *temp = new DataField<T>;
-        DataField<T> *floatingRoot;
-        temp = input.data;
-
-        for (int i = 0; i < this->size; i++) {
-            floatingRoot->pointer = new DataField<T>;
-            if(i == 0) {
-                data = floatingRoot;
-            }
-            floatingRoot->data = temp.data;
-            temp = temp->pointer;
-        }
+        copy(input);
     }
 
     void push(const T input) {
@@ -297,6 +292,29 @@ private:
     unsigned int size;
     DataField<T> * data;
     DataField<T> * last;
+
+    void copy (const Queue & input) {
+        this->size = input.size;
+        data = NULL;
+
+        if(this->size > 0) {
+
+            DataField<T> *temp;
+            DataField<T> *floatingRoot = new DataField<T>;
+            this->data = floatingRoot;
+            temp = input.data;
+            floatingRoot->data = temp->data;
+            temp = temp->pointer;
+            for (int i = 1; i < this->size; i++) {
+                floatingRoot->pointer = new DataField<T>;
+                floatingRoot = floatingRoot->pointer;
+                floatingRoot->data = temp->data;
+                temp = temp->pointer;
+            }
+            last = floatingRoot;
+        }
+    }
+
 public:
     Queue() : size(0) {
         data = NULL;
@@ -304,22 +322,7 @@ public:
 
     void operator = (const Queue & input) {
         while(this->size > 0) dequeue();
-        this->size = input.size;
-        data = NULL;
-
-        DataField<T> * temp = new DataField<T>;
-        DataField<T> * floatingRoot;
-        temp = input.data;
-
-        for (int i = 0; i < this->size; i++) {
-            floatingRoot->pointer = new DataField<T>;
-            if(i == 0) {
-                data = floatingRoot;
-            }
-            floatingRoot->data = temp.data;
-            temp = temp->pointer;
-        }
-        last = floatingRoot;
+        copy(input);
     }
 
     ~Queue() {
@@ -327,22 +330,7 @@ public:
     }
 
     Queue(const Queue &input) {
-        this->size = input.size;
-        data = NULL;
-
-        DataField<T> * temp = new DataField<T>;
-        DataField<T> * floatingRoot;
-        temp = input.data;
-
-        for (int i = 0; i < this->size; i++) {
-            floatingRoot->pointer = new DataField<T>;
-            if(i == 0) {
-                data = floatingRoot;
-            }
-            floatingRoot->data = temp.data;
-            temp = temp->pointer;
-        }
-        last = floatingRoot;
+        copy(input);
     }
 
     void enqueue(const T input) {

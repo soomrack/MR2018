@@ -19,6 +19,49 @@ struct binaryTreeNode{
 };
 
 
+//version 4
+class binaryTree : public Tree {
+
+protected:
+
+    typedef binaryTreeNode Node;
+
+    void delete_all_branch(Node * root);
+    void delete_node(unsigned int key, Node * item = nullptr);
+
+    Stack<void *> search_node(unsigned int key, Node * item = nullptr);
+
+private:
+
+    void add_to_tree(Node * newUnit, Node * root);
+    void * get_node_with_next_key(Node * root);
+
+public:
+    binaryTree() {
+        root = NULL;
+    }
+    ~binaryTree() {
+        delete_all_branch((Node *)root);
+    }
+
+    void add(unsigned int key, void * data);
+
+    List<void *> visiting1();
+    List<void *> visiting2();
+    List<void *> visiting3();
+
+    void * search(unsigned int key) {
+        Stack<void *> wayToItem;
+        wayToItem = search_node(key);
+        Node * item = (Node *)wayToItem.pop();
+        return item->data;
+    }
+
+    void remove(unsigned int key);
+};
+
+//version 3
+/*
 class binaryTree : public Tree {
 
 protected:
@@ -53,3 +96,4 @@ public:
 
     void remove(unsigned int key);
 };
+ */

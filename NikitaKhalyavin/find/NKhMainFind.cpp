@@ -4,7 +4,7 @@
 
 #include "findInArray.h"
 #include "ArraySort.h"
-#include "trees/RBTree.h"
+#include "trees/binaryTree.h"
 #include <stdio.h>
 #include <iostream>
 

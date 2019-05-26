@@ -20,5 +20,6 @@ public:
     virtual void remove(unsigned int key) = 0;
     virtual List<void *> visiting1() = 0;
     virtual List<void *> visiting2() = 0;
+    virtual List<void *> visiting3() = 0;
 
 };
