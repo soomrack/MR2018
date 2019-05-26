@@ -102,6 +102,7 @@ void binaryTree::delete_node(unsigned int key, binaryTree::Node *item) {
     Stack<void *> wayToItem;
     wayToItem = search_node(key, item);
     Node * itemToDelete = (Node *)wayToItem.pop();
+    if(itemToDelete == nullptr) return;
 
     if ( (itemToDelete->leftChild != nullptr) &&
     (itemToDelete->rightChild != nullptr) ) {

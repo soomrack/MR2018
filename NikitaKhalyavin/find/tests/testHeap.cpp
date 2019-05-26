@@ -17,7 +17,18 @@ int main() {
     for(int i = 9; i >=0; i--) {
         int out = *(int *)(heap1.extract());
         if(out != i)
-            return 1;
+            return 4;
+    }
+
+    for(int i = 0; i < 10; i++) {
+        heap1.add((void *)(&data[i]), i);
+    }
+    if(  *(int *)(heap1.extract_by_key(9)) != 9 ) return(1);
+    if(  (heap1.extract_by_key(9)) != nullptr ) return(2);
+    for(int i = 8; i >=0; i--) {
+        int out = *(int *)(heap1.extract());
+        if(out != i)
+            return 3;
     }
     return 0;
 }

@@ -48,6 +48,10 @@ protected:
     Node * root;
     unsigned int size;
 public:
+    abstractHeap() : root(nullptr), size(0) {
+
+    }
     virtual void add(void * data, int key) = 0;
     virtual void * extract() = 0;
+    virtual void * extract_by_key(int key) = 0;
 };

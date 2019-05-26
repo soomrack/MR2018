@@ -54,6 +54,7 @@ public:
         Stack<void *> wayToItem;
         wayToItem = search_node(key);
         Node * item = (Node *)wayToItem.pop();
+        if(item == nullptr) return nullptr;
         return item->data;
     }
 

@@ -20,6 +20,7 @@ private:
     void sift_up(int startNumber);
 
     void * getItem(int number);
+    List<int> visiting();
 
 public:
     binaryHeap() {
@@ -27,8 +28,9 @@ public:
         size = 0;
     }
 
-    void add(void * data, int key);
+    void add(void * data, int key) override;
 
-    void * extract();
+    void * extract() override;
+    void * extract_by_key(int key) override;
 
 };
