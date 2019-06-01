@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <stack>
 
+#include <map>
+
 //СОРТИРОВКА ПУЗЫРЬКОМ
 void bubble_sort (int* array, int size)
 {
@@ -1519,3 +1521,212 @@ void RBtree::delete_recover(RBnode *node)
 
 //РАСШИРЯЮЩЕЕСЯ (КОСОЕ) ДЕРЕВО
 
+
+
+//ДВОИЧНАЯ КУЧА для минимума (минимум в корне)
+
+
+void BinaryMinHeap::Swap(HeapNode *node1, HeapNode *node2)
+{
+    int temp = node1->key;
+    node1->key = node2->key;
+    node2->key = temp;
+
+    void * temp2 = node1->data;
+    node1->data = node2->data;
+    node2->data = temp2;
+
+    HeapNode * temp3 = node1->parent;
+    node1->parent = node2->parent;
+    node2->parent = temp3;
+
+    temp3 = node1->leftChild;
+    node1->leftChild = node2->leftChild;
+    node2->leftChild = temp3;
+
+    temp3 = node1->rightChild;
+    node1->rightChild = node2->rightChild;
+    node2->rightChild = temp3;
+}
+
+void BinaryMinHeap::Repair(HeapNode * node)
+{
+    if ((node->key >= node->rightChild->key) || (node->key >= node->leftChild->key))
+    {
+        if (node->leftChild->key < node->rightChild->key)
+            Swap(node, node->leftChild);
+        else
+            Swap(node, node->rightChild);
+        SiftDown(node);
+    }
+}
+
+void BinaryMinHeap::SiftDown(HeapNode *node)
+{
+    if ((node->rightChild != nullptr) && (node->rightChild->key < node->leftChild->key))
+    {
+        if (node->key > node->rightChild->key)
+        {
+            BinaryMinHeap::Swap(node, node->rightChild);
+            SiftDown(node);
+        }
+
+    }
+    else if ((node->leftChild != nullptr) && (node->key > node->leftChild->key))
+    {
+        BinaryMinHeap::Swap(node, node->leftChild);
+        SiftDown(node);
+    }
+}
+
+void BinaryMinHeap::SiftUp(HeapNode *node)
+{
+    if (node->key < node->parent->key)
+    {
+        Swap(node, node->parent);
+        SiftUp(node);
+    }
+}
+
+void BinaryMinHeap::Insert(int key, void *data)
+{
+    heap[size].key = key;
+    heap[size].data = data;
+    heap[size].parent = &heap[(size-1)/2];
+    heap[size].rightChild = nullptr;
+    heap[size].leftChild = nullptr;
+    size = size + 1;
+    SiftUp(&heap[size]);
+}
+
+HeapNode BinaryMinHeap::extract_min(void)
+{
+    HeapNode min = heap[0];
+    heap[0] = heap[size - 1];
+    size = size - 1;
+    SiftDown(0);
+    return min;
+}
+
+HeapNode * BinaryMinHeap::Search(int key)
+{
+    if (heap[0].key > key)
+        return nullptr;
+
+    HeapNode * node = &heap[0];
+
+    while (node->key < key)
+    {
+        if (node->leftChild->key > key)
+        {
+            if (node->rightChild->key > key)
+                return nullptr;
+            else
+                node = node->rightChild;
+        }
+        else
+        {
+            if (node->rightChild->key > key)
+                node = node->leftChild;
+            else {
+                if (node->leftChild->key > node->rightChild->key)
+                    node = node->leftChild;
+                else node = node->rightChild;
+            }
+        }
+    }
+    return node;
+}
+
+//ГРАФЫ
+
+
+//АЛГОРИТМ ФОРДА-БЕЛЛМАНА
+//поиск кратчайших путей во взвешенном графе
+//допускает рёбра с отрицательным весом
+//если содержит отрицательные циклы, то кратч. путей нет
+
+//возвращает вектор вершин с установленными кратчайшими путями
+std::vector <Graph::Vertex> Graph::FordBellman(Graph * graph, int sourceIndex)
+{
+    vertices[sourceIndex].distance = 0;
+
+    //замена путей на более короткие
+    for (int i = 1; i < vertices.size(); i++)
+    {
+        for (int j = 1; j < edges.size(); j++)
+        {
+            int src = edges[j].vert1index;
+            int dest = edges[j].vert2index;
+            int weight = edges[j].weight;
+            if (vertices[dest].distance > vertices[src].distance + weight)
+            {
+                vertices[dest].distance = vertices[src].distance + weight;
+                vertices[dest].predecessor = &vertices[src];
+            }
+        }
+    }
+
+    //проверка на наличие отрицательных циклов
+    for (int j = 1; j < edges.size(); j++)
+    {
+        int src = edges[j].vert1index;
+        int dest = edges[j].vert2index;
+        int weight = edges[j].weight;
+        if (vertices[dest].distance > vertices[src].distance + weight)
+        {
+            std::cout << "Граф содержит отрицательные циклы. Кратчайший путь невозможно найти." << "\n";
+            exit(0);
+        }
+    }
+
+    return vertices;
+}
+
+void Graph::printPath(std::vector <Graph::Vertex> vert, int sourceIndex, int destIndex)
+{
+    using namespace std;
+    cout << "Source: " << sourceIndex << "\n";
+    cout << "Destination: " << destIndex << "\n";
+    cout << "Distance: " << vert[destIndex].distance << "\n";
+    cout << "Path: ";
+    char name;
+    Vertex * next = &vert[destIndex];
+    do
+    {
+        name = * next->name;
+        cout << name << " <- ";
+        next = next->predecessor;
+    }
+    while(next->predecessor != nullptr);
+
+    name = * vert[sourceIndex].name;
+    cout << name << "\n";
+}
+
+void Graph::addVertex(char * newName)
+{
+    Vertex newVertex;
+    newVertex.name = newName;
+    newVertex.index = size;
+    size = size + 1;
+    newVertex.distance = inf;
+    newVertex.predecessor = nullptr;
+
+    vertices.push_back(newVertex);
+}
+
+void Graph::addEdge(int vertInd1, int vertInd2, int weight)
+{
+    Edge newEdge;
+    newEdge.vert1index = vertInd1;
+    newEdge.vert2index = vertInd2;
+    newEdge.weight = weight;
+
+    edges.push_back(newEdge);
+
+    newEdge.vert1index = vertInd2;
+    newEdge.vert2index = vertInd1;
+
+    edges.push_back(newEdge);
+}

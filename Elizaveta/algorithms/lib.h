@@ -1,7 +1,8 @@
 //
 // Created by Елизавета on 13.02.2019.
 //
-
+#include "stdlib.h"
+#include <vector>
 #ifndef UNTITLED22_SORT_H
 #define UNTITLED22_SORT_H
 
@@ -199,11 +200,11 @@ private:
         SplayNode * searchedElement = root;
         while (searchedElement != nullptr)
         {
-            if (searchedElement->data < key)
+            if (searchedElement->key < key)
                 searchedElement = searchedElement->rightChild;
-            else if (key < searchedElement->data)
+            else if (key < searchedElement->key)
                 searchedElement = searchedElement->leftChild;
-            else if (searchedElement->data == key)
+            else if (searchedElement->key == key)
             {
                 _Splay(searchedElement);
                 return searchedElement;
@@ -264,11 +265,112 @@ private:
                     _RightRotate(pivotElement->parent->parent);
                     _RightRotate(pivotElement->parent);
                 }
-                else if (pivotElement == pivotElement->parent->rightChild &&)
+                //else if (pivotElement == pivotElement->parent->rightChild &&)
             }
         }
     }
 
 };
+
+
+
+class HeapNode
+{
+public:
+    int key;
+    void * data;
+    HeapNode * leftChild;
+    HeapNode * rightChild;
+    HeapNode * parent;
+
+    HeapNode()
+    {
+        int key = 0;
+        data = nullptr;
+        leftChild = nullptr;
+        rightChild = nullptr;
+        parent = nullptr;
+    }
+
+    HeapNode(int key, void * data)
+    {
+        this->key = key;
+        this->data = data;
+        leftChild = nullptr;
+        rightChild = nullptr;
+        parent = nullptr;
+    }
+    ~HeapNode(){};
+};
+
+class BinaryMinHeap
+{
+private:
+    HeapNode * heap;
+    unsigned int size;
+    void SiftUp(HeapNode * node);
+    void SiftDown(HeapNode * node);
+    void Swap(HeapNode * node1, HeapNode * node2);
+    void Repair(HeapNode * node);
+public:
+     BinaryMinHeap(unsigned int number)
+     {
+         heap = (HeapNode*) malloc(sizeof(HeapNode) * number);
+         size = number;
+     }
+    ~BinaryMinHeap()
+    {
+        if (heap) free(heap);
+    }
+
+    void Insert(int key, void * data);
+    HeapNode * Search(int key);
+    void Remove(int key);
+    HeapNode extract_min(void);
+};
+
+
+class Graph
+{
+    int size;
+
+    //условная бесконечность, д.б. > количества вершин
+    static const int inf = 10000;
+
+    struct Vertex
+    {
+        char * name;
+        int index = 0;
+        int distance = inf;
+        Vertex * predecessor = nullptr;
+    };
+    struct Edge
+    {
+        int vert1index;
+        int vert2index;
+        int weight;
+    };
+    //source index, destination index, weight
+    //std::map <std::pair<int, int>, int> edges;
+    std::vector <Edge> edges;
+    std::vector <Vertex> vertices;
+
+public:
+    Graph()
+    {
+        size = 0;
+        //std::map <std::pair<int, int>, int> edges;
+    }
+    void addVertex(char * newName);
+    void addEdge(int source, int destination, int weight);
+    std::vector <Graph::Vertex> FordBellman(Graph * graph, int sourceIndex);
+    void printPath(std::vector <Graph::Vertex> vertices, int sourceIndex, int destIndex);
+};
+
+
+
+
+
+
 #endif //UNTITLED22_SORT_H
 

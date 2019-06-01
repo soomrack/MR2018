@@ -35,7 +35,7 @@ int main() {
     //HeapSort(arr, 23);
    // print_array(arr, 23);
 
-    Tree mytree;
+   /* Tree mytree;
 
 
     int temp;
@@ -63,7 +63,29 @@ int main() {
     node result = mytree.search(8);
     std::cout<<'\n';
     std::cout<< result.value;
-    mytree.remove(mytree.root->key);
+    mytree.remove(mytree.root->key);*/
+
+
+    Graph newGraph;
+
+    char nodes[8] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+
+    for (int i = 0; i < 8; i++)
+    {
+        newGraph.addVertex(&nodes[i]);
+    }
+    newGraph.addEdge(0,1,2);
+    newGraph.addEdge(1,2,2);
+    newGraph.addEdge(1,3,2);
+    newGraph.addEdge(2,7,4);
+    newGraph.addEdge(3,6,3);
+    newGraph.addEdge(7,6,2);
+    newGraph.addEdge(7,4,4);
+    newGraph.addEdge(5,6,2);
+
+    newGraph.printPath(newGraph.FordBellman(&newGraph, 5), 5, 0);
+
+
 
 
 
