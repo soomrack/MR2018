@@ -278,29 +278,10 @@ class HeapNode
 {
 public:
     int key;
-    void * data;
+    int * data;
     HeapNode * leftChild;
     HeapNode * rightChild;
     HeapNode * parent;
-
-    HeapNode()
-    {
-        int key = 0;
-        data = nullptr;
-        leftChild = nullptr;
-        rightChild = nullptr;
-        parent = nullptr;
-    }
-
-    HeapNode(int key, void * data)
-    {
-        this->key = key;
-        this->data = data;
-        leftChild = nullptr;
-        rightChild = nullptr;
-        parent = nullptr;
-    }
-    ~HeapNode(){};
 };
 
 class BinaryMinHeap
@@ -308,25 +289,26 @@ class BinaryMinHeap
 private:
     HeapNode * heap;
     unsigned int size;
+
     void SiftUp(HeapNode * node);
     void SiftDown(HeapNode * node);
-    void Swap(HeapNode * node1, HeapNode * node2);
-    void Repair(HeapNode * node);
+    void SwapUp(HeapNode * parent, HeapNode * child);
+    //void Repair(HeapNode * node);
 public:
-     BinaryMinHeap(unsigned int number)
+     BinaryMinHeap(int n)
      {
-         heap = (HeapNode*) malloc(sizeof(HeapNode) * number);
-         size = number;
+         heap = (HeapNode*) malloc(sizeof(HeapNode) * n);
+         size = 0;
      }
     ~BinaryMinHeap()
     {
         if (heap) free(heap);
     }
 
-    void Insert(int key, void * data);
-    HeapNode * Search(int key);
-    void Remove(int key);
-    HeapNode extract_min(void);
+    void Insert(int key, int * data);
+    //HeapNode * Search(int key);
+    //void Remove(int key);
+    HeapNode extractMin(void);
 };
 
 

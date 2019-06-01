@@ -66,7 +66,7 @@ int main() {
     mytree.remove(mytree.root->key);*/
 
 
-    Graph newGraph;
+   /* Graph newGraph;
 
     char nodes[8] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 
@@ -83,11 +83,31 @@ int main() {
     newGraph.addEdge(7,4,4);
     newGraph.addEdge(5,6,2);
 
-    newGraph.printPath(newGraph.FordBellman(&newGraph, 5), 5, 0);
+    newGraph.printPath(newGraph.FordBellman(&newGraph, 5), 5, 0);*/
 
+    BinaryMinHeap newHeap(10);
+    int keys[10] = {5, 9, 2, 1, 6, 3, 8, 4, 11, 7};
+    int values[10] = {55, 92, 21, 15, 67, 31, 80, 43, 110, 74};
 
+    for (int i = 0; i < 10; i++)
+    {
+        int key = keys[i];
+        int * data;
+        data = &values[i];
+        newHeap.Insert(key, data);
+    }
 
+    /*HeapNode * foundNode = newHeap.Search(6);
+    std::cout << "key: 6  value: " << * foundNode->data << "\n";*/
 
+    HeapNode minNode = newHeap.extractMin();
+    std::cout << "min node key: " << minNode.key << "  data: " << *minNode.data << "\n";
+
+    minNode = newHeap.extractMin();
+    std::cout << "min node key: " << minNode.key << "  data: " << *minNode.data << "\n";
+
+    minNode = newHeap.extractMin();
+    std::cout << "min node key: " << minNode.key << "  data: " << *minNode.data << "\n";
 
     return 0;
 }

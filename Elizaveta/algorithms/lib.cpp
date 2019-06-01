@@ -1525,31 +1525,18 @@ void RBtree::delete_recover(RBnode *node)
 
 //ДВОИЧНАЯ КУЧА для минимума (минимум в корне)
 
-
-void BinaryMinHeap::Swap(HeapNode *node1, HeapNode *node2)
+void BinaryMinHeap::SwapUp(HeapNode *parent, HeapNode *child)
 {
-    int temp = node1->key;
-    node1->key = node2->key;
-    node2->key = temp;
+    int temp = parent->key;
+    parent->key = child->key;
+    child->key = temp;
 
-    void * temp2 = node1->data;
-    node1->data = node2->data;
-    node2->data = temp2;
-
-    HeapNode * temp3 = node1->parent;
-    node1->parent = node2->parent;
-    node2->parent = temp3;
-
-    temp3 = node1->leftChild;
-    node1->leftChild = node2->leftChild;
-    node2->leftChild = temp3;
-
-    temp3 = node1->rightChild;
-    node1->rightChild = node2->rightChild;
-    node2->rightChild = temp3;
+    int * temp2 = parent->data;
+    parent->data = child->data;
+    child->data = temp2;
 }
 
-void BinaryMinHeap::Repair(HeapNode * node)
+/*void BinaryMinHeap::Repair(HeapNode * node)
 {
     if ((node->key >= node->rightChild->key) || (node->key >= node->leftChild->key))
     {
@@ -1559,7 +1546,7 @@ void BinaryMinHeap::Repair(HeapNode * node)
             Swap(node, node->rightChild);
         SiftDown(node);
     }
-}
+}*/
 
 void BinaryMinHeap::SiftDown(HeapNode *node)
 {
@@ -1567,47 +1554,64 @@ void BinaryMinHeap::SiftDown(HeapNode *node)
     {
         if (node->key > node->rightChild->key)
         {
-            BinaryMinHeap::Swap(node, node->rightChild);
-            SiftDown(node);
+            BinaryMinHeap::SwapUp(node, node->rightChild);
+            SiftDown(node->rightChild);
         }
-
     }
     else if ((node->leftChild != nullptr) && (node->key > node->leftChild->key))
     {
-        BinaryMinHeap::Swap(node, node->leftChild);
-        SiftDown(node);
+        BinaryMinHeap::SwapUp(node, node->leftChild);
+        SiftDown(node->leftChild);
     }
 }
 
 void BinaryMinHeap::SiftUp(HeapNode *node)
 {
-    if (node->key < node->parent->key)
+    if (node->parent != nullptr)
     {
-        Swap(node, node->parent);
-        SiftUp(node);
+        if (node->key < node->parent->key) {
+            SwapUp(node->parent, node);
+            SiftUp(node->parent);
+        }
     }
 }
 
-void BinaryMinHeap::Insert(int key, void *data)
+void BinaryMinHeap::Insert(int key, int *data)
 {
-    heap[size].key = key;
-    heap[size].data = data;
-    heap[size].parent = &heap[(size-1)/2];
-    heap[size].rightChild = nullptr;
-    heap[size].leftChild = nullptr;
-    size = size + 1;
-    SiftUp(&heap[size]);
+    static unsigned int i = 0;
+    heap[i].key = key;
+    heap[i].data = data;
+    if (i > 0)
+    {
+        heap[i].parent = &heap[(i-1)/2];
+        if (heap[i].parent->leftChild == nullptr)
+            heap[i].parent->leftChild = &heap[i];
+        else
+            heap[i].parent->rightChild = &heap[i];
+    }
+    else
+    {
+        heap[i].parent = nullptr;
+
+    }
+    heap[i].rightChild = nullptr;
+    heap[i].leftChild = nullptr;
+    SiftUp(&heap[i]);
+    if (i > size)
+        size = i + 1;
+    i++;
 }
 
-HeapNode BinaryMinHeap::extract_min(void)
+HeapNode BinaryMinHeap::extractMin(void)
 {
     HeapNode min = heap[0];
-    heap[0] = heap[size - 1];
+    heap[0].key = heap[size - 1].key;
+    heap[0].data = heap[size - 1].data;
     size = size - 1;
-    SiftDown(0);
+    SiftDown(&heap[0]);
     return min;
 }
-
+/*
 HeapNode * BinaryMinHeap::Search(int key)
 {
     if (heap[0].key > key)
@@ -1617,26 +1621,48 @@ HeapNode * BinaryMinHeap::Search(int key)
 
     while (node->key < key)
     {
-        if (node->leftChild->key > key)
+        if ((node->leftChild != nullptr)&&(node->rightChild != nullptr))
         {
-            if (node->rightChild->key > key)
-                return nullptr;
+            if (node->leftChild->key > key) {
+                if (node->rightChild->key > key)
+                    return nullptr;
+                else
+                    node = node->rightChild;
+            }
             else
-                node = node->rightChild;
+            {
+                if (node->rightChild->key > key)
+                    node = node->leftChild;
+                else {
+                    if (node->leftChild->key > node->rightChild->key)
+                        node = node->leftChild;
+                    else node = node->rightChild;
+                }
+            }
         }
         else
         {
-            if (node->rightChild->key > key)
-                node = node->leftChild;
-            else {
-                if (node->leftChild->key > node->rightChild->key)
+            if (node->leftChild != nullptr)
+            {
+                if (node->leftChild->key < key)
                     node = node->leftChild;
-                else node = node->rightChild;
+                else
+                    return nullptr;
             }
+            else if (node->rightChild != nullptr)
+            {
+                if (node->rightChild->key < key)
+                    node = node->rightChild;
+                else
+                    return nullptr;
+            }
+            else return nullptr;
+
         }
     }
     return node;
-}
+}*/
+
 
 //ГРАФЫ
 
@@ -1683,27 +1709,6 @@ std::vector <Graph::Vertex> Graph::FordBellman(Graph * graph, int sourceIndex)
     return vertices;
 }
 
-void Graph::printPath(std::vector <Graph::Vertex> vert, int sourceIndex, int destIndex)
-{
-    using namespace std;
-    cout << "Source: " << sourceIndex << "\n";
-    cout << "Destination: " << destIndex << "\n";
-    cout << "Distance: " << vert[destIndex].distance << "\n";
-    cout << "Path: ";
-    char name;
-    Vertex * next = &vert[destIndex];
-    do
-    {
-        name = * next->name;
-        cout << name << " <- ";
-        next = next->predecessor;
-    }
-    while(next->predecessor != nullptr);
-
-    name = * vert[sourceIndex].name;
-    cout << name << "\n";
-}
-
 void Graph::addVertex(char * newName)
 {
     Vertex newVertex;
@@ -1729,4 +1734,25 @@ void Graph::addEdge(int vertInd1, int vertInd2, int weight)
     newEdge.vert2index = vertInd1;
 
     edges.push_back(newEdge);
+}
+
+void Graph::printPath(std::vector <Graph::Vertex> vert, int sourceIndex, int destIndex)
+{
+    using namespace std;
+    cout << "Source: " << sourceIndex << "\n";
+    cout << "Destination: " << destIndex << "\n";
+    cout << "Distance: " << vert[destIndex].distance << "\n";
+    cout << "Path: ";
+    char name;
+    Vertex * next = &vert[destIndex];
+    do
+    {
+        name = * next->name;
+        cout << name << " <- ";
+        next = next->predecessor;
+    }
+    while(next->predecessor != nullptr);
+
+    name = * vert[sourceIndex].name;
+    cout << name << "\n";
 }
